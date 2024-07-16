@@ -41,13 +41,12 @@ export default async function Index() {
           )}
       </nav>
       <div className="flex-1 flex flex-col gap-20 max-w-4xl px-3">
-        <Header />
+        <Header/>
         <main className="flex-1 flex flex-col gap-6">
         <div className="flex justify-center space-x-4">
           <a
             className="inline-flex items-center justify-center bg-gradient-to-r from-blue-500 via-pink-500 to-blue-500 text-lg font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background bg-primary text-primary-foreground h-11 px-8 rounded-md"
-            href="/login"
-          >
+            href="/login">
             Get Started
           </a>
         </div>
