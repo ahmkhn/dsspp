@@ -61,7 +61,7 @@ export default function Worldmap( {authorized} : worldMapProps) {
 
     return (
         <>
-            <MapContainer className="h-full max-h-full" zoom={10} center={[31.5000,74.3017]}>
+            <MapContainer className="h-full max-h-full" zoom={11} center={[31.5000,74.3017]}>
                 <TileLayer
                     attribution="Google Maps"
                     url="http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}" // satellite
