@@ -38,7 +38,6 @@ export default async function Index() {
           ) : (
             <>
             </>
-            
           )}
       </nav>
       <div className="flex-1 flex flex-col gap-20 max-w-4xl px-3">

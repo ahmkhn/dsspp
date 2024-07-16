@@ -1,0 +1,87 @@
+[
+    {
+      "name": "Anthropology",
+      "code": "Anthropology"
+    },
+    {
+      "name": "Sociology",
+      "code": "Sociology"
+    },
+    {
+      "name": "Political Science",
+      "code": "Political Science"
+    },
+    {
+      "name": "Economics",
+      "code": "Economics"
+    },
+    {
+      "name": "History",
+      "code": "History"
+    },
+    {
+      "name": "Geography",
+      "code": "Geography"
+    },
+    {
+      "name": "Psychology",
+      "code": "Psychology"
+    },
+    {
+      "name": "International Relations",
+      "code": "International Relations"
+    },
+    {
+      "name": "Law",
+      "code": "Law"
+    },
+    {
+      "name": "Education",
+      "code": "Education"
+    },
+    {
+      "name": "Cultural Studies",
+      "code": "Cultural Studies"
+    },
+    {
+      "name": "Development Studies",
+      "code": "Development Studies"
+    },
+    {
+      "name": "Public Administration",
+      "code": "Public Administration"
+    },
+    {
+      "name": "Gender Studies",
+      "code": "Gender Studies"
+    },
+    {
+      "name": "Environmental Studies",
+      "code": "Environmental Studies"
+    },
+    {
+      "name": "Media and Communication Studies",
+      "code": "Media and Communication Studies"
+    },
+    {
+      "name": "Linguistics",
+      "code": "Linguistics"
+    },
+    {
+      "name": "Philosophy",
+      "code": "Philosophy"
+    },
+    {
+      "name": "Social Work",
+      "code": "Social Work"
+    },
+    {
+      "name": "Urban Studies",
+      "code": "Urban Studies"
+    },
+    {
+        "name": "Custom",
+        "code": "Custom"
+    }
+  ]
+  

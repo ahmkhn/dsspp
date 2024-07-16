@@ -3,7 +3,7 @@ import SupabaseLogo from "./SupabaseLogo";
 
 export default function Header() {
   return (
-    <div className="flex flex-col gap-16 items-center">
+    <div className="flex flex-col gap-14 mt-2 items-center">
       <p className="!leading-tight text-center text-balance font-black text-4xl sm:text-5xl md:text-7xl lg:text-8xl">
         Decolonizing <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-pink-500 to-blue-500">Social Sciences</span> in Pakistan
       </p>
