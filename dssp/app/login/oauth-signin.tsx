@@ -53,7 +53,7 @@ export function OAuthButtons() {
           Login with {provider.displayName}
         </button>
       ))}
-      <Link href="/mapu" className="underline flex justify-center mt-3">View without signing in?</Link>
+      <Link href="/map" className="underline flex justify-center mt-3">View without signing in?</Link>
       
     </>
   );

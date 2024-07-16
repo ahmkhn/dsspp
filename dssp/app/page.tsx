@@ -36,9 +36,8 @@ export default async function Index() {
               <button>Sign Out</button>
             </form>
           ) : (
-            <button className="hover:bg-white hover:text-black hover:shadow hover:shadow-slate-600">
-              <Link href="/login">Sign In</Link>
-            </button>
+            <>
+            </>
             
           )}
       </nav>
@@ -54,10 +53,6 @@ export default async function Index() {
           </a>
         </div>
         </main>
-      </div>
-      <div>
-        Signed in as:
-
       </div>
       <footer className="w-full border-t border-gray-600 p-8 flex justify-center text-center text-xs">
         <p>
