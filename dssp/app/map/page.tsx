@@ -21,14 +21,8 @@ export default async function Map(){
       <main className="flex-1 flex flex-col">
         <section className="flex-1 w-full flex flex-col p-4">
           <div className="flex h-full">
-            <div className="w-1/6 p-4 flex items-center justify-center flex-col" style={{ borderRadius: '8px', overflow: 'hidden' }}>
-              <h1 className="text-xl">Welcome to the interactive map!</h1>
-            </div>
-            <div className="flex-grow h-[85vh] border-black rounded-lg" style={{borderRadius: '8px', overflow: 'hidden'}}>
+            <div className="flex-grow h-[89vh] border-black rounded-lg" style={{borderRadius: '8px', overflow: 'hidden'}}>
               <Worldmap authorized={user !== null} />
-            </div>
-            <div className="w-1/6 p-4 flex items-center justify-center flex-col" style={{ borderRadius: '8px', overflow: 'hidden' }}>
-              <h1 className="text-xl">Click on the map to set a marker!</h1>
             </div>
           </div>
         </section>
