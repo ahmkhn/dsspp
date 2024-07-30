@@ -1,4 +1,4 @@
-import Worldmap from "@/components/Worldmap";
+import Worldmap from "@/components/Worldmap/page";
 import { createClient } from "@/utils/supabase/server";
 export default async function Map(){
     const supabase = await createClient();

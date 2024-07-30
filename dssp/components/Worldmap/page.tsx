@@ -17,6 +17,11 @@ import { Map } from "react-map-gl";
 import {InputTextarea} from 'primereact/inputtextarea';
 import {Button} from 'primereact/button';
 import 'primereact/resources/themes/mira/theme.css';
+import { Jersey_10 } from "next/font/google";
+import { createClientComponentClient, createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
+import { addData } from "./test";
+
+
 type worldMapProps = {
     authorized: boolean | null;
 }
@@ -25,12 +30,12 @@ type researchType = {
     "name":string
     "code":string
 }
-
+type Coordinate = [number,number];
 export default function Worldmap( {authorized} : worldMapProps) {
     const [selectedPosition, setSelectedPosition] = useState<[number, number]>([0,0]);
     const [showInputDiv, setShowInputDiv] = useState(true);
     const [visible, setVisible] = useState(false);
-
+    const [longLat, setLongLat] = useState<Coordinate | null>(null);
     //user input
     const [fullName, setFullName] = useState<string|null>(null);
     const [title,setTitle] = useState<string|null>(null);
@@ -39,13 +44,68 @@ export default function Worldmap( {authorized} : worldMapProps) {
     const [locationCoordinates,setLocationCoordinates] = useState<[number,number]|null>(null);
     const [linkedinLink,setLinkedInLink] = useState<string|null>(null);
 
-
+    const MIN_DISTANCE = 10;
 
     const mapContainer = useRef<HTMLDivElement>(null);
     const map = useRef<mapboxgl.Map | null>(null);
     const [spinEnabled, setSpinEnabled] = useState(true);
     const spinRef = useRef(true);
     const [showDialog, setShowDialog] = useState(true);
+
+    /*const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      try {
+        const requestBody = {
+          userFullName: "jerryasif",
+          userResearchTag: "jerry research",
+          userResearchDesc: "Your research description here",
+          userLocationX: 4,
+          userLocationY: 3,
+          userOccupation: "dshkfl",
+        };
+        console.log('Sending request body:', JSON.stringify(requestBody));
+        const supabase = createClientComponentClient();
+        const { data: { session } } = await supabase.auth.getSession();
+        console.log('Client-side session:', session);
+        const response = await fetch('/api/addUserDetails', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(requestBody),
+          credentials: 'include', // Add this line
+        });
+        console.log('Raw response:', response);
+        const data = await response.json();
+        console.log('Parsed response data:', data);
+        if (!response.ok) {
+          throw new Error(`Failed to add user details: ${data.message || response.statusText}`);
+        }
+        console.log('User details added successfully:', data);
+      } catch (error) {
+        console.error('Error adding user details:', error);
+      }
+    };*/
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      await addData();
+    }
+    
+
+
+
+    function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number) {
+      const R = 6371; // Radius of the Earth in km
+      const dLat = (lat2 - lat1) * (Math.PI / 180);
+      const dLon = (lon2 - lon1) * (Math.PI / 180);
+      const a = 
+        Math.sin(dLat/2) * Math.sin(dLat/2) +
+        Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) * 
+        Math.sin(dLon/2) * Math.sin(dLon/2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+      return R * c; // Distance in km
+    }
 
     useEffect(() => {
       const hasSeenDialog = localStorage.getItem('hasSeenDialog');
@@ -64,7 +124,7 @@ export default function Worldmap( {authorized} : worldMapProps) {
       const zoom = map.current.getZoom();
     
       if (zoom < maxSpinZoom) {
-        let distancePerSecond = 40 / secondsPerRevolution;
+        let distancePerSecond = 30 / secondsPerRevolution;
         if (zoom > slowSpinZoom) {
           const zoomDif = (maxSpinZoom - zoom) / (maxSpinZoom - slowSpinZoom);
           distancePerSecond *= zoomDif;
@@ -93,7 +153,7 @@ export default function Worldmap( {authorized} : worldMapProps) {
     el.style.height = '20px';
     el.style.borderRadius = '50%';
     el.style.cursor = 'pointer';
-  
+    setLongLat([e.lngLat.lat,e.lngLat.lng]);
     new mapboxgl.Marker(el)
       .setLngLat(e.lngLat)
       .setPopup(
@@ -106,13 +166,13 @@ export default function Worldmap( {authorized} : worldMapProps) {
   useEffect(() => {
     if (map.current || !mapContainer.current) return;
 
-   
+
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
       style: 'mapbox://styles/mapbox/outdoors-v12',
       projection: 'globe',
       zoom: 3,
-      center: [80, 30]
+      center: [130, 30]
     });
 
     map.current.on('style.load', () => {
@@ -202,6 +262,9 @@ export default function Worldmap( {authorized} : worldMapProps) {
       </button>
     </div>
     <Dialog className="dialog-popup w-[40rem] max-w-[50rem] border border-black" header="Input your details" visible={visible} position="top" onHide={() => {if (!visible) return; setVisible(false); }}>
+      <form onSubmit={(e: React.FormEvent<HTMLFormElement>)=>{
+        handleSubmit(e);
+      }}>
                     <p className="text-blac text-center">Please <strong>make sure </strong>the marker on the map is accurate to the location you would like to set! :) (this window can be moved!)</p>
                     <div className="flex justify-center gap-8">
                         <div className="flex flex-col justify-content-center card gap-6 mt-8">
@@ -224,12 +287,12 @@ export default function Worldmap( {authorized} : worldMapProps) {
                             <InputTextarea
                                 disabled
                                 rows={2}
-                                className="w-[12rem] border-2 border-black rounded-md text-center mt-2"
+                                className="w-[12rem] border-2 border-black rounded-md text-center mt-2 flex p-6 "
                                 placeholder="'other' research type, currently disabled."
                             />
-                            <Button className="border border-black rounded-md p-2 text-white bg-black">Submit</Button>
+                            <Button type="submit" className="border border-black rounded-md p-2 text-white bg-black">Submit</Button>
                     </div>
-                    
+      </form>       
      </Dialog>
      <Dialog 
         className="bg-white text-black rounded-md p-8 flex justify-center text-center"
