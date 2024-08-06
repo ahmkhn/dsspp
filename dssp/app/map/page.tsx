@@ -9,11 +9,31 @@ export default async function Map(){
     <div className="flex-1 w-full flex flex-col min-h-screen">
       <nav className="w-full border-b border-gray-600 h-16 flex font-bold text-4xl">
         <div className="flex justify-between items-center flex-grow mx-6">
-          <a className="inline-flex items-center justify-center bg-gradient-to-r from-blue-500 to-pink-500 text-lg font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background bg-primary text-primary-foreground h-11 px-2 rounded-md" href="/">
+          <a className="inline-flex items-center justify-center text-center"  href="/"
+            style={{
+              font: 'bold 12px/20px "Helvetica Neue", Arial, Helvetica, sans-serif',
+              backgroundColor: 'white',
+              color: 'black',
+              width: '130px',
+              display: 'block',
+              cursor: 'pointer',
+              padding: '10px 20px',
+              borderRadius: '3px',}}
+          >
             Homepage
           </a>
           <h1 className="ml-6">Interactive Map</h1>
-          <a className="inline-flex items-center justify-center bg-gradient-to-r from-blue-500 to-pink-500 text-lg font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background bg-primary text-primary-foreground h-11 px-2 rounded-md" href="/">
+          <a className="inline-flex items-center justify-center" href="/"
+          
+          style={{
+            font: 'bold 12px/20px "Helvetica Neue", Arial, Helvetica, sans-serif',
+            backgroundColor: 'white',
+            color: 'black',
+            width: '130px',
+            cursor: 'pointer',
+            padding: '10px 20px',
+            borderRadius: '3px',}}
+          >
             About DSSP
           </a>
         </div>

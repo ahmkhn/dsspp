@@ -37,8 +37,6 @@ export default function Worldmap( {authorized} : worldMapProps) {
     const [researchInputDescription,setResearchInputDescription] = useState<string>("'Other' research type. Currently disabled.")
     const [summary,setSummary] = useState<string>("");
 
-    const [mapPopupOpen, setMapPopupOpen] = useState<boolean>(false); // State for map popup visibility
-
 
 
 
@@ -77,19 +75,20 @@ export default function Worldmap( {authorized} : worldMapProps) {
           el.style.height = '45px';
           el.style.borderRadius = '50%';
           el.style.cursor = 'pointer';
-          const popupContent = `<div class="p-4 bg-white text-black border border-gray-300 rounded-lg shadow-lg">
-            <h1 class="text-xl font-bold">${user.full_name}</h1>
-            <p class="text-sm mt-1">Research Tag: ${user.user_research_tag}</p>
-            <p class="text-sm mt-1">Description: ${user.user_research_description}</p>
-            <p class="text-sm mt-1">Occupation: ${user.user_occupation}</p>
-            <p class="text-sm mt-1">Location: (${user.user_location_x}, ${user.user_location_y})</p>
-            <a class="text-blue-500 hover:underline" href="${user.linked_in_link}" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-            <p class="text-sm mt-1">Summary: ${user.summary}</p>
-          </div>
-        `;
-
-const popup = new mapboxgl.Popup({ offset: 25 })
-  .setHTML(popupContent);
+          const popupContent = `
+          <div class="p-4 bg-white text-black border border-gray-300 rounded-lg shadow-lg" style="max-width: 300px; width: 100%;">
+            <div class="flex items-center mb-3">
+              <img src="${user.avatar_url}" alt="${user.full_name}" class="w-16 h-16 rounded-full mr-3 object-cover border-2 border-gray-300 flex-shrink-0">
+              <h1 class="text-xl font-bold break-words">${user.full_name}</h1>
+            </div>
+            <p class="text-sm mt-2"><span class="font-semibold">Research / Major:</span> ${user.user_research_tag}</p>
+            <p class="text-sm mt-2"><span class="font-semibold">Summary:</span> ${user.summary}</p>
+            <p class="text-sm mt-2"><span class="font-semibold">Occupation:</span> ${user.user_occupation}</p>
+            <p class="text-sm mt-2"><span class="font-semibold">Location:</span> (${user.user_location_x}, ${user.user_location_y})</p>
+            <a class="text-blue-500 hover:underline text-sm mt-2 block" href="${user.linked_in_link}" target="_blank" rel="noopener noreferrer">LinkedIn Profile</a>
+          </div>`;
+        const popup = new mapboxgl.Popup({ offset: 25 })
+          .setHTML(popupContent);
 
           new mapboxgl.Marker(el)
               .setLngLat([user.user_location_y, user.user_location_x])
@@ -103,7 +102,8 @@ const popup = new mapboxgl.Popup({ offset: 25 })
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      await addData(fullName,longLat[0],longLat[1],title,researchInputDescription,research,linkedinLink,summary);
+      const researchUpdated = (researchDisabled ? research : researchInputDescription);
+      await addData(fullName,longLat[0],longLat[1],title,researchInputDescription,researchUpdated,linkedinLink,summary);
       /*export async function addData(full_name:string,user_location_x:number,user_location_y:number,user_occupation:string,user_research_description:string,user_research_tag:string){
       */
     }
@@ -180,6 +180,7 @@ const popup = new mapboxgl.Popup({ offset: 25 })
 
   useEffect(() => {
     if (map.current || !mapContainer.current) return;
+
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
       style: 'mapbox://styles/mapbox/outdoors-v12',
@@ -290,7 +291,7 @@ const popup = new mapboxgl.Popup({ offset: 25 })
                                 className="border border-black rounded-md h-10 w-[12rem]"
                                 value={research}
                                 options={ResearchType.map((type) => ({ label: type.name, value: type.code }))}
-                                onChange={(e) => setResearch(e.value)}
+                                onChange={(e) => setResearch(e.target.value)}
                                 placeholder="Select a research"
                             />
                             <InputText required className="h-10 border border-black rounded-md p-2 w-[12rem]" id="name" value={linkedinLink} onChange={(e)=>setLinkedInLink(e.target.value)} placeholder="Enter LinkedIn Link" />
@@ -300,14 +301,14 @@ const popup = new mapboxgl.Popup({ offset: 25 })
                             <InputTextarea
                                 disabled={researchDisabled}
                                 rows={2}
-                                className="w-[12rem] border-2 border-black rounded-md text-center mt-2 flex p-4 "
+                                className="w-[13rem] border-2 border-black rounded-md text-center mt-2 flex p-4 "
                                 placeholder={researchInputDescription}
-                                onChange={(e)=>setResearchInputDescription}
+                                onChange={(e)=>setResearchInputDescription(e.target.value)}
                             />
                             <InputTextarea
-                                rows={2}
-                                className="w-[12rem] border-2 border-black rounded-md text-center mt-2 flex p-3 "
-                                placeholder="Who are you and what's your research about?"
+                                rows={3}
+                                className="w-[13rem] border-2 border-black rounded-md text-center mt-2 flex p-3 "
+                                placeholder="Who are you and what's your research about? (please keep it concise!)"
                                 required
                                 onChange={(e)=>setSummary(e.target.value)}
                             />
@@ -320,7 +321,7 @@ const popup = new mapboxgl.Popup({ offset: 25 })
      </Dialog>
      <Dialog 
         className="bg-white text-black rounded-md p-8 flex justify-center text-center"
-        visible={showDialog} 
+        visible={false} 
         onHide={() => setShowDialog(false)}
         header="Welcome!"
         style={{ width: '30vw' }}
