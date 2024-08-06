@@ -2,20 +2,23 @@
 
 import { createClient } from "@/utils/supabase/server";
 
-export async function addData(){
+export async function addData(full_name:string,user_location_x:number,user_location_y:number,user_occupation:string,user_research_description:string,user_research_tag:string,li_link:string,summary:string){
     const supabase = createClient();
     const { data: { user } } = await supabase.auth.getUser();
+    const {avatar_url} = user?.user_metadata || {}
     const { error } = await supabase.from("users").insert({
-        avatar_url:"adsf",
-        full_name: "asdf",
+        avatar_url: avatar_url,
+        full_name: full_name,
         id: String(user?.id),
-        user_city_country: "asdf",
-        user_location_x: 0,
-        user_location_y:  0,
-        user_occupation:  "asdf",
-        user_research_description: "asdf",
-        user_research_tag: "asdf",
-        username:  "asdf",
+        user_city_country: "temp",
+        user_location_x: user_location_x,
+        user_location_y:  user_location_y,
+        user_occupation:  user_occupation,
+        user_research_description: user_research_description,
+        user_research_tag: user_research_tag,
+        linked_in_link: li_link,
+        summary:summary
+
     });
     if (error) {
         console.error("Error inserting data:", error);

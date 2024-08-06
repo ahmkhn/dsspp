@@ -1,10 +1,6 @@
 'use client';
-import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import { Icon } from "leaflet";
-import MarkerClusterGroup from "react-leaflet-cluster"; 
 import { useState } from 'react';
-import dropdownResearchTypes from "@/public/ResearchTypes.json";
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import {Dialog} from 'primereact/dialog';
@@ -12,101 +8,97 @@ import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
 import ResearchType from "@/public/ResearchTypes.json";
 import {useEffect, useRef, useCallback} from 'react';
-import {MapRef, ViewStateChangeEvent} from 'react-map-gl';
-import { Map } from "react-map-gl";
 import {InputTextarea} from 'primereact/inputtextarea';
 import {Button} from 'primereact/button';
 import 'primereact/resources/themes/mira/theme.css';
-import { Jersey_10 } from "next/font/google";
-import { createClientComponentClient, createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { addData } from "./test";
+import { getAllMarkerUserData } from "./getMapData";
 
 
 type worldMapProps = {
     authorized: boolean | null;
 }
 
-type researchType = {
-    "name":string
-    "code":string
-}
+
 type Coordinate = [number,number];
 export default function Worldmap( {authorized} : worldMapProps) {
-    const [selectedPosition, setSelectedPosition] = useState<[number, number]>([0,0]);
-    const [showInputDiv, setShowInputDiv] = useState(true);
     const [visible, setVisible] = useState(false);
-    const [longLat, setLongLat] = useState<Coordinate | null>(null);
+    const [longLat, setLongLat] = useState<Coordinate>([0,0]);
     //user input
-    const [fullName, setFullName] = useState<string|null>(null);
-    const [title,setTitle] = useState<string|null>(null);
-    const [research,setResearch] = useState<researchType|null>(null);
-    const [img,uploadImg] = useState<ImageBitmap|null>(null);
-    const [locationCoordinates,setLocationCoordinates] = useState<[number,number]|null>(null);
-    const [linkedinLink,setLinkedInLink] = useState<string|null>(null);
-
-    const MIN_DISTANCE = 10;
-
+    const [fullName, setFullName] = useState<string>("");
+    const [title,setTitle] = useState<string>("");
+    const [research,setResearch] = useState<string>("");
+    const [linkedinLink,setLinkedInLink] = useState<string>("");
+    const [researchDisabled,setResearchDisabled] = useState<boolean>(true);
     const mapContainer = useRef<HTMLDivElement>(null);
     const map = useRef<mapboxgl.Map | null>(null);
     const [spinEnabled, setSpinEnabled] = useState(true);
     const spinRef = useRef(true);
     const [showDialog, setShowDialog] = useState(true);
+    const [researchInputDescription,setResearchInputDescription] = useState<string>("'Other' research type. Currently disabled.")
+    const [summary,setSummary] = useState<string>("");
 
-    /*const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
-      try {
-        const requestBody = {
-          userFullName: "jerryasif",
-          userResearchTag: "jerry research",
-          userResearchDesc: "Your research description here",
-          userLocationX: 4,
-          userLocationY: 3,
-          userOccupation: "dshkfl",
-        };
-        console.log('Sending request body:', JSON.stringify(requestBody));
-        const supabase = createClientComponentClient();
-        const { data: { session } } = await supabase.auth.getSession();
-        console.log('Client-side session:', session);
-        const response = await fetch('/api/addUserDetails', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(requestBody),
-          credentials: 'include', // Add this line
-        });
-        console.log('Raw response:', response);
-        const data = await response.json();
-        console.log('Parsed response data:', data);
-        if (!response.ok) {
-          throw new Error(`Failed to add user details: ${data.message || response.statusText}`);
-        }
-        console.log('User details added successfully:', data);
-      } catch (error) {
-        console.error('Error adding user details:', error);
+
+
+
+    interface User {
+      full_name: string;
+      user_research_tag: string;
+      avatar_url: string;
+      user_research_description: string;
+      user_occupation: string;
+      user_location_x: number;
+      user_location_y: number;
+      linked_in_link: string;
+      summary: string;
+    }
+    
+    const [users, setUsers] = useState<User[] | null>(null);
+    
+    useEffect(() => {
+      async function fetchData() {
+        const data = await getAllMarkerUserData();
+        console.log(data);
+        setUsers(data);
       }
-    };*/
+      fetchData();
+    }, []);
+
+    useEffect(() => {
+      if (users === null) return;
+      users.map((user, index) => {
+          if (!map.current) return;
+          const el = document.createElement('div');
+          el.className = 'marker';
+          el.style.backgroundImage = "url('https://docs.mapbox.com/help/demos/custom-markers-gl-js/mapbox-icon.png')";
+          el.style.backgroundSize = 'cover';
+          el.style.width = '80px';
+          el.style.height = '80px';
+          el.style.borderRadius = '50%';
+          el.style.cursor = 'pointer';
+
+          new mapboxgl.Marker(el)
+              .setLngLat([user.user_location_y, user.user_location_x])
+              .setPopup(
+                  new mapboxgl.Popup({ offset: 25 })
+                      .setHTML(`<h1>${user.full_name}</h1>
+                                <p>Research Tag: ${user.user_research_tag}</p>
+                                <p>Description: ${user.user_research_description}</p>
+                                <p>Occupation: ${user.user_occupation}</p>
+                                <p>Location: (${user.user_location_x}, ${user.user_location_y})</p>
+                                <a href="${user.linked_in_link}" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                <p>Summary: ${user.summary}</p>`)
+              )
+              .addTo(map.current);
+      });
+    }, [users]);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      await addData();
+      await addData(fullName,longLat[0],longLat[1],title,researchInputDescription,research,linkedinLink,summary);
+      /*export async function addData(full_name:string,user_location_x:number,user_location_y:number,user_occupation:string,user_research_description:string,user_research_tag:string){
+      */
     }
-    
-
-
-
-    function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number) {
-      const R = 6371; // Radius of the Earth in km
-      const dLat = (lat2 - lat1) * (Math.PI / 180);
-      const dLon = (lon2 - lon1) * (Math.PI / 180);
-      const a = 
-        Math.sin(dLat/2) * Math.sin(dLat/2) +
-        Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) * 
-        Math.sin(dLon/2) * Math.sin(dLon/2);
-      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-      return R * c; // Distance in km
-    }
-
     useEffect(() => {
       const hasSeenDialog = localStorage.getItem('hasSeenDialog');
       if (!hasSeenDialog) {
@@ -114,6 +106,19 @@ export default function Worldmap( {authorized} : worldMapProps) {
         localStorage.setItem('hasSeenDialog', 'true');
       }
     }, []);
+    
+    useEffect(() =>{
+      if(research){
+        console.log(research);
+        if(research==="Other"){
+          setResearchDisabled(false);
+          setResearchInputDescription("");
+        }else{
+          setResearchDisabled(true);
+          setResearchInputDescription("'Other' research type. Currently disabled.");
+        }
+      }
+    },[research])
     
     const spinGlobe = useCallback(() => {
       if (!map.current || !spinRef.current) return;
@@ -165,7 +170,6 @@ export default function Worldmap( {authorized} : worldMapProps) {
 
   useEffect(() => {
     if (map.current || !mapContainer.current) return;
-
 
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
@@ -269,7 +273,7 @@ export default function Worldmap( {authorized} : worldMapProps) {
                     <div className="flex justify-center gap-8">
                         <div className="flex flex-col justify-content-center card gap-6 mt-8">
                             <InputText required className="h-10 border border-black rounded-md p-2 w-[12rem]" id="name" value={fullName} onChange={(e)=>setFullName(e.target.value)} placeholder="Enter Full Name" />
-                            <InputText required className="h-10 border border-black rounded-md p-2 w-[12rem]" id="name" value={fullName} onChange={(e)=>setFullName(e.target.value)} placeholder="Enter Job Title" />
+                            <InputText required className="h-10 border border-black rounded-md p-2 w-[12rem]" id="name" value={title} onChange={(e)=>setTitle(e.target.value)} placeholder="Enter Job Title" />
                         </div>
                         <div className="flex flex-col justify-content-center card gap-6 mt-8">
                             <Dropdown
@@ -280,18 +284,29 @@ export default function Worldmap( {authorized} : worldMapProps) {
                                 onChange={(e) => setResearch(e.value)}
                                 placeholder="Select a research"
                             />
-                            <InputText required className="h-10 border border-black rounded-md p-2 w-[12rem]" id="name" value={fullName} onChange={(e)=>setFullName(e.target.value)} placeholder="Enter Phone Number" />
+                            <InputText required className="h-10 border border-black rounded-md p-2 w-[12rem]" id="name" value={linkedinLink} onChange={(e)=>setLinkedInLink(e.target.value)} placeholder="Enter LinkedIn Link" />
                         </div>
                     </div>
-                    <div className="flex flex-col flex-grow justify-center items-center card gap-6 mt-4">
+                    <div className="flex flex-row justify-center gap-6 mt-4">
                             <InputTextarea
-                                disabled
+                                disabled={researchDisabled}
                                 rows={2}
-                                className="w-[12rem] border-2 border-black rounded-md text-center mt-2 flex p-6 "
-                                placeholder="'other' research type, currently disabled."
+                                className="w-[12rem] border-2 border-black rounded-md text-center mt-2 flex p-4 "
+                                placeholder={researchInputDescription}
+                                onChange={(e)=>setResearchInputDescription}
                             />
-                            <Button type="submit" className="border border-black rounded-md p-2 text-white bg-black">Submit</Button>
+                            <InputTextarea
+                                rows={2}
+                                className="w-[12rem] border-2 border-black rounded-md text-center mt-2 flex p-3 "
+                                placeholder="Who are you and what's your research about?"
+                                required
+                                onChange={(e)=>setSummary(e.target.value)}
+                            />
                     </div>
+                    <div className="flex flex-grow align-middle items-center justify-center mt-2">
+                      <Button type="submit" className="border border-black rounded-md p-2 text-white bg-black">Submit</Button>
+                    </div>
+                   
       </form>       
      </Dialog>
      <Dialog 
@@ -307,5 +322,3 @@ export default function Worldmap( {authorized} : worldMapProps) {
     </>
   );
 };
-
-
