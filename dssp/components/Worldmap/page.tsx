@@ -13,8 +13,7 @@ import {Button} from 'primereact/button';
 import 'primereact/resources/themes/mira/theme.css';
 import { addData } from "./test";
 import { getAllMarkerUserData } from "./getMapData";
-
-
+import pin from "@/public/pin.gif";
 type worldMapProps = {
     authorized: boolean | null;
 }
@@ -37,6 +36,8 @@ export default function Worldmap( {authorized} : worldMapProps) {
     const [showDialog, setShowDialog] = useState(true);
     const [researchInputDescription,setResearchInputDescription] = useState<string>("'Other' research type. Currently disabled.")
     const [summary,setSummary] = useState<string>("");
+
+    const [mapPopupOpen, setMapPopupOpen] = useState<boolean>(false); // State for map popup visibility
 
 
 
@@ -70,24 +71,31 @@ export default function Worldmap( {authorized} : worldMapProps) {
           if (!map.current) return;
           const el = document.createElement('div');
           el.className = 'marker';
-          el.style.backgroundImage = "url('https://docs.mapbox.com/help/demos/custom-markers-gl-js/mapbox-icon.png')";
+          el.style.backgroundImage = `url(${pin.src})`;
           el.style.backgroundSize = 'cover';
-          el.style.width = '80px';
-          el.style.height = '80px';
+          el.style.width = '45px';
+          el.style.height = '45px';
           el.style.borderRadius = '50%';
           el.style.cursor = 'pointer';
+          const popupContent = `<div class="p-4 bg-white text-black border border-gray-300 rounded-lg shadow-lg">
+            <h1 class="text-xl font-bold">${user.full_name}</h1>
+            <p class="text-sm mt-1">Research Tag: ${user.user_research_tag}</p>
+            <p class="text-sm mt-1">Description: ${user.user_research_description}</p>
+            <p class="text-sm mt-1">Occupation: ${user.user_occupation}</p>
+            <p class="text-sm mt-1">Location: (${user.user_location_x}, ${user.user_location_y})</p>
+            <a class="text-blue-500 hover:underline" href="${user.linked_in_link}" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            <p class="text-sm mt-1">Summary: ${user.summary}</p>
+          </div>
+        `;
+
+const popup = new mapboxgl.Popup({ offset: 25 })
+  .setHTML(popupContent);
 
           new mapboxgl.Marker(el)
               .setLngLat([user.user_location_y, user.user_location_x])
               .setPopup(
                   new mapboxgl.Popup({ offset: 25 })
-                      .setHTML(`<h1>${user.full_name}</h1>
-                                <p>Research Tag: ${user.user_research_tag}</p>
-                                <p>Description: ${user.user_research_description}</p>
-                                <p>Occupation: ${user.user_occupation}</p>
-                                <p>Location: (${user.user_location_x}, ${user.user_location_y})</p>
-                                <a href="${user.linked_in_link}" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-                                <p>Summary: ${user.summary}</p>`)
+                      .setHTML(popupContent)
               )
               .addTo(map.current);
       });
@@ -147,30 +155,31 @@ export default function Worldmap( {authorized} : worldMapProps) {
       }
     }, []);
 
-  const addMarker = useCallback((e: mapboxgl.MapMouseEvent) => {
-    if (!map.current || spinRef.current) return;
-    setVisible(true);
-    const el = document.createElement('div');
-    el.className = 'marker';
-    el.style.backgroundImage = "url('https://docs.mapbox.com/help/demos/custom-markers-gl-js/mapbox-icon.png')";
-    el.style.backgroundSize = 'cover';
-    el.style.width = '20px';
-    el.style.height = '20px';
-    el.style.borderRadius = '50%';
-    el.style.cursor = 'pointer';
-    setLongLat([e.lngLat.lat,e.lngLat.lng]);
-    new mapboxgl.Marker(el)
-      .setLngLat(e.lngLat)
-      .setPopup(
-        new mapboxgl.Popup({ offset: 25 })
-          .setHTML(`<h1>empty</h1>`)
-      )
-      .addTo(map.current);
-  }, []);
+    const addMarker = useCallback((e: mapboxgl.MapMouseEvent & { originalEvent: MouseEvent }) => {
+      if (!map.current || spinRef.current) return;
+    
+      // Check if the click was on a marker
+      if (e.defaultPrevented || e.originalEvent.target instanceof HTMLElement && e.originalEvent.target.className.includes('mapboxgl-marker')) {
+        return; // Exit the function if the click was on a marker
+      }
+    
+      setVisible(true);
+      const el = document.createElement('div');
+      el.className = 'marker';
+      el.style.backgroundImage = "url('https://docs.mapbox.com/help/demos/custom-markers-gl-js/mapbox-icon.png')";
+      el.style.backgroundSize = 'cover';
+      el.style.width = '20px';
+      el.style.height = '20px';
+      el.style.borderRadius = '50%';
+      el.style.cursor = 'pointer';
+      setLongLat([e.lngLat.lat, e.lngLat.lng]);
+      new mapboxgl.Marker(el)
+        .setLngLat(e.lngLat)
+        .addTo(map.current);
+    }, []);
 
   useEffect(() => {
     if (map.current || !mapContainer.current) return;
-
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
       style: 'mapbox://styles/mapbox/outdoors-v12',
