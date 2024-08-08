@@ -13,6 +13,7 @@ import {Button} from 'primereact/button';
 import 'primereact/resources/themes/mira/theme.css';
 import { addData } from "./test";
 import { getAllMarkerUserData } from "./getMapData";
+import { getUserDataExists } from "./getMapData";
 import pin from "@/public/pin.gif";
 type worldMapProps = {
     authorized: boolean | null;
@@ -36,10 +37,7 @@ export default function Worldmap( {authorized} : worldMapProps) {
     const [showDialog, setShowDialog] = useState(true);
     const [researchInputDescription,setResearchInputDescription] = useState<string>("'Other' research type. Currently disabled.")
     const [summary,setSummary] = useState<string>("");
-
-
-
-
+    const [userExists,setUserExists] = useState<boolean>(false);
     interface User {
       full_name: string;
       user_research_tag: string;
@@ -57,7 +55,6 @@ export default function Worldmap( {authorized} : worldMapProps) {
     useEffect(() => {
       async function fetchData() {
         const data = await getAllMarkerUserData();
-        console.log(data);
         setUsers(data);
       }
       fetchData();
@@ -117,7 +114,6 @@ export default function Worldmap( {authorized} : worldMapProps) {
     
     useEffect(() =>{
       if(research){
-        console.log(research);
         if(research==="Other"){
           setResearchDisabled(false);
           setResearchInputDescription("");
@@ -155,14 +151,25 @@ export default function Worldmap( {authorized} : worldMapProps) {
       }
     }, []);
 
-    const addMarker = useCallback((e: mapboxgl.MapMouseEvent & { originalEvent: MouseEvent }) => {
+    const addMarker = useCallback(async (e: mapboxgl.MapMouseEvent & { originalEvent: MouseEvent }) => {
       if (!map.current || spinRef.current) return;
+      if (!authorized) return;
     
       // Check if the click was on a marker
       if (e.defaultPrevented || e.originalEvent.target instanceof HTMLElement && e.originalEvent.target.className.includes('mapboxgl-marker')) {
         return; // Exit the function if the click was on a marker
       }
     
+      try {
+        const exists = await getUserDataExists();
+        setUserExists(exists);
+        if (exists) {
+          return; // Exit if the user already exists
+        }
+      } catch (error) {
+        console.error("Error checking user existence:", error);
+      }
+
       setVisible(true);
       const el = document.createElement('div');
       el.className = 'marker';
@@ -176,11 +183,10 @@ export default function Worldmap( {authorized} : worldMapProps) {
       new mapboxgl.Marker(el)
         .setLngLat(e.lngLat)
         .addTo(map.current);
-    }, []);
+    }, [map, spinRef, authorized, setUserExists]);
 
   useEffect(() => {
     if (map.current || !mapContainer.current) return;
-
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
       style: 'mapbox://styles/mapbox/outdoors-v12',

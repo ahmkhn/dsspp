@@ -27,3 +27,37 @@ export async function getAllMarkerUserData(): Promise<User[] | null> {
 
     return data;
 }
+export async function getUserDataExists() {
+    const supabase = createClient();
+    
+    // Step 1: Check if we can get the current user
+    const { data: { user }, error: userError } = await supabase.auth.getUser();
+    
+    if (userError) {
+      console.error("Error getting user:", userError);
+      return false;
+    }
+    
+    if (!user?.id) {
+      console.log("No user ID found");
+      return false;
+    }
+    
+    
+    // Step 2: Query the database
+    const { data, error } = await supabase
+      .from('users')
+      .select('id')
+      .eq('id', user.id);
+  
+    if (error) {
+      console.error('Error querying database:', error);
+      return false;
+    }
+  
+    
+    // Step 3: Check if user exists in the database
+    const exists = data && data.length > 0;
+    
+    return exists;
+  }
