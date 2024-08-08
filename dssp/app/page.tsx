@@ -6,7 +6,7 @@ import SignUpUserSteps from "@/components/tutorial/SignUpUserSteps";
 import Header from "@/components/Header";
 import Link from "next/link";
 import { signOut } from "@/app/login/actions";
-
+import Globe from "@/components/magicui/globe";
 export default async function Index() {
   const canInitSupabaseClient = () => {
     // This function is just for the interactive tutorial.
@@ -41,7 +41,15 @@ export default async function Index() {
           )}
       </nav>
       <div className="flex-1 flex flex-col gap-10 max-w-4xl px-3">
-        <Header/>
+          <div className="flex flex-col gap-8 items-center">
+          <p className="!leading-tight text-center text-balance font-black text-2xl sm:text-3xl md:text-4xl lg:text-5xl">
+            Decolonizing <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-pink-500 to-blue-500">Social Sciences</span> in Pakistan
+          </p>
+          <div className="w-full p-[1px] bg-gradient-to-r from-transparent via-gray-300 to-transparent my-4" />
+          <p className="text-center !leading-tight text-balance font-black text-xl sm:text-2xl md:text-3xl lg:text-4xl">
+            An application that fosters a global community where users can <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-pink-500 to-blue-500">share their research and collaborate</span> promoting a sense of unity and mutual support
+          </p>
+        </div>
         <main className="flex-1 flex flex-col gap-6">
         <div className="flex justify-center space-x-4">
           <a
@@ -51,6 +59,7 @@ export default async function Index() {
           </a>
         </div>
         </main>
+          <Globe className="relative flex max-h-[20rem] max-w-[20rem] px-6 pb-6 md:shadow-xl" />
       </div>
       <footer className="w-full border-t border-gray-600 p-8 flex justify-center text-center text-xs">
         <p>
