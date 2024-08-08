@@ -42,7 +42,7 @@ export default async function Index() {
       </nav>
       <div className="flex justify-between items-center max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div className="flex justify-between items-center max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-  <div className="flex w-[85vh] flex-col gap-2 max-w-2xl">
+  <div className="flex h-[60vh] flex-col gap-2 max-w-2xl mt-20">
     <div className="flex flex-col gap-2 items-start">
       <p className="!leading-tight text-balance font-black text-2xl sm:text-3xl md:text-4xl lg:text-5xl">
         Decolonizing{' '}
@@ -69,12 +69,12 @@ export default async function Index() {
       </a>
     </div>
   </div>
-  <div className="relative flex h-full ml-40 max-w-[32rem] items-center justify-center overflow-hidden rounded-lg border bg-background px-40 pb-40 pt-10 md:pb-60 md:shadow-xl">
-      <span className="pb-20 pointer-events-none whitespace-pre-wrap bg-gradient-to-b from-black to-gray-300/80 bg-clip-text text-center text-4xl font-semibold leading-none text-transparent dark:from-white dark:to-slate-900/10">
-        Welcome! :)
+  <div className="relative flex h-full ml-40 max-w-[32rem] items-center justify-center overflow-hidden px-40 pb-40 pt-10 md:pb-60 mb-20">
+      <span className="pb-20 pointer-events-none whitespace-pre-wrap bg-gradient-to-b text-white bg-clip-text text-center text-4xl font-semibold leading-none text-transparent dark:from-white dark:to-slate-900/10">
+        Welcome!
       </span>
-      <Globe className="top-28" />
-      <div className="pointer-events-none absolute inset-0 h-full bg-[radial-gradient(circle_at_50%_200%,rgba(0,0,0,0.2),rgba(255,255,255,0))]" />
+      <Globe className="top-14 left-2" />
+      <div className="pointer-events-none absolute inset-0 h-full" />
   </div>
 </div>
 </div>

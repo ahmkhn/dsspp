@@ -47,7 +47,7 @@ export default function Globe({
   const pointerInteracting = useRef(null);
   const pointerInteractionMovement = useRef(0);
   const [{ r }, api] = useSpring(() => ({
-    r: 0,
+    r: 1,
     config: {
       mass: 1,
       tension: 280,
