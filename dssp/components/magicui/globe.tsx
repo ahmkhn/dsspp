@@ -91,8 +91,8 @@ export default function Globe({
 
     const globe = createGlobe(canvasRef.current!, {
       ...config,
-      width: width * 2,
-      height: width * 2,
+      width: width * 3,
+      height: width * 3,
       onRender,
     });
 

@@ -6,7 +6,13 @@ import SignUpUserSteps from "@/components/tutorial/SignUpUserSteps";
 import Header from "@/components/Header";
 import Link from "next/link";
 import { signOut } from "@/app/login/actions";
-import Globe from "@/components/magicui/globe";
+import { Globe } from "@/components/ui/globe";
+import { StarsBackground } from "@/components/ui/stars-background";
+import { ShootingStars } from "@/components/ui/shooting-stars";
+import { motion } from "framer-motion";
+import { HeroHighlightDemo } from "@/components/Hero";
+import globeData from "@/data/globe.json"
+import { GlobeDemo } from "@/components/GlobeD";
 export default async function Index() {
   const canInitSupabaseClient = () => {
     // This function is just for the interactive tutorial.
@@ -28,7 +34,9 @@ export default async function Index() {
   const isSupabaseConnected = canInitSupabaseClient();
 
   return (
-    <div className="flex-1 w-full flex flex-col items-center max-h-screen min-h-screen">
+    <div className=" h-[40vh] flex-1 w-full flex flex-col items-center max-h-screen min-h-screen  bg-black bg-dot-thick-neutral-800 group">
+      <StarsBackground className="important" starDensity={0.0001}/>
+      <ShootingStars starColor="green-200" trailColor="white" minDelay={800} maxDelay={1200} starHeight={6} starWidth={40}/>
       <nav className="w-full flex justify-center border-b border-gray-600 h-16">
       {user !== null ? (
             <form action={signOut} className="flex items-center gap-2">
@@ -40,45 +48,20 @@ export default async function Index() {
             </>
           )}
       </nav>
-      <div className="flex justify-between items-center max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <div className="flex justify-between items-center max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-  <div className="flex h-[60vh] flex-col gap-2 max-w-2xl mt-20">
-    <div className="flex flex-col gap-2 items-start">
-      <p className="!leading-tight text-balance font-black text-2xl sm:text-3xl md:text-4xl lg:text-5xl">
-        Decolonizing{' '}
-        <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-pink-500 to-blue-500">
-          Social Sciences
-        </span>{' '}
-        in Pakistan
-      </p>
-      <div className="w-full p-[1px] bg-gradient-to-r from-transparent via-gray-300 to-transparent my-4" />
-      <p className="!leading-tight text-balance font-black text-xl sm:text-2xl md:text-3xl lg:text-4xl">
-        An application that fosters a global community where users can{' '}
-        <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-pink-500 to-blue-500">
-          share their research and collaborate
-        </span>{' '}
-        promoting a sense of unity and mutual support
-      </p>
-    </div>
-    <div className="flex justify-start space-x-4">
+  <div className="flex justify-between items-center max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+  <div className="flex justify-between items-center max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className=" flex flex-grow flex-col gap-2 max-w-3xl rounded-lg justify-center align-middle items-center bg-white">
+        <HeroHighlightDemo></HeroHighlightDemo>
       
-        <a className="inline-flex items-center justify-center bg-gradient-to-r from-blue-500 via-pink-500 to-blue-500 text-lg font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background bg-primary text-primary-foreground h-11 px-8 rounded-md"
+        <a className="z-10 w-[12rem] cursor-pointer inline-flex items-center justify-center bg-gradient-to-r bg-green-600 text-lg font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2  ring-offset-background bg-primary text-primary-foreground h-11 px-8 rounded-2xl"
         href="/login"
       >
         Get Started
       </a>
     </div>
   </div>
-  <div className="relative flex h-full ml-40 max-w-[32rem] items-center justify-center overflow-hidden px-40 pb-40 pt-10 md:pb-60 mb-20">
-      <span className="pb-20 pointer-events-none whitespace-pre-wrap bg-gradient-to-b text-white bg-clip-text text-center text-4xl font-semibold leading-none text-transparent dark:from-white dark:to-slate-900/10">
-        Welcome!
-      </span>
-      <Globe className="top-14 left-2" />
-      <div className="pointer-events-none absolute inset-0 h-full" />
   </div>
-</div>
-</div>
-      <footer className="w-full border-t border-gray-600 p-8 flex justify-center text-center text-xs">
+  <footer className="w-full border-t border-gray-600 h-16 flex justify-center items-center text-center text-xs bg-black bg-dot-thick-neutral-800 group">
         <p>
           Developed by {""}
           <a
@@ -91,6 +74,6 @@ export default async function Index() {
           </a>
         </p>
       </footer>
-    </div>
+  </div>
   );
 }

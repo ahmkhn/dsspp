@@ -187,7 +187,6 @@ export default function Worldmap( {authorized} : worldMapProps) {
 
   useEffect(() => {
     if (map.current || !mapContainer.current) return;
-    mapboxgl.accessToken = "pk.eyJ1IjoiYWhta2huIiwiYSI6ImNsbjF4NW5tbjAyd3Qya213eWs2ejc0NDUifQ.dAQ6snVKM7ga1ApOfs0jsQ";
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
       style: 'mapbox://styles/mapbox/outdoors-v12',
@@ -281,6 +280,24 @@ export default function Worldmap( {authorized} : worldMapProps) {
       >
         {spinEnabled ? 'Pause rotation' : 'Start rotation'}
       </button>
+      <a className="inline-flex items-center justify-center text-center border-black border-2 rounded-md"  href="/"
+            style={{
+              font: 'bold 12px/20px "Helvetica Neue", Arial, Helvetica, sans-serif',
+          backgroundColor: 'white',
+          color: 'black',
+          position: 'absolute',
+          top: '45rem',
+          left: '50%',
+          zIndex: 1,
+          width: '200px',
+          marginLeft: '-100px',
+          display: 'block',
+          cursor: 'pointer',
+          padding: '10px 20px',
+          borderRadius: '3px',}}
+          >
+            Modify Your Marker
+          </a>
     </div>
     <Dialog className="dialog-popup w-[40rem] max-w-[50rem] border border-black" header="Input your details" visible={visible} position="top" onHide={() => {if (!visible) return; setVisible(false); }}>
       <form onSubmit={(e: React.FormEvent<HTMLFormElement>)=>{

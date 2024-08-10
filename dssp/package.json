@@ -6,6 +6,8 @@
     "start": "next start"
   },
   "dependencies": {
+    "@react-three/drei": "^9.109.5",
+    "@react-three/fiber": "^8.16.8",
     "@supabase/auth-helpers-nextjs": "^0.10.0",
     "@supabase/ssr": "latest",
     "@supabase/supabase-js": "latest",
@@ -14,11 +16,12 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "cobe": "^0.6.3",
-    "framer-motion": "^11.3.23",
+    "framer-motion": "^11.3.24",
     "geist": "^1.2.1",
     "leaflet": "^1.9.4",
     "lucide-react": "^0.424.0",
     "mapbox-gl": "^3.5.1",
+    "mini-svg-data-uri": "^1.4.4",
     "next": "latest",
     "postcss": "8.4.33",
     "primereact": "^10.7.0",
