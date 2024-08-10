@@ -187,6 +187,7 @@ export default function Worldmap( {authorized} : worldMapProps) {
 
   useEffect(() => {
     if (map.current || !mapContainer.current) return;
+    mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_KEY as string;
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
       style: 'mapbox://styles/mapbox/outdoors-v12',
