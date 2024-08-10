@@ -19,7 +19,7 @@ export function HeroHighlightDemo() {
           duration: 0.5,
           ease: [0.4, 0.0, 0.2, 1],
         }}
-        className="text-1xl px-4 text-center md:text-5xl lg:text-6xl font-bold text-gray-300 max-w-5xl !leading-tight text-base mx-auto "
+        className="text-1xl px-4 text-center md:text-4xl lg:text-5xl font-bold text-gray-300 max-w-5xl !leading-tight text-base mx-auto "
       >
         Decolonization of Social Sciences in{" "}
 

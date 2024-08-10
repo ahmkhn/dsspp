@@ -50,7 +50,7 @@ export default async function Index() {
       </nav>
   <div className="flex justify-between items-center max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
   <div className="flex justify-between items-center max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <div className=" flex flex-grow flex-col gap-2 max-w-3xl rounded-lg justify-center align-middle items-center bg-white">
+    <div className=" flex flex-grow flex-col gap-2 max-w-3xl rounded-lg justify-center align-middle items-center">
         <HeroHighlightDemo></HeroHighlightDemo>
       
         <a className="z-10 w-[12rem] cursor-pointer inline-flex items-center justify-center bg-gradient-to-r bg-green-600 text-lg font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2  ring-offset-background bg-primary text-primary-foreground h-11 px-8 rounded-2xl"
