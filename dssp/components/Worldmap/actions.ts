@@ -10,7 +10,7 @@ export async function addUserDetails(userFullName:string,userResearchTag:string,
     }
     const avatarUrl = user.user_metadata?.avatar_url || user.user_metadata?.picture || null;
     const {data, error} = await supabase.from("users").insert({
-        uuid: user.email,
+        id: user.email as string,
         avatar_url: avatarUrl,
         full_name: userFullName,
         user_research_tag: userResearchTag,
