@@ -23,7 +23,7 @@ export default async function Map(){
             Homepage
           </a>
           <h1 className="ml-6">Interactive Map</h1>
-          <a className="inline-flex items-center justify-center" href="/"
+          <a className="inline-flex items-center justify-center" href="/about"
           
           style={{
             font: 'bold 12px/20px "Helvetica Neue", Arial, Helvetica, sans-serif',
