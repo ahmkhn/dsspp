@@ -41,7 +41,7 @@ export default async function Index() {
   <main className="flex-grow flex items-center justify-center w-full z-10">
     <div className="-mt-40 flex flex-col items-center justify-center w-full max-w-4xl p-4">
       <HeroHighlightDemo/>
-      <a className="-mt-20 w-full max-w-xs cursor-pointer inline-flex items-center justify-center !bg-green-600 text-lg font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background bg-primary text-primary-foreground h-11 px-8 rounded-2xl"
+      <a className="-mt-20 z-10 w-full max-w-xs cursor-pointer inline-flex items-center justify-center !bg-green-600 text-lg font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background bg-primary text-primary-foreground h-11 px-8 rounded-2xl"
          href="/login">
         Get Started
       </a>
