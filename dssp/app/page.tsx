@@ -4,6 +4,7 @@ import { StarsBackground } from "@/components/ui/stars-background";
 import { ShootingStars } from "@/components/ui/shooting-stars";
 import { HeroHighlightDemo } from "@/components/Hero";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/react"
 export default async function Index() {
   const canInitSupabaseClient = () => {
     // This function is just for the interactive tutorial.
@@ -60,6 +61,7 @@ export default async function Index() {
     </p>
   </footer>
   <SpeedInsights/>
+  <Analytics/>
 </div>
   
   );
