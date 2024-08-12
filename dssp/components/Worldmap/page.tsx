@@ -83,7 +83,7 @@ export default function Worldmap( {authorized} : worldMapProps) {
             <p class="text-sm mt-2"><span class="font-semibold">Summary:</span> ${user.summary}</p>
             <p class="text-sm mt-2"><span class="font-semibold">Occupation:</span> ${user.user_occupation}</p>
             <p class="text-sm mt-2"><span class="font-semibold">Location:</span> (${user.user_location_x}, ${user.user_location_y})</p>
-            <p class="text-sm mt-2"><span class="font-semibold">Email:</span> (${user.email}</p>
+            <p class="text-sm mt-2"><span class="font-semibold">Email:</span> <a href="mailto:${user.email}" class="text-blue-500 hover:underline">${user.email}</a></p>
             <a class="text-blue-500 hover:underline text-sm mt-2 block" href="${user.linked_in_link}" target="_blank" rel="noopener noreferrer">LinkedIn Profile</a>
           </div>`;
         const popup = new mapboxgl.Popup({ offset: 25 })
