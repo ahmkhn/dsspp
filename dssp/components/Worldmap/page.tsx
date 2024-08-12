@@ -127,7 +127,6 @@ export default function Worldmap( {authorized} : worldMapProps) {
     
     const spinGlobe = useCallback(() => {
       if (!map.current || !spinRef.current) return;
-      if(map.current.loaded()) return;
     
       const secondsPerRevolution = 120;
       const maxSpinZoom = 5;
@@ -189,7 +188,7 @@ export default function Worldmap( {authorized} : worldMapProps) {
 
   useEffect(() => {
     if (map.current || !mapContainer.current) return;
-    mapboxgl.accessToken = "pk.eyJ1IjoiYWhta2huIiwiYSI6ImNsbjF4NW5tbjAyd3Qya213eWs2ejc0NDUifQ.dAQ6snVKM7ga1ApOfs0jsQ";
+    mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_KEY as string;
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
       style: 'mapbox://styles/mapbox/outdoors-v12',
