@@ -1,1 +1,3 @@
-# dsspp
+# Decolonization of Social Sciences in Pakistan
+
+Are you someone interested in challenging colonial legacies within social sciences? Are you interested in decolonizing bureaucratic thought to pave the way to modern governance in Pakistan? Is your research focused on the intersection of governance and decolonization? Do you believe in the power of indigenous knowledge and perspectives? Are you passionate about reshaping social sciences to better reflect local contexts and realities? Do you want to contribute to a broader understanding of decolonization beyond traditional academic boundaries? Are you eager to collaborate on projects that seek to dismantle power imbalances in academia? Are you looking for opportunities to engage in interdisciplinary research that addresses pressing social issues? Do you see yourself as part of a global conversation on decolonizing social sciences? 𝗜𝗳 𝘆𝗲𝘀, 𝘁𝗵𝗲𝗻 let’s get started!
