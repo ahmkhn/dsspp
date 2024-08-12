@@ -25,8 +25,8 @@ export default async function Index() {
 
   return (
     <div className="flex flex-col min-h-screen w-full bg-black bg-dot-thick-neutral-800 group overflow-hidden">
-  <StarsBackground className="!fixed inset-0 z-0" starDensity={0.0001}/>
-  <ShootingStars starColor="green-200" trailColor="white" minDelay={800} maxDelay={1200} starHeight={6} starWidth={40}/>
+  <StarsBackground className="!fixed inset-0 z-0" starDensity={0.0002}/>
+  <ShootingStars starColor="#16a34a" trailColor="white" minDelay={800} maxDelay={1200} starHeight={10} starWidth={40}/>
   
   <nav className="w-full flex justify-center border-b border-gray-600 py-2 z-10">
     {user !== null ? (
