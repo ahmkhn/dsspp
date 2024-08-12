@@ -98,7 +98,6 @@ export default function Worldmap( {authorized} : worldMapProps) {
     }, [users]);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
       const researchUpdated = (researchDisabled ? research : researchInputDescription);
       await addData(fullName,longLat[0],longLat[1],title,researchInputDescription,researchUpdated,linkedinLink,summary);
       /*export async function addData(full_name:string,user_location_x:number,user_location_y:number,user_occupation:string,user_research_description:string,user_research_tag:string){

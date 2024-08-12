@@ -80,6 +80,10 @@
       "code": "Urban Studies"
     },
     {
+      "name": "Security Studies",
+      "code": "Security Studies"
+    },
+    {
         "name": "Other",
         "code": "Other"
     }
