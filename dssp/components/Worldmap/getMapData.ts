@@ -11,13 +11,14 @@ interface User {
     user_location_y: number;
     linked_in_link: string;
     summary: string;
+    email: string;
 }
 
 export async function getAllMarkerUserData(): Promise<User[] | null> {
     const supabase = createClient();
     const { data, error } = await supabase
         .from('users')
-        .select('full_name, user_research_tag, avatar_url, user_research_description, user_occupation, user_location_x, user_location_y, linked_in_link, summary')
+        .select('full_name, user_research_tag, avatar_url, user_research_description, user_occupation, user_location_x, user_location_y, linked_in_link, summary, email')
         .returns<User[]>();
 
     if (error) {

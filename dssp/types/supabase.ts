@@ -15,7 +15,7 @@ export type Database = {
           full_name: string | null
           id: string
           updated_at: string | null
-          user_city_country: string | null
+          email: string | null
           user_location_x: number | null
           user_location_y: number | null
           user_occupation: string | null

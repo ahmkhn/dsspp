@@ -10,7 +10,7 @@ export async function addData(full_name:string,user_location_x:number,user_locat
         avatar_url: avatar_url,
         full_name: full_name,
         id: String(user?.id),
-        user_city_country: "temp",
+        email: String(user?.email),
         user_location_x: user_location_x,
         user_location_y:  user_location_y,
         user_occupation:  user_occupation,
