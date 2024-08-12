@@ -44,7 +44,7 @@ export function OAuthButtons() {
     <>
       {oAuthProviders.map((provider) => (
         <button
-          className="w-full flex items-center justify-center gap-2"
+          className="w-full flex items-center justify-center border gap-2 rounded-2xl p-3"
           onClick={async () => {
             await oAuthSignIn(provider.name);
           }}
@@ -53,7 +53,7 @@ export function OAuthButtons() {
           Login with {provider.displayName}
         </button>
       ))}
-      <Link href="/map" className="underline flex justify-center mt-3">View without signing in?</Link>
+      <Link href="/map" className="underline text-wrap text-center flex justify-center mt-3 border rounded-2xl p-3">View without signing in?</Link>
       
     </>
   );
