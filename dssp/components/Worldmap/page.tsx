@@ -194,6 +194,8 @@ export default function Worldmap( {authorized} : worldMapProps) {
       zoom: 3,
       center: [130, 30]
     });
+    map.current.addControl(new mapboxgl.NavigationControl());
+
 
     map.current.on('style.load', () => {
       map.current?.setFog({});
@@ -228,6 +230,8 @@ export default function Worldmap( {authorized} : worldMapProps) {
     map.current.on('moveend', () => {
       spinGlobe();
     });
+
+
 
     map.current.on('click', addMarker);
 
