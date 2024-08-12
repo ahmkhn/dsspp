@@ -127,6 +127,7 @@ export default function Worldmap( {authorized} : worldMapProps) {
     
     const spinGlobe = useCallback(() => {
       if (!map.current || !spinRef.current) return;
+      if(map.current.loaded()) return;
     
       const secondsPerRevolution = 120;
       const maxSpinZoom = 5;
@@ -188,7 +189,7 @@ export default function Worldmap( {authorized} : worldMapProps) {
 
   useEffect(() => {
     if (map.current || !mapContainer.current) return;
-    mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_KEY as string;
+    mapboxgl.accessToken = "pk.eyJ1IjoiYWhta2huIiwiYSI6ImNsbjF4NW5tbjAyd3Qya213eWs2ejc0NDUifQ.dAQ6snVKM7ga1ApOfs0jsQ";
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
       style: 'mapbox://styles/mapbox/outdoors-v12',
@@ -204,7 +205,6 @@ export default function Worldmap( {authorized} : worldMapProps) {
     });
 
     let userInteracting = false;
-
     map.current.on('mousedown', () => {
       userInteracting = true;
     });
@@ -233,11 +233,8 @@ export default function Worldmap( {authorized} : worldMapProps) {
       spinGlobe();
     });
 
-
-
     map.current.on('click', addMarker);
 
-    spinGlobe();
 
     return () => {
       if (map.current) {
