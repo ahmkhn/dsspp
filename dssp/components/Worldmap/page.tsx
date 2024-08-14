@@ -134,7 +134,7 @@ export default function Worldmap( {authorized} : worldMapProps) {
       const zoom = map.current.getZoom();
     
       if (zoom < maxSpinZoom) {
-        let distancePerSecond = 30 / secondsPerRevolution;
+        let distancePerSecond = 300 / secondsPerRevolution;
         if (zoom > slowSpinZoom) {
           const zoomDif = (maxSpinZoom - zoom) / (maxSpinZoom - slowSpinZoom);
           distancePerSecond *= zoomDif;
