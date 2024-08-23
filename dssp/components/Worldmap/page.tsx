@@ -32,8 +32,6 @@ export default function Worldmap( {authorized} : worldMapProps) {
     const [researchDisabled,setResearchDisabled] = useState<boolean>(true);
     const mapContainer = useRef<HTMLDivElement>(null);
     const map = useRef<mapboxgl.Map | null>(null);
-    const [spinEnabled, setSpinEnabled] = useState(true);
-    const spinRef = useRef(true);
     const [showDialog, setShowDialog] = useState(true);
     const [researchInputDescription,setResearchInputDescription] = useState<string>("'Other' research type. Currently disabled.")
     const [summary,setSummary] = useState<string>("");
@@ -125,35 +123,9 @@ export default function Worldmap( {authorized} : worldMapProps) {
       }
     },[research])
     
-    const spinGlobe = useCallback(() => {
-      if (!map.current || !spinRef.current) return;
-    
-      const secondsPerRevolution = 120;
-      const maxSpinZoom = 5;
-      const slowSpinZoom = 3;
-      const zoom = map.current.getZoom();
-    
-      if (zoom < maxSpinZoom) {
-        let distancePerSecond = 30 / secondsPerRevolution;
-        if (zoom > slowSpinZoom) {
-          const zoomDif = (maxSpinZoom - zoom) / (maxSpinZoom - slowSpinZoom);
-          distancePerSecond *= zoomDif;
-        }
-    
-        const center = map.current.getCenter();
-        center.lng -= distancePerSecond;
-        
-        // Use requestAnimationFrame to control the animation
-        requestAnimationFrame(() => {
-          if (map.current) {
-            map.current.panTo(center, { duration: 1000, animate: true });
-          }
-        });
-      }
-    }, []);
 
     const addMarker = useCallback(async (e: mapboxgl.MapMouseEvent & { originalEvent: MouseEvent }) => {
-      if (!map.current || spinRef.current) return;
+      if(!map.current) return; // make sure the map is loaded ? 
       if (!authorized) return;
     
       // Check if the click was on a marker
@@ -184,7 +156,7 @@ export default function Worldmap( {authorized} : worldMapProps) {
       new mapboxgl.Marker(el)
         .setLngLat(e.lngLat)
         .addTo(map.current);
-    }, [map, spinRef, authorized, setUserExists]);
+    }, [map, authorized, setUserExists]);
 
   useEffect(() => {
     if (map.current || !mapContainer.current) return;
@@ -197,72 +169,12 @@ export default function Worldmap( {authorized} : worldMapProps) {
       center: [130, 30]
     });
     map.current.addControl(new mapboxgl.NavigationControl());
-
-
-    map.current.on('style.load', () => {
-      map.current?.setFog({});
-    });
-
-    let userInteracting = false;
-    map.current.on('mousedown', () => {
-      userInteracting = true;
-    });
-
-    map.current.on('mouseup', () => {
-      userInteracting = false;
-      spinGlobe();
-    });
-
-    map.current.on('dragend', () => {
-      userInteracting = false;
-      spinGlobe();
-    });
-
-    map.current.on('pitchend', () => {
-      userInteracting = false;
-      spinGlobe();
-    });
-
-    map.current.on('rotateend', () => {
-      userInteracting = false;
-      spinGlobe();
-    });
-
-    map.current.on('moveend', () => {
-      spinGlobe();
-    });
-
-    map.current.on('click', addMarker);
-
-
-    return () => {
-      if (map.current) {
-        map.current.off('click', addMarker);
-        map.current.remove();
-        map.current = null;
-      }
-    };
-  }, [spinGlobe, addMarker]);
-
-  useEffect(() => {
-    spinRef.current = spinEnabled;
-    if (!spinEnabled && map.current) {
-      map.current.stop();
-    } else if (spinEnabled) {
-      spinGlobe();
-    }
-  }, [spinEnabled, spinGlobe]);
-
-  const handleSpinClick = () => {
-    setSpinEnabled(!spinEnabled);
-  };
-
+  });
   return (
     <>
     <div style={{ position: 'relative', width: '100%', height: '100vh' }}>
       <div ref={mapContainer} style={{ position: 'absolute', top: 0, bottom: 0, width: '100%' }} />
-      <button
-        onClick={handleSpinClick}
+      <a
         className="border-black border-2 rounded-md"
         style={{
           font: 'bold 12px/20px "Helvetica Neue", Arial, Helvetica, sans-serif',
@@ -280,26 +192,8 @@ export default function Worldmap( {authorized} : worldMapProps) {
           borderRadius: '3px',
         }}
       >
-        {spinEnabled ? 'Pause rotation' : 'Start rotation'}
-      </button>
-      <a className="inline-flex items-center justify-center text-center border-black border-2 rounded-md"  href="/"
-            style={{
-              font: 'bold 12px/20px "Helvetica Neue", Arial, Helvetica, sans-serif',
-          backgroundColor: 'white',
-          color: 'black',
-          position: 'absolute',
-          top: '45rem',
-          left: '50%',
-          zIndex: 1,
-          width: '200px',
-          marginLeft: '-100px',
-          display: 'block',
-          cursor: 'pointer',
-          padding: '10px 20px',
-          borderRadius: '3px',}}
-          >
-            Modify Your Marker
-          </a>
+        Modify Your Marker
+      </a>
     </div>
     <Dialog className="dialog-popup w-[40rem] max-w-[50rem] border border-black" header="Input your details" visible={visible} position="top" onHide={() => {if (!visible) return; setVisible(false); }}>
       <form onSubmit={(e: React.FormEvent<HTMLFormElement>)=>{
