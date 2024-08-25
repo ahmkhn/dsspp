@@ -174,8 +174,13 @@ export default function Worldmap( {authorized} : worldMapProps) {
     <>
     <div style={{ position: 'relative', width: '100%', height: '100vh' }}>
       <div ref={mapContainer} style={{ position: 'absolute', top: 0, bottom: 0, width: '100%' }} />
-      <a
-        className="border-black border-2 rounded-md"
+      <button
+        onClick={ ()=>
+          {
+            // hello...
+           }
+         }
+        className="border-black border-2 rounded-md text-center"
         style={{
           font: 'bold 12px/20px "Helvetica Neue", Arial, Helvetica, sans-serif',
           backgroundColor: 'white',
@@ -192,8 +197,8 @@ export default function Worldmap( {authorized} : worldMapProps) {
           borderRadius: '3px',
         }}
       >
-        Modify Your Marker
-      </a>
+        Delete your marker?
+      </button>
     </div>
     <Dialog className="dialog-popup w-[40rem] max-w-[50rem] border border-black" header="Input your details" visible={visible} position="top" onHide={() => {if (!visible) return; setVisible(false); }}>
       <form onSubmit={(e: React.FormEvent<HTMLFormElement>)=>{
