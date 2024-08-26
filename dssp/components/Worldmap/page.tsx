@@ -14,7 +14,14 @@ import 'primereact/resources/themes/mira/theme.css';
 import { addData } from "./test";
 import { getAllMarkerUserData } from "./getMapData";
 import { getUserDataExists } from "./getMapData";
+import { removeData } from "./test";
 import pin from "@/public/pin.gif";
+
+
+
+import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
+import { Toast } from 'primereact/toast';
+
 type worldMapProps = {
     authorized: boolean | null;
 }
@@ -22,6 +29,35 @@ type worldMapProps = {
 
 type Coordinate = [number,number];
 export default function Worldmap( {authorized} : worldMapProps) {
+  const toast = useRef<Toast>(null);
+
+    const accept = async () => {
+        if(authorized){
+          await removeData();
+          toast.current?.show({ severity: 'info', summary: 'Confirmed', detail: 'Your marker has been deleted :)', life: 3000 });
+        }else{
+          toast.current?.show({ severity: 'warn', summary: 'Error', detail: 'You are not signed in.', life: 3000 });
+        }
+    }
+
+    const reject = () => {
+        toast.current?.show({ severity: 'warn', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
+    }
+
+    const confirm2 = () => {
+        confirmDialog({
+            message: 'Do you want to delete this record?',
+            header: 'Delete Confirmation',
+            icon: 'pi pi-info-circle',
+            defaultFocus: 'reject',
+            acceptClassName: 'p-button-danger',
+            accept,
+            reject
+        });
+    };
+
+
+
     const [visible, setVisible] = useState(false);
     const [longLat, setLongLat] = useState<Coordinate>([0,0]);
     //user input
@@ -173,14 +209,12 @@ export default function Worldmap( {authorized} : worldMapProps) {
   });
   return (
     <>
+    <Toast ref={toast}/>
     <div style={{ position: 'relative', width: '100%', height: '100vh' }}>
       <div ref={mapContainer} style={{ position: 'absolute', top: 0, bottom: 0, width: '100%' }} />
+      <ConfirmDialog/>
       <button
-        onClick={ async ()=>
-          {
-            await console.log("h");
-          }
-         }
+        onClick={confirm2}
         className="border-black border-2 rounded-md text-center bg-red-500"
         style={{
           font: 'bold 12px/20px "Helvetica Neue", Arial, Helvetica, sans-serif',
