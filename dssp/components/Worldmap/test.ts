@@ -1,6 +1,7 @@
 "use server"
 
 import { createClient } from "@/utils/supabase/server";
+import { revalidatePath } from "next/cache";
 
 export async function addData(full_name:string,user_location_x:number,user_location_y:number,user_occupation:string,user_research_description:string,user_research_tag:string,li_link:string,summary:string){
     const supabase = createClient();
@@ -25,4 +26,24 @@ export async function addData(full_name:string,user_location_x:number,user_locat
     } else {
         console.log("Data inserted successfully");
     }
+    revalidatePath("/map");
+}
+export async function removeData(){
+    const supabase = createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    
+    if(!user){
+        throw new Error ("user is not logged in");
+    }
+
+    const { error } = await supabase.from("users").delete().match({
+        id : String(user.id)
+    });
+
+
+    if (error) {
+        throw new Error("Error deleting data");
+    }
+
+    revalidatePath("/map");
 }

@@ -98,6 +98,7 @@ export default function Worldmap( {authorized} : worldMapProps) {
     }, [users]);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
       const researchUpdated = (researchDisabled ? research : researchInputDescription);
       await addData(fullName,longLat[0],longLat[1],title,researchInputDescription,researchUpdated,linkedinLink,summary);
       /*export async function addData(full_name:string,user_location_x:number,user_location_y:number,user_occupation:string,user_research_description:string,user_research_tag:string){
@@ -166,7 +167,7 @@ export default function Worldmap( {authorized} : worldMapProps) {
       style: 'mapbox://styles/mapbox/outdoors-v12',
       projection: 'globe',
       zoom: 3,
-      center: [130, 30]
+      center: [90, 30]
     });
     map.current.addControl(new mapboxgl.NavigationControl());
   });
@@ -175,15 +176,14 @@ export default function Worldmap( {authorized} : worldMapProps) {
     <div style={{ position: 'relative', width: '100%', height: '100vh' }}>
       <div ref={mapContainer} style={{ position: 'absolute', top: 0, bottom: 0, width: '100%' }} />
       <button
-        onClick={ ()=>
+        onClick={ async ()=>
           {
-            // hello...
-           }
+            await console.log("h");
+          }
          }
-        className="border-black border-2 rounded-md text-center"
+        className="border-black border-2 rounded-md text-center bg-red-500"
         style={{
           font: 'bold 12px/20px "Helvetica Neue", Arial, Helvetica, sans-serif',
-          backgroundColor: 'white',
           color: 'black',
           position: 'absolute',
           top: '20px',
