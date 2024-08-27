@@ -49,7 +49,7 @@ export default async function About() {
             </p>
 
             <p className="mt-4 text-base sm:text-lg md:text-xl lg:text-2xl">
-            She is the editor of <a className="italic text-blue-500 underline" href="https://pakistan.fes.de/e/china-pakistan-economic-corridor-beyond-2030-a-green-alliance-for-sustainable-development.html"> CPEC Beyond 2030: A Green Alliance for Sustainable Development</a>, published by FES Pakistan in August 2024, underscoring her commitment to fostering regional cooperation and sustainable development. In 2018, Dr. Akhtar authored <a className="italic text-blue-500 underline" href="https://csspr.uol.edu.pk/f2c/">The Blind Eye: U.S. Non-proliferation Policy Towards Pakistan from Ford to Clinton </a>, showcasing her expertise as a nuclear historian.
+            She is the editor of <a target="_blank" className="italic text-blue-500 underline" href="https://pakistan.fes.de/e/china-pakistan-economic-corridor-beyond-2030-a-green-alliance-for-sustainable-development.html"> CPEC Beyond 2030: A Green Alliance for Sustainable Development</a>, published by FES Pakistan in August 2024, underscoring her commitment to fostering regional cooperation and sustainable development. In 2018, Dr. Akhtar authored <a target="_blank" className="italic text-blue-500 underline" href="https://csspr.uol.edu.pk/f2c/">The Blind Eye: U.S. Non-proliferation Policy Towards Pakistan from Ford to Clinton </a>, showcasing her expertise as a nuclear historian.
             </p>
 
             <p className="mt-4 text-base sm:text-lg md:text-xl lg:text-2xl">
@@ -60,8 +60,8 @@ export default async function About() {
             Her global reach extends to teaching roles at the NATO Defence College, the NPIHP Nuclear Bootcamp in Rome, and ISODARCO in Andalo, Italy. Through her role as an academic entrepreneur, Dr. Akhtar continues to push the boundaries of knowledge and policy innovation in Pakistan and beyond.
             </p>
 
-            <p className="mt-4 text-base sm:text-lg md:text-xl lg:text-2xl"> Contact: <a className="text-blue-500 underline" href="mailto:rabia.akhtar@csspr.uol.edu.pk">rabia.akhtar@csspr.uol.edu.pk</a></p>
-            <p className="mt-4 text-base sm:text-lg md:text-xl lg:text-2xl"> LinkedIn: <a className="text-blue-500 underline" href="https://www.linkedin.com/in/dr-rabia-akhtar-4a702b49/">Rabia Akhtar</a></p>
+            <p className="mt-4 text-base sm:text-lg md:text-xl lg:text-2xl"> Contact: <a target="_blank" className="text-blue-500 underline" href="mailto:rabia.akhtar@csspr.uol.edu.pk">rabia.akhtar@csspr.uol.edu.pk</a></p>
+            <p className="mt-4 text-base sm:text-lg md:text-xl lg:text-2xl"> LinkedIn: <a target="_blank" className="text-blue-500 underline" href="https://www.linkedin.com/in/dr-rabia-akhtar-4a702b49/">Rabia Akhtar</a></p>
 
           </div>
       </div>

@@ -4,7 +4,7 @@ import {Inter} from 'next/font/google';
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
-  : "https://dssp.app";
+  : "https://www.dssp.app";
 
 export const metadata = {
   metadataBase: new URL(defaultUrl),
