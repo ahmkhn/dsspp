@@ -5,7 +5,7 @@ import { Highlight } from "./ui/hero-highlight";
 
 export function HeroHighlightDemo() {
   return (
-    <HeroHighlight className="flex justify-center -mt-26">
+    <HeroHighlight className="flex justify-center -mt-26 px-4 md:px-8">
       <motion.h1
         initial={{
           opacity: 0,
@@ -19,31 +19,19 @@ export function HeroHighlightDemo() {
           duration: 0.5,
           ease: [0.4, 0.0, 0.2, 1],
         }}
-        className="!leading-tight text-center text-balance font-black text-3xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl"
+        className="text-center font-black !leading-tight text-sm sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl overflow-hidden whitespace-pre-wrap"
       >
         Decolonization of Social Sciences in{" "}
-
-        <Highlight className="text-green-500">
-          Pakistan
-        </Highlight>
+        <Highlight className="text-green-500">Pakistan</Highlight>
         <div className="w-full p-[1px] bg-gradient-to-r from-transparent via-gray-300 to-transparent my-4 !text-1xl" />
-
-        A platform for a global community to share{' '}
-        <Highlight className="text-green-500">
-          research&nbsp;
-        </Highlight>
+        A platform for a global community to share{" "}
+        <Highlight className="text-green-500">research&nbsp;</Highlight>
         and&nbsp;
-        <Highlight className="text-green-500">
-         collaborate&nbsp;
-        </Highlight>
-        fostering&nbsp; 
-        <Highlight className="text-green-500">
-          unity&nbsp;
-        </Highlight>
-         and&nbsp; 
-         <Highlight className="text-green-500">
-          mutual support.&nbsp;
-        </Highlight>
+        <Highlight className="text-green-500">collaborate&nbsp;</Highlight>
+        fostering&nbsp;
+        <Highlight className="text-green-500">unity&nbsp;</Highlight>
+        and&nbsp;
+        <Highlight className="text-green-500">mutual support.&nbsp;</Highlight>
       </motion.h1>
     </HeroHighlight>
   );
