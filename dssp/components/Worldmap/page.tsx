@@ -20,9 +20,10 @@ import pin from "@/public/pin.gif";
 
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
 import { Toast } from 'primereact/toast';
+import { User } from "@supabase/supabase-js";
 
 type worldMapProps = {
-    authorized: boolean | null;
+    authorized: User | null;
 }
 
 
