@@ -35,7 +35,7 @@ export default function Worldmap( {authorized} : worldMapProps) {
   const accept = async () => {
     if (authorized) {
         try {
-            await removeData(getUserId());
+            await removeData();
             toast.current?.show({ severity: 'info', summary: 'Confirmed', detail: 'Your marker has been deleted :)', life: 3000 });
         } catch (error) {
             toast.current?.show({ severity: 'error', summary: 'Error', detail: "there was an error", life: 3000 });

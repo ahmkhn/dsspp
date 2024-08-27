@@ -28,7 +28,7 @@ export async function addData(full_name:string,user_location_x:number,user_locat
     }
     revalidatePath("/map");
 }
-export async function removeData(id : any){
+export async function removeData(){
     const supabase = createClient();
     const { data: { user }, error: authError } = await supabase.auth.getUser();
 
@@ -38,7 +38,7 @@ export async function removeData(id : any){
     const { error } = await supabase
         .from("users")
         .delete()
-        .eq("id", String(id));
+        .eq("id", String(user.id));
 
     if (error) {
         throw new Error("Error deleting data");
