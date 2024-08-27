@@ -38,7 +38,7 @@ export async function removeData(id : any){
     const { error } = await supabase
         .from("users")
         .delete()
-        .eq("id", id);
+        .eq("id", String(id));
 
     if (error) {
         throw new Error("Error deleting data");
