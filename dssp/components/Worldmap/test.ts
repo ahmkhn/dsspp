@@ -36,10 +36,10 @@ export async function removeData(){
         throw new Error ("user is not logged in");
     }
 
-    const { error } = await supabase.from("users").delete().match({
-        id : String(user.id)
-    });
-
+    const { error } = await supabase
+        .from("users")
+        .delete()
+        .eq("id", user.id);
 
     if (error) {
         throw new Error("Error deleting data");

@@ -16,8 +16,6 @@ import { getAllMarkerUserData } from "./getMapData";
 import { getUserDataExists } from "./getMapData";
 import { removeData } from "./test";
 import pin from "@/public/pin.gif";
-import "primereact/resources/themes/lara-light-indigo/theme.css";    
-
 
 
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
