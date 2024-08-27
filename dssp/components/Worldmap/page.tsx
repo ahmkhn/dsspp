@@ -212,7 +212,12 @@ export default function Worldmap( {authorized} : worldMapProps) {
       center: [90, 30]
     });
     map.current.addControl(new mapboxgl.NavigationControl());
+    map.current.on('style.load', () => {
+      map.current?.setFog({});
+    });
+    map.current.on('click', addMarker);
   });
+
   return (
     <>
     <Toast ref={toast}/>
