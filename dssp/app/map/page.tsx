@@ -7,32 +7,18 @@ export default async function Map(){
   } = await supabase.auth.getUser();
   return (
     <div className="flex-1 w-full flex flex-col min-h-screen">
-      <nav className="w-full border-b border-gray-600 h-16 flex font-bold text-4xl">
-        <div className="flex justify-between items-center flex-grow mx-6">
-          <a className="inline-flex items-center justify-center text-center"  href="/"
-            style={{
-              font: 'bold 12px/20px "Helvetica Neue", Arial, Helvetica, sans-serif',
-              backgroundColor: 'white',
-              color: 'black',
-              width: '130px',
-              display: 'block',
-              cursor: 'pointer',
-              padding: '10px 20px',
-              borderRadius: '3px',}}
+      <nav className="w-full border-b border-gray-600 py-4 flex flex-col sm:flex-row items-center">
+        <div className="flex flex-col sm:flex-row justify-between items-center w-full px-4 sm:px-6 space-y-4 sm:space-y-0">
+          <a 
+            className="inline-flex items-center justify-center text-center bg-white text-black px-4 py-2 rounded text-sm sm:text-base font-bold"
+            href="/"
           >
             Homepage
           </a>
-          <h1 className="ml-6">Interactive Map</h1>
-          <a className="inline-flex items-center justify-center" href="/about"
-          
-          style={{
-            font: 'bold 12px/20px "Helvetica Neue", Arial, Helvetica, sans-serif',
-            backgroundColor: 'white',
-            color: 'black',
-            width: '130px',
-            cursor: 'pointer',
-            padding: '10px 20px',
-            borderRadius: '3px',}}
+          <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold">Interactive Map</h1>
+          <a 
+            className="inline-flex items-center justify-center text-center bg-white text-black px-4 py-2 rounded text-sm sm:text-base font-bold"
+            href="/about"
           >
             About DSSP
           </a>

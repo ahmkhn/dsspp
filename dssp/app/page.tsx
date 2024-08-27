@@ -28,15 +28,31 @@ export default async function Index() {
   <StarsBackground className="!fixed inset-0 z-0" starDensity={0.0002}/>
   <ShootingStars starColor="#16a34a" trailColor="white" minDelay={800} maxDelay={1200} starHeight={10} starWidth={40}/>
   
-  <nav className="w-full flex justify-center border-b border-gray-600 py-2 z-10">
-    {user !== null ? (
-      <form action={signOut} className="flex items-center gap-2">
-        <p>{user.email}</p>
-        <button className="bg-green-600 rounded-xl p-2">Sign Out?</button>
-      </form>
-    ) : (
-      <></>
-    )}
+  
+
+  <nav className="z-10 w-full border-b border-gray-600 py-4 flex flex-col sm:flex-row items-center">
+        <div className="flex flex-col sm:flex-row justify-between items-center w-full px-4 sm:px-6 space-y-4 sm:space-y-0">
+          <a 
+            className="inline-flex items-center justify-center text-center bg-white text-black px-4 py-2 rounded text-sm sm:text-base font-bold"
+            href="/"
+          >
+            Homepage
+          </a>
+                {user !== null ? (
+            <form action={signOut} className="flex items-center gap-2">
+              <p>{user.email}</p>
+              <button className="bg-green-600 rounded-xl p-2">Sign Out?</button>
+            </form>
+          ) : (
+            <></>
+          )}
+          <a 
+            className="inline-flex items-center justify-center text-center bg-white text-black px-4 py-2 rounded text-sm sm:text-base font-bold"
+            href="/about"
+          >
+            About DSSP
+          </a>
+        </div>
   </nav>
 
   <main className="flex-grow flex items-center justify-center w-full z-10">

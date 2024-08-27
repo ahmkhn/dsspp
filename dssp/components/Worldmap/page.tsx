@@ -78,6 +78,7 @@ export default function Worldmap( {authorized} : worldMapProps) {
     const [researchInputDescription,setResearchInputDescription] = useState<string>("'Other' research type. Currently disabled.")
     const [summary,setSummary] = useState<string>("");
     const [userExists,setUserExists] = useState<boolean>(false);
+    const [introVisible,setIntroVisible] = useState(true);
     interface User {
       full_name: string;
       user_research_tag: string;
@@ -140,7 +141,6 @@ export default function Worldmap( {authorized} : worldMapProps) {
     }, [users]);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
       const researchUpdated = (researchDisabled ? research : researchInputDescription);
       await addData(fullName,longLat[0],longLat[1],title,researchInputDescription,researchUpdated,linkedinLink,summary);
       /*export async function addData(full_name:string,user_location_x:number,user_location_y:number,user_occupation:string,user_research_description:string,user_research_tag:string){
@@ -291,12 +291,12 @@ export default function Worldmap( {authorized} : worldMapProps) {
      </Dialog>
      <Dialog 
         className="bg-white text-black rounded-md p-8 flex justify-center text-center"
-        visible={false} 
-        onHide={() => setShowDialog(false)}
+        visible={introVisible}
+        onHide={() => {if (!introVisible) return; setIntroVisible(false); }}
         header="Welcome!"
         style={{ width: '30vw' }}
       >
-        <p>To set a marker, make sure you stop the map's rotation!</p>
+        <p>To set a marker, simply click on the map!</p>
         <p>Explore the map and click on other markers to see other people's story!</p>
       </Dialog>
     </>
