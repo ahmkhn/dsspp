@@ -44,5 +44,4 @@ export async function removeData(){
         throw new Error("Error deleting data");
     }
 
-    revalidatePath("/map");
 }
