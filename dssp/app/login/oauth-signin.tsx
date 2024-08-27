@@ -44,7 +44,6 @@ export function OAuthButtons() {
     <>
       {oAuthProviders.map((provider) => (
         <button
-          key={provider.displayName}
           className="w-full flex items-center justify-center border gap-2 rounded-2xl p-3"
           onClick={async () => {
             await oAuthSignIn(provider.name);
