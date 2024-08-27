@@ -49,7 +49,7 @@ export default async function About() {
             </p>
 
             <p className="mt-4 text-base sm:text-lg md:text-xl lg:text-2xl">
-            She is the editor of <a className="italic text-blue-500" href="https://pakistan.fes.de/e/china-pakistan-economic-corridor-beyond-2030-a-green-alliance-for-sustainable-development.html"> CPEC Beyond 2030: A Green Alliance for Sustainable Development</a>, published by FES Pakistan in August 2024, underscoring her commitment to fostering regional cooperation and sustainable development. In 2018, Dr. Akhtar authored <a className="italic text-blue-500 underline" href="https://csspr.uol.edu.pk/f2c/">The Blind Eye: U.S. Non-proliferation Policy Towards Pakistan from Ford to Clinton </a>, showcasing her expertise as a nuclear historian.
+            She is the editor of <a className="italic text-blue-500 underline" href="https://pakistan.fes.de/e/china-pakistan-economic-corridor-beyond-2030-a-green-alliance-for-sustainable-development.html"> CPEC Beyond 2030: A Green Alliance for Sustainable Development</a>, published by FES Pakistan in August 2024, underscoring her commitment to fostering regional cooperation and sustainable development. In 2018, Dr. Akhtar authored <a className="italic text-blue-500 underline" href="https://csspr.uol.edu.pk/f2c/">The Blind Eye: U.S. Non-proliferation Policy Towards Pakistan from Ford to Clinton </a>, showcasing her expertise as a nuclear historian.
             </p>
 
             <p className="mt-4 text-base sm:text-lg md:text-xl lg:text-2xl">
