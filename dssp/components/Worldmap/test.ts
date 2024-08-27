@@ -30,16 +30,15 @@ export async function addData(full_name:string,user_location_x:number,user_locat
 }
 export async function removeData(){
     const supabase = createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-    
-    if(!user){
-        throw new Error ("user is not logged in");
-    }
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
 
+    if (authError || !user) {
+        throw new Error("User is not logged in");
+    }
     const { error } = await supabase
         .from("users")
         .delete()
-        .eq("id", user.id);
+        .eq("id", String(user.id));
 
     if (error) {
         throw new Error("Error deleting data");
