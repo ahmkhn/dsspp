@@ -62,3 +62,21 @@ export async function getUserDataExists() {
     
     return exists;
   }
+export async function getUserId(){
+  const supabase = createClient();
+    
+  // Step 1: Check if we can get the current user
+  const { data: { user }, error: userError } = await supabase.auth.getUser();
+  
+  if (userError) {
+    console.error("Error getting user:", userError);
+    return false;
+  }
+  
+  if (!user?.id) {
+    console.log("No user ID found");
+    return false;
+  }else{
+    return user.id;
+  }
+}

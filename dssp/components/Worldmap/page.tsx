@@ -15,6 +15,7 @@ import { addData } from "./test";
 import { getAllMarkerUserData } from "./getMapData";
 import { getUserDataExists } from "./getMapData";
 import { removeData } from "./test";
+import { getUserId } from "./getMapData";
 import pin from "@/public/pin.gif";
 
 
@@ -34,7 +35,8 @@ export default function Worldmap( {authorized} : worldMapProps) {
   const accept = async () => {
     if (authorized) {
         try {
-            await removeData();
+            let x = getUserId();
+            await removeData(x);
             toast.current?.show({ severity: 'info', summary: 'Confirmed', detail: 'Your marker has been deleted :)', life: 3000 });
         } catch (error) {
             toast.current?.show({ severity: 'error', summary: 'Error', detail: "there was an error", life: 3000 });
