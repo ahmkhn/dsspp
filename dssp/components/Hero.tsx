@@ -19,7 +19,7 @@ export function HeroHighlightDemo() {
           duration: 0.5,
           ease: [0.4, 0.0, 0.2, 1],
         }}
-        className="text-1xl px-4 text-center md:text-4xl lg:text-5xl font-bold text-gray-300 max-w-5xl !leading-tight text-base mx-auto "
+        className="!leading-tight text-center text-balance font-black text-3xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl"
       >
         Decolonization of Social Sciences in{" "}
 
@@ -28,11 +28,22 @@ export function HeroHighlightDemo() {
         </Highlight>
         <div className="w-full p-[1px] bg-gradient-to-r from-transparent via-gray-300 to-transparent my-4 !text-1xl" />
 
-        An application that fosters a global community where users can{' '}
+        A platform for a global community to share{' '}
         <Highlight className="text-green-500">
-          share their research and collaborate&nbsp;
+          research&nbsp;
         </Highlight>
-        promoting a sense of unity and mutual support
+        and&nbsp;
+        <Highlight className="text-green-500">
+         collaborate&nbsp;
+        </Highlight>
+        fostering&nbsp; 
+        <Highlight className="text-green-500">
+          unity&nbsp;
+        </Highlight>
+         and&nbsp; 
+         <Highlight className="text-green-500">
+          mutual support.&nbsp;
+        </Highlight>
       </motion.h1>
     </HeroHighlight>
   );
