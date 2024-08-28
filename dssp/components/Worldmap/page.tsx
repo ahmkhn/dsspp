@@ -38,12 +38,13 @@ export default function Worldmap( {authorized} : worldMapProps) {
         setUserIDExists( await getUserId() );
         if(userIDExists===false){
           toast.current?.show({ severity: 'error', summary: 'Error', detail: "You don't have a marker!", life: 3000 });
-        }
-        try {
+        }else{
+          try {
             await removeData();
             toast.current?.show({ severity: 'info', summary: 'Confirmed', detail: 'Your marker has been deleted :)', life: 3000 });
-        } catch (error) {
-            toast.current?.show({ severity: 'error', summary: 'Error', detail: "there was an error", life: 3000 });
+          } catch (error) {
+              toast.current?.show({ severity: 'error', summary: 'Error', detail: "there was an error", life: 3000 });
+          }
         }
     } else {
         toast.current?.show({ severity: 'warn', summary: 'Error', detail: 'You are not signed in.', life: 3000 });
