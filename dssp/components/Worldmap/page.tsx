@@ -295,16 +295,6 @@ export default function Worldmap( {authorized} : worldMapProps) {
                    
       </form>       
      </Dialog>
-     <Dialog 
-        className="bg-white text-black rounded-md p-8 text-center dialog-popup w-[40rem] max-w-[50rem] "
-        visible={introVisible}
-        onHide={() => {if (!introVisible) return; setIntroVisible(false); }}
-        header="Welcome!"
-        style={{ width: '30vw' }}
-      >
-        <p className="text-sm sm:text-base md:text-lg mb-4">To set a marker, simply tap or click on the map!</p>
-        <p className="text-sm sm:text-base md:text-lg">Explore the map and tap or click on other markers to see other people's stories!</p>
-      </Dialog>
     </>
   );
 };
