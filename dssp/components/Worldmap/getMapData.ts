@@ -77,6 +77,6 @@ export async function getUserId(){
     console.log("No user ID found");
     return false;
   }else{
-    return user.id;
+    return true;
   }
 }

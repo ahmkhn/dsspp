@@ -33,7 +33,12 @@ export default function Worldmap( {authorized} : worldMapProps) {
   const toast = useRef<Toast>(null);
 
   const accept = async () => {
+
     if (authorized) {
+        let x = getUserId();
+        if(!x){
+          toast.current?.show({ severity: 'error', summary: 'Error', detail: "you don't have a marker!", life: 3000 });
+        }
         try {
             await removeData();
             toast.current?.show({ severity: 'info', summary: 'Confirmed', detail: 'Your marker has been deleted :)', life: 3000 });
