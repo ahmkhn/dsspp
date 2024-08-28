@@ -70,7 +70,7 @@ export default async function About() {
             Ahmed Khan, CS @ UMass, Developer of DSSP
             </h1>
             <p className="mt-4 text-base sm:text-lg md:text-xl lg:text-2xl">
-              Hi! I'm Ahmed, a junior at the University of Massachusetts Amherst studying Computer Science.
+              Hi! I'm Ahmed, a junior at the University of Massachusetts, Amherst studying Computer Science.
             </p>
 
             <h1 className="mt-4 font-extrabold  text-lg sm:text-xl md:text-2xl lg:text-3xl text-gray-200 leading-relaxed text-center">
