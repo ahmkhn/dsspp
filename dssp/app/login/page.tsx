@@ -56,7 +56,7 @@ export default async function Login({
                   Ahmed Khan
         </a>
       </p>
-      <p className="ml-10">Your feedback matters! Send us your thoughts and help us improve</p>
+      <p className="ml-[1.5rem]">Your feedback matters! Send us your thoughts and help us improve</p>
     </footer>
     </div>
   );
