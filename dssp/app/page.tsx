@@ -41,7 +41,7 @@ export default async function Index() {
                 {user !== null ? (
             <form action={signOut} className="flex items-center gap-2">
               <p>{user.email}</p>
-              <button className="bg-green-600 rounded-xl p-2 z-10">Sign Out?</button>
+              <button className="bg-green-600 rounded-xl p-2 z-50">Sign Out?</button>
             </form>
           ) : (
             <></>
