@@ -36,7 +36,7 @@ export default async function Map(){
       <footer className="w-full border-t border-gray-600 p-4 flex justify-center text-center text-xs">
         <p>
           Developed by {" "}
-          <a href="https://linkedin.com/in/ahmkhn" target="_blank" className="font-bold underline" rel="noreferrer">
+          <a href="https://linkedin.com/in/ahmkhn" target="_blank" className="text-green-500 font-bold underline" rel="noreferrer">
             Ahmed Khan
           </a>
         </p>
