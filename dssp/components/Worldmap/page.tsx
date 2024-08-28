@@ -302,8 +302,8 @@ export default function Worldmap( {authorized} : worldMapProps) {
         header="Welcome!"
         style={{ width: '30vw' }}
       >
-        <p>To set a marker, simply click on the map!</p>
-        <p>Explore the map and click on other markers to see other people's story!</p>
+        <p className="text-sm sm:text-base md:text-lg mb-4">To set a marker, simply tap or click on the map!</p>
+        <p className="text-sm sm:text-base md:text-lg">Explore the map and tap or click on other markers to see other people's stories!</p>
       </Dialog>
     </>
   );
