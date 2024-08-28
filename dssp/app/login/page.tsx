@@ -46,6 +46,18 @@ export default async function Login({
                 <OAuthButtons />
               </div>
       </section>
+    <footer className="w-full border-t border-gray-600 py-2 flex justify-center items-center text-center text-xs bg-black bg-dot-thick-neutral-800 group z-10">
+      <p>
+        Developed by {" "}
+        <a href="https://linkedin.com/in/ahmkhn"
+          target="_blank"
+          className="font-bold underline text-green-500"
+          rel="noreferrer">
+                  Ahmed Khan
+        </a>
+      </p>
+      <p className="ml-10">Your feedback matters! Send us your thoughts and help us improve</p>
+    </footer>
     </div>
   );
 }

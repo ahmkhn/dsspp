@@ -40,6 +40,7 @@ export default async function Map(){
             Ahmed Khan
           </a>
         </p>
+        <p className="ml-10">Your feedback matters! Send us your thoughts and help us improve</p>
       </footer>
     </div>
   );

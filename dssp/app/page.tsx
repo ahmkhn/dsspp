@@ -77,11 +77,12 @@ export default async function Index() {
       Developed by {" "}
       <a href="https://linkedin.com/in/ahmkhn"
         target="_blank"
-        className="font-bold underline"
+        className="font-bold underline text-green-500"
         rel="noreferrer">
                 Ahmed Khan
       </a>
     </p>
+    <p className="ml-10">Your feedback matters! Send us your thoughts and help us improve</p>
   </footer>
   <SpeedInsights/>
   <Analytics/>
