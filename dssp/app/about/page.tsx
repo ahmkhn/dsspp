@@ -74,7 +74,7 @@ export default async function About() {
             </p>
 
             <h1 className="mt-4 font-extrabold  text-lg sm:text-xl md:text-2xl lg:text-3xl text-gray-200 leading-relaxed text-center">
-            Origin
+            Origin of DSSP
             </h1>
             <p className="mt-4 text-base sm:text-lg md:text-xl lg:text-2xl">
             The idea was initiated by Dr. Rabia, who reached out with a vision to create a platform that could bring together minds from around the world. Through brainstorming and collaboration, this concept evolved into the application you see today.
@@ -92,6 +92,9 @@ export default async function About() {
             We're proud to present an application that we believe truly embodies our initial vision. It represents not just technological innovation, but a step towards creating a more inclusive and diverse approach to social sciences.
             We invite you to explore, engage, and contribute to this growing global community!
             </p>
+
+            <p className="mt-4 text-base sm:text-lg md:text-xl lg:text-2xl"> Contact: <a target="_blank" className="text-blue-500 underline" href="mailto:ahmkhnwork@gmail.com">ahmkhnwork@gmail.com</a></p>
+            <p className="mt-4 text-base sm:text-lg md:text-xl lg:text-2xl"> LinkedIn: <a target="_blank" className="text-blue-500 underline" href="https://www.linkedin.com/in/ahmkhn">Ahmed Khan</a></p>
           </div>
       </div>
     </div>

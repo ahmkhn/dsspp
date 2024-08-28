@@ -62,21 +62,40 @@ export async function getUserDataExists() {
     
     return exists;
   }
-export async function getUserId(){
-  const supabase = createClient();
+  export async function getUserId() {
+    const supabase = createClient();
+      
+    // Step 1: Check if we can get the current user
+    const { data: { user }, error: userError } = await supabase.auth.getUser();
     
-  // Step 1: Check if we can get the current user
-  const { data: { user }, error: userError } = await supabase.auth.getUser();
+    if (userError) {
+      console.error('Error getting current user:', userError);
+      return null;
+    }
   
-  if (userError) {
-    console.error("Error getting user:", userError);
-    return false;
-  }
+    const currentUserID = user?.id;
   
-  if (!user?.id) {
-    console.log("No user ID found");
-    return false;
-  }else{
+    if (!currentUserID) {
+      console.error('No current user found');
+      return null;
+    }
+  
+    // Step 2: Check if the current user's ID exists in the users table
+    const { data, error } = await supabase
+      .from('users')
+      .select('id')
+      .eq('id', currentUserID)
+      .single();
+  
+    if (error) {
+      console.error('Error fetching user data:', error);
+      return false;
+    }
+  
+    if (!data) {
+      console.error('Current user not found in users table');
+      return false;
+    }
+  
     return true;
   }
-}
