@@ -6,6 +6,10 @@ import { HeroHighlightDemo } from "@/components/Hero";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react"
 export default async function Index() {
+
+  
+
+
   const canInitSupabaseClient = () => {
     // This function is just for the interactive tutorial.
     // Feel free to remove it once you have Supabase connected.
