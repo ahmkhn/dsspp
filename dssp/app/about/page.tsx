@@ -33,8 +33,11 @@ export default async function About() {
       </div>
       
       <div className="flex flex-col text-justify">
-        <div className="flex flex-col gap-4 max-w-6xl mx-auto">
+        <div className="w-full flex flex-col gap-4 mx-auto">
           <div className="flex-1 border border-white p-4 md:p-6 lg:p-8 rounded-lg bg-black-800 bg-opacity-75">
+            <p className="mb-2 text-base sm:text-lg md:text-xl lg:text-2xl text-gray-200 leading-relaxed">
+            To set a marker, simply tap or click on the map! Explore the map and tap or click on other markers to see other people's stories!
+            </p>
             <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-200 leading-relaxed">
             Are you someone interested in challenging colonial legacies within social sciences? Are you interested in decolonizing bureaucratic thought to pave the way to modern governance in Pakistan? Is your research focused on the intersection of governance and decolonization? Do you believe in the power of indigenous knowledge and perspectives? Are you passionate about reshaping social sciences to better reflect local contexts and realities? Do you want to contribute to a broader understanding of decolonization beyond traditional academic boundaries? Are you eager to collaborate on projects that seek to dismantle power imbalances in academia? Are you looking for opportunities to engage in interdisciplinary research that addresses pressing social issues? Do you see yourself as part of a global conversation on decolonizing social sciences? If yes, let's get started by plotting your info on the map!
             </p>
