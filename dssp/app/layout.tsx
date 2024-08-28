@@ -1,16 +1,43 @@
 import { GeistSans } from "geist/font/sans";
 import "./globals.css";
 import {Inter} from 'next/font/google';
+import type { Metadata } from 'next'
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
-  : "https://www.dssp.app/";
+  : "https://www.dssp.app";
 
-export const metadata = {
-  metadataBase: new URL(defaultUrl),
-  title: "DSSP",
+const faviconUrl = `${defaultUrl}/favicon.ico`;
+
+export const metadata: Metadata = {
+  title: 'DSSP',
   description: "Decolonization of Social Sciences in Pakistan",
-};
+  openGraph: {
+    title: 'DSSP',
+    description: 'Decolonization of Social Sciences in Pakistan',
+    url: defaultUrl,
+    siteName: 'DSSP',
+    images: [
+      {
+        url: faviconUrl,
+        width: 32,
+        height: 32,
+        alt: 'DSSP Favicon',
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary', // Changed to 'summary' as we're using a small image
+    title: 'DSSP',
+    description: 'Decolonization of Social Sciences in Pakistan',
+    images: [faviconUrl],
+  },
+  icons: {
+    icon: '/favicon.ico',
+  },
+}
 const inter = Inter({subsets:['latin']})
 
 export default function RootLayout({
