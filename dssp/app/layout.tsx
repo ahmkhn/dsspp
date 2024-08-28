@@ -7,7 +7,7 @@ const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
   : "https://www.dssp.app";
 
-const faviconUrl = `${defaultUrl}/favicon.ico`;
+const faviconUrl = `https://www.dssp.app/favicon.ico`;
 
 export const metadata: Metadata = {
   title: 'DSSP',
