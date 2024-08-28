@@ -83,7 +83,7 @@ export default async function About() {
             Development Process
             </h1>
             <p className="mt-4 text-base sm:text-lg md:text-xl lg:text-2xl">
-            The journey from idea to reality involved many processes. First, starting with the effort to bring the concept to life, how would we implement functionality to bring together users? To input and testing from a diverse group of individuals, and continuous refinement based on their feedback and experiences.
+            The journey from idea to reality involved several key processes. Initially, we focused on actualizing the concept by determining how to implement functionality that connects users. This included gathering input and conducting tests with a diverse group of individuals, followed by continuous refinement based on their feedback and experiences.
             </p>
             <h1 className="mt-4 font-extrabold  text-lg sm:text-xl md:text-2xl lg:text-3xl text-gray-200 leading-relaxed text-center">
             Our Achievement
