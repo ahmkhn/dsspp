@@ -77,7 +77,7 @@ export default async function About() {
             Origin of DSSP
             </h1>
             <p className="mt-4 text-base sm:text-lg md:text-xl lg:text-2xl">
-            The idea was initiated by Dr. Rabia, who reached out with a vision to create a platform that could bring together minds from around the world. Through brainstorming and collaboration, this concept evolved into the application you see today.
+            The idea was initiated by Dr. Rabia Akhtar, who reached out with a vision to create a platform that could bring together minds from around the world. Through brainstorming and collaboration, this concept evolved into the application you see today.
             </p>
             <h1 className="mt-4 font-extrabold  text-lg sm:text-xl md:text-2xl lg:text-3xl text-gray-200 leading-relaxed text-center">
             Development Process
