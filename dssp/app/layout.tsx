@@ -8,6 +8,7 @@ const defaultUrl = 'https://www.dssp.app'
     metadataBase: new URL(defaultUrl),
     title: "Decolonizing Social Sciences",
     description: "DSSP",
+    image: "https://www.dssp.app/twitter-image.png"
   };
   
 
