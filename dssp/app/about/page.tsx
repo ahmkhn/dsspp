@@ -53,7 +53,7 @@ export default async function About() {
             </p>
 
             <p className="mt-4 text-base sm:text-lg md:text-xl lg:text-2xl">
-            As the Editor of Pakistan Politico, Pakistan's pioneering strategic and foreign affairs magazine, another one of her projects, Dr. Akhtar continues to influence public discourse. Her policy experience includes serving as a member of Prime Minister Imran Khan's Advisory Council on Foreign Affairs from 2018 to 2022. She is a Nonresident Senior Fellow at the South Asia Center, Atlantic Council, Washington DC, and a Nonresident Fellow at BASIC, UK. She is currently a Visiting Fellow at the Project for Managing The Atom at the Belfer Center, Harvard Kennedy School for 2024-2025.
+            As the Editor of <a target="_blank" className="italic text-blue-500 underline" href="https://pakistanpolitico.com/">Pakistan Politico,</a>, Pakistan's pioneering strategic and foreign affairs magazine, another one of her projects, Dr. Akhtar continues to influence public discourse. Her policy experience includes serving as a member of Prime Minister Imran Khan's Advisory Council on Foreign Affairs from 2018 to 2022. She is a Nonresident Senior Fellow at the South Asia Center, Atlantic Council, Washington DC, and a Nonresident Fellow at BASIC, UK. She is currently a Visiting Fellow at the Project for Managing The Atom at the Belfer Center, Harvard Kennedy School for 2024-2025.
             </p>
 
             <p className="mt-4 text-base sm:text-lg md:text-xl lg:text-2xl">
@@ -70,7 +70,7 @@ export default async function About() {
             Ahmed Khan, CS @ UMass, Developer of DSSP
             </h1>
             <p className="mt-4 text-base sm:text-lg md:text-xl lg:text-2xl">
-              Hi! I'm Ahmed, an incoming junior to the University of Massachusetts Amherst studying Computer Science.
+              Hi! I'm Ahmed, a junior to the University of Massachusetts Amherst studying Computer Science.
             </p>
 
             <h1 className="mt-4 font-extrabold  text-lg sm:text-xl md:text-2xl lg:text-3xl text-gray-200 leading-relaxed text-center">
@@ -83,7 +83,7 @@ export default async function About() {
             Development Process
             </h1>
             <p className="mt-4 text-base sm:text-lg md:text-xl lg:text-2xl">
-            The journey from idea to reality involved many processes... First starting with the effort to bring the concept to life, how would we implement functionality to bring together users? To input and testing from a diverse group of individuals, and continuous refinement based on their feedback and experiences.
+            The journey from idea to reality involved many processes. First, starting with the effort to bring the concept to life, how would we implement functionality to bring together users? To input and testing from a diverse group of individuals, and continuous refinement based on their feedback and experiences.
             </p>
             <h1 className="mt-4 font-extrabold  text-lg sm:text-xl md:text-2xl lg:text-3xl text-gray-200 leading-relaxed text-center">
             Our Achievement
