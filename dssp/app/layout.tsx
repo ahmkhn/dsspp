@@ -21,7 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.className}>
       <Head>
-        <meta property="og:image" content="https://dssp.app/og-image.png"></meta>
+        <meta property="og:image" content="https://www.dssp.app/twitter-image.png"></meta>
         <meta property="og:title" content="DSSP" />
         <meta property="og:description" content="Decolonization of Social Sciences in Pakistan" />
         <meta property="og:type" content="website" />
