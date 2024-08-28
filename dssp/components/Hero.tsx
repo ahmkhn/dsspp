@@ -31,7 +31,7 @@ export function HeroHighlightDemo() {
         fostering&nbsp;
         <Highlight className="text-green-500">unity&nbsp;</Highlight>
         and&nbsp;
-        <Highlight className="text-green-500">mutual support.&nbsp;</Highlight>
+        <Highlight className="text-green-500">mutual support&nbsp;</Highlight>
       </motion.h1>
     </HeroHighlight>
   );
