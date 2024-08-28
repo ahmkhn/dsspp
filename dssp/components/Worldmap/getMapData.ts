@@ -70,14 +70,14 @@ export async function getUserDataExists() {
     
     if (userError) {
       console.error('Error getting current user:', userError);
-      return null;
+      return false;
     }
   
     const currentUserID = user?.id;
   
     if (!currentUserID) {
       console.error('No current user found');
-      return null;
+      return false;
     }
   
     // Step 2: Check if the current user's ID exists in the users table

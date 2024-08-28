@@ -31,13 +31,13 @@ type worldMapProps = {
 type Coordinate = [number,number];
 export default function Worldmap( {authorized} : worldMapProps) {
   const toast = useRef<Toast>(null);
-
+  const [userIDExists,setUserIDExists] = useState<boolean>(false);
   const accept = async () => {
 
     if (authorized) {
-        let x = getUserId();
-        if(!x){
-          toast.current?.show({ severity: 'error', summary: 'Error', detail: "you don't have a marker!", life: 3000 });
+        setUserIDExists( await getUserId() );
+        if(userIDExists===false){
+          toast.current?.show({ severity: 'error', summary: 'Error', detail: "You don't have a marker!", life: 3000 });
         }
         try {
             await removeData();
