@@ -255,7 +255,7 @@ export default function Worldmap( {authorized} : worldMapProps) {
       <form onSubmit={(e: React.FormEvent<HTMLFormElement>)=>{
         handleSubmit(e);
       }}>
-                    <p className="text-blac text-center">Please <strong>make sure </strong>the marker on the map is accurate to the location you would like to set! :) (this window can be moved!)</p>
+                    <p className="text-black text-center">Please <strong>make sure </strong>the marker on the map is accurate to the location you would like to set! :) (this window can be moved!)</p>
                     <div className="flex justify-center gap-8">
                         <div className="flex flex-col justify-content-center card gap-6 mt-8">
                             <InputText required className="h-10 border border-black rounded-md p-2 w-[12rem]" id="name" value={fullName} onChange={(e)=>setFullName(e.target.value)} placeholder="Enter Full Name" />
@@ -296,7 +296,7 @@ export default function Worldmap( {authorized} : worldMapProps) {
       </form>       
      </Dialog>
      <Dialog 
-        className="bg-white text-black rounded-md p-8 flex justify-center text-center"
+        className="bg-white text-black rounded-md p-8 text-center dialog-popup w-[40rem] max-w-[50rem] "
         visible={introVisible}
         onHide={() => {if (!introVisible) return; setIntroVisible(false); }}
         header="Welcome!"
