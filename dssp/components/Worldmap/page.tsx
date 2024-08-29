@@ -53,7 +53,7 @@ export default function Worldmap( {authorized} : worldMapProps) {
 
 
     const reject = () => {
-        toast.current?.show({ severity: 'warn', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
+        toast.current?.show({ severity: 'warn', summary: 'Rejected', detail: 'You have selected no', life: 3000 });
     }
 
     const confirm2 = () => {
