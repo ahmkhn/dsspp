@@ -44,6 +44,11 @@ placeholder{
   background-color: transparent;
   color: darkred;
 }
+.p-dialog-header-close {
+  color:red;
+  z-index: 100 !important;
+  margin-right:1rem;
+}
 
 @layer base {
   * {

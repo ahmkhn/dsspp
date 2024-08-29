@@ -268,50 +268,47 @@ export default function Worldmap( {authorized} : worldMapProps) {
         Delete your marker?
       </button> )}
     </div>
-    <Dialog className="dialog-popup w-[40rem] max-w-[50rem] border border-black" header="Input your details" visible={visible} position="top" onHide={() => {if (!visible) return; setVisible(false); }}>
+    <Dialog className="dialog-popup w-full sm:w-[90vw] md:w-[40rem] max-w-[50rem] border border-black p-4" header="Input your details" visible={true} position="top" onHide={() => {if (!visible) return; setVisible(false); }}>
       <form onSubmit={(e: React.FormEvent<HTMLFormElement>)=>{
         handleSubmit(e);
       }}>
-                    <p className="text-black text-center">Please <strong>make sure </strong>the marker on the map is accurate to the location you would like to set! :) (this window can be moved!)</p>
-                    <div className="flex justify-center gap-8">
-                        <div className="flex flex-col justify-content-center card gap-6 mt-8">
-                            <InputText required className="h-10 border border-black rounded-md p-2 w-[12rem]" id="name" value={fullName} onChange={(e)=>setFullName(e.target.value)} placeholder="Enter Full Name" />
-                            <InputText required className="h-10 border border-black rounded-md p-2 w-[12rem]" id="name" value={title} onChange={(e)=>setTitle(e.target.value)} placeholder="Enter Job Title" />
-                        </div>
-                        <div className="flex flex-col justify-content-center card gap-6 mt-8">
-                            <Dropdown
-                                required
-                                className="border border-black rounded-md h-10 w-[12rem]"
-                                value={research}
-                                options={ResearchType.map((type) => ({ label: type.name, value: type.code }))}
-                                onChange={(e) => setResearch(e.target.value)}
-                                placeholder="Select a research"
-                            />
-                            <InputText className="h-10 border border-black rounded-md p-2 w-[12rem]" id="name" value={linkedinLink} onChange={(e)=>setLinkedInLink(e.target.value)} placeholder="Enter LinkedIn Link" />
-                        </div>
-                    </div>
-                    <div className="flex flex-row justify-center gap-6 mt-4">
-                            <InputTextarea
-                                disabled={researchDisabled}
-                                rows={2}
-                                className="w-[13rem] border-2 border-black rounded-md text-center mt-2 flex p-4 "
-                                placeholder={researchInputDescription}
-                                onChange={(e)=>setResearchInputDescription(e.target.value)}
-                            />
-                            <InputTextarea
-                                rows={3}
-                                className="w-[13rem] border-2 border-black rounded-md text-center mt-2 flex p-3 "
-                                placeholder="Who are you and what's your research about? (please keep it concise!)"
-                                required
-                                onChange={(e)=>setSummary(e.target.value)}
-                            />
-                    </div>
-                    <div className="flex flex-grow align-middle items-center justify-center mt-2">
-                      <Button type="submit" className="border border-black rounded-md p-2 text-white bg-black">Submit</Button>
-                    </div>
-                   
+                    <p className="text-black text-center text-sm md:text-base">Please <strong>make sure </strong>the marker on the map is accurate to the location you would like to set! :) (this window can be moved!)</p>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <InputText required className="h-10 border border-black rounded-md p-2 w-full" id="name" value={fullName} onChange={(e) => setFullName(e.target.value)} placeholder="Enter Full Name" />
+          <InputText required className="h-10 border border-black rounded-md p-2 w-full" id="title" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Enter Job Title" />
+          <Dropdown
+            required
+            className="border border-black rounded-md h-10 w-full"
+            value={research}
+            options={ResearchType.map((type) => ({ label: type.name, value: type.code }))}
+            onChange={(e) => setResearch(e.target.value)}
+            placeholder="Select a research"
+          />
+          <InputText className="h-10 border border-black rounded-md p-2 w-full" id="linkedin" value={linkedinLink} onChange={(e) => setLinkedInLink(e.target.value)} placeholder="Enter LinkedIn Link" />
+        </div>
+        
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <InputTextarea
+            disabled={researchDisabled}
+            rows={2}
+            className="mt-2 w-full border-2 border-black rounded-md text-center p-2"
+            placeholder={researchInputDescription}
+            onChange={(e) => setResearchInputDescription(e.target.value)}
+          />
+          <InputTextarea
+            rows={3}
+            className="mt-2 w-full border-2 border-black rounded-md text-center p-2"
+            placeholder="Who are you and what's your research about? (please keep it concise!)"
+            required
+            onChange={(e) => setSummary(e.target.value)}
+          />
+        </div>
+        
+        <div className="flex justify-center mt-2">
+          <Button type="submit" className="border border-black rounded-md p-2 text-white bg-black">Submit</Button>
+        </div>
       </form>       
-     </Dialog>
+    </Dialog>
     </>
   );
 };
