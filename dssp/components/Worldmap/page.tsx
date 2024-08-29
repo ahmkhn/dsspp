@@ -85,6 +85,8 @@ export default function Worldmap( {authorized} : worldMapProps) {
     const [summary,setSummary] = useState<string>("");
     const [userExists,setUserExists] = useState<boolean>(false);
     const [introVisible,setIntroVisible] = useState(true);
+
+    const [deleteButtonVisible, setDeleteButtonVisible] = useState<boolean>(false);
     interface User {
       full_name: string;
       user_research_tag: string;
@@ -106,6 +108,13 @@ export default function Worldmap( {authorized} : worldMapProps) {
         setUsers(data);
       }
       fetchData();
+    }, []);
+
+    useEffect(() => {
+      async function initializeDeleteButton() {
+        setDeleteButtonVisible( await getUserId() );
+      }
+      initializeDeleteButton();
     }, []);
 
     useEffect(() => {
@@ -230,6 +239,7 @@ export default function Worldmap( {authorized} : worldMapProps) {
     <div style={{ position: 'relative', width: '100%', height: '100vh' }}>
       <div ref={mapContainer} style={{ position: 'absolute', top: 0, bottom: 0, width: '100%' }} />
       <ConfirmDialog/>
+      {deleteButtonVisible && (
       <button
         onClick={confirm2}
         className="border-black border-2 rounded-md text-center bg-red-500"
@@ -249,7 +259,7 @@ export default function Worldmap( {authorized} : worldMapProps) {
         }}
       >
         Delete your marker?
-      </button>
+      </button> )}
     </div>
     <Dialog className="dialog-popup w-[40rem] max-w-[50rem] border border-black" header="Input your details" visible={visible} position="top" onHide={() => {if (!visible) return; setVisible(false); }}>
       <form onSubmit={(e: React.FormEvent<HTMLFormElement>)=>{
