@@ -270,7 +270,7 @@ export default function Worldmap( {authorized} : worldMapProps) {
                                 onChange={(e) => setResearch(e.target.value)}
                                 placeholder="Select a research"
                             />
-                            <InputText required className="h-10 border border-black rounded-md p-2 w-[12rem]" id="name" value={linkedinLink} onChange={(e)=>setLinkedInLink(e.target.value)} placeholder="Enter LinkedIn Link" />
+                            <InputText className="h-10 border border-black rounded-md p-2 w-[12rem]" id="name" value={linkedinLink} onChange={(e)=>setLinkedInLink(e.target.value)} placeholder="Enter LinkedIn Link" />
                         </div>
                     </div>
                     <div className="flex flex-row justify-center gap-6 mt-4">
