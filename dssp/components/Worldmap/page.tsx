@@ -268,7 +268,7 @@ export default function Worldmap( {authorized} : worldMapProps) {
         Delete your marker?
       </button> )}
     </div>
-    <Dialog className="dialog-popup w-full sm:w-[90vw] md:w-[40rem] max-w-[50rem] border border-black p-4" header="Input your details" visible={true} position="top" onHide={() => {if (!visible) return; setVisible(false); }}>
+    <Dialog className="dialog-popup w-full sm:w-[90vw] md:w-[40rem] max-w-[50rem] border border-black p-4" header="Input your details" visible={visible} position="top" onHide={() => {if (!visible) return; setVisible(false); }}>
       <form onSubmit={(e: React.FormEvent<HTMLFormElement>)=>{
         handleSubmit(e);
       }}>
