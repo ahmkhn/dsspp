@@ -184,7 +184,10 @@ export default function Worldmap( {authorized} : worldMapProps) {
 
     const addMarker = useCallback(async (e: mapboxgl.MapMouseEvent & { originalEvent: MouseEvent }) => {
       if(!map.current) return; // make sure the map is loaded ? 
-      if (!authorized) return;
+      if (!authorized){
+        toast.current?.show({ severity: 'error', summary: 'Unable to add marker', detail: "Please login", life: 3000 });
+        return;
+      };
     
       // Check if the click was on a marker
       if (e.defaultPrevented || e.originalEvent.target instanceof HTMLElement && e.originalEvent.target.className.includes('mapboxgl-marker')) {
