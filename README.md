@@ -12,6 +12,10 @@ Backend: Next.js, PostgreSQL, Supabase
 
 Authentication: NextAuth, Google OAuth, Supabase
 
+Hosting + CI/CD: Vercel
+
+TODO: Implement unit testing with Vitest / Jest
+
 
 # Development Process
 The journey from idea to reality involved several key processes. Initially, we focused on actualizing the concept by determining how to implement functionality that connects users. This included gathering input and conducting tests with a diverse group of individuals, followed by continuous refinement based on their feedback and experiences.
