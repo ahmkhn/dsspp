@@ -215,7 +215,7 @@ export default function Worldmap( {authorized} : worldMapProps) {
       style: 'mapbox://styles/mapbox/outdoors-v12',
       projection: 'globe',
       zoom: 3,
-      center: [90, 30]
+      center: [70, 30]
     });
     map.current.addControl(new mapboxgl.NavigationControl());
     map.current.on('style.load', () => {
