@@ -32,7 +32,7 @@ export default async function About() {
         </h1>
       </div>
       
-      <div className="flex flex-col text-justify">
+      <div className="flex flex-col text-left">
         <div className="w-full flex flex-col gap-4 mx-auto">
           <div className="flex-1 border border-white p-4 md:p-6 lg:p-8 rounded-lg bg-black-800 bg-opacity-75">
             <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-200 leading-relaxed">
