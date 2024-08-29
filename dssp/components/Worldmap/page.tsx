@@ -30,12 +30,18 @@ type worldMapProps = {
 
 type Coordinate = [number,number];
 export default function Worldmap( {authorized} : worldMapProps) {
+
+  useEffect(() => {
+    async function CheckIfUserMarkerExists() {
+      setUserIDExists( await getUserId() );
+    }
+    CheckIfUserMarkerExists();
+  }, []);
+
   const toast = useRef<Toast>(null);
   const [userIDExists,setUserIDExists] = useState<boolean>(false);
   const accept = async () => {
-
     if (authorized) {
-        setUserIDExists( await getUserId() );
         if(userIDExists===false){
           toast.current?.show({ severity: 'error', summary: 'Error', detail: "You don't have a marker!", life: 3000 });
         }else{
