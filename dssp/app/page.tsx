@@ -28,7 +28,7 @@ export default async function Index() {
   } = await supabase.auth.getUser();
 
   return (
-    <div className="h-[100vh] flex flex-col min-h-screen w-full bg-black bg-dot-thick-neutral-800 group overflow-hidden">
+    <div className="flex flex-col min-h-screen w-full bg-black bg-dot-thick-neutral-800 group overflow-hidden">
   <StarsBackground className="!fixed inset-0 z-0" starDensity={0.0002}/>
   <ShootingStars starColor="#16a34a" trailColor="white" minDelay={800} maxDelay={1200} starHeight={10} starWidth={40}/>
   
@@ -70,7 +70,7 @@ export default async function Index() {
     </div>
   </main>
 
-  <footer className=" w-full border-t border-gray-600 py-2 flex justify-center items-center text-center text-xs bg-black bg-dot-thick-neutral-800 group z-10">
+  <footer className="-mt-20 w-full border-t border-gray-600 py-2 flex justify-center items-center text-center text-xs bg-black bg-dot-thick-neutral-800 group z-10">
     <p>
       Developed by {" "}
       <a href="https://linkedin.com/in/ahmkhn"
