@@ -13,7 +13,7 @@ export default async function About() {
         starHeight={6}
         starWidth={40}
       />
-      <nav className="z-10 mb-10 w-full border-b border-white py-4 flex flex-col sm:flex-row items-center">
+      <nav className="z-10 mb-10 w-full  py-4 flex flex-col sm:flex-row items-center">
         <div className="flex flex-col sm:flex-row justify-center items-center w-full px-4 sm:px-6 space-y-4 sm:space-y-0">
           <a 
             className="z-10 inline-flex items-center justify-center text-center bg-white text-black px-4 py-2 rounded text-sm sm:text-base font-bold"
@@ -68,7 +68,7 @@ export default async function About() {
 
           </div>
 
-          <div className="mt-8 flex-1 border border-white p-4 md:p-6 lg:p-8 rounded-lg bg-black bg-opacity-75">
+          <div className="mt-8 flex-1 border border-white p-4 md:p-6 lg:p-8 rounded-lg bg-opacity-75">
             <h1 className="mt-4 font-extrabold  text-lg sm:text-xl md:text-2xl lg:text-3xl text-gray-200 leading-relaxed text-center">
             Ahmed Khan, CS @ UMass, Developer of DSSP
             </h1>
