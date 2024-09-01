@@ -34,7 +34,7 @@ export default async function Index() {
   
   
 
-  <nav className="z-20 w-full border-b border-gray-600 py-4">
+    <nav className="z-20 w-full border-b border-gray-600 py-4">
     <div className="flex flex-wrap justify-between items-center w-full px-4 sm:px-6 gap-4">
       <a 
         className="z-50 inline-flex items-center justify-center text-center bg-white text-black px-4 py-2 rounded text-sm sm:text-base font-bold"
@@ -60,11 +60,11 @@ export default async function Index() {
   <main className="flex-grow flex items-center justify-center w-full z-10">
     <div className="-mt-40 flex flex-col items-center justify-center w-full max-w-4xl p-4">
       <HeroHighlightDemo/>
-      <a className="-mt-40 z-10 w-full max-w-xs cursor-pointer inline-flex items-center justify-center !bg-green-600 text-lg font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background bg-primary text-primary-foreground h-11 px-8 rounded-2xl"
-         href="/login">
+      <a className="-mt-60 sm:-mt-40 z-10  font-bold max-w-xs cursor-pointer inline-flex items-center justify-center !bg-green-600 text-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background bg-primary text-primary-foreground h-11 px-12 sm:px-24 rounded-2xl"
+        href="/login">
         Get Started
       </a>
-      <p className="mt-20 text-center sm:text-xs md:text-sm lg:text-lg font-bold text-green-500 leading-relaxed">
+      <p className="mt-20 sm:mt-12 text-center text-xs sm:text-sm md:text-base lg:text-lg font-bold text-green-500 leading-relaxed max-w-md">
             To set a marker, simply tap or click on the map! Explore the map and tap or click on other markers to see other people's stories!
       </p>
     </div>
