@@ -234,7 +234,7 @@ export default function Worldmap( {authorized} : worldMapProps) {
     mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_KEY as string;
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
-      style: 'mapbox://styles/mapbox/outdoors-v12',
+      style: 'mapbox://styles/ahmkhn/cm0t536km002101nt0xc1fwvq',
       projection: 'globe',
       zoom: 3,
       center: [70, 30]
