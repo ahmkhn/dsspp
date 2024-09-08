@@ -14,9 +14,12 @@ Authentication: NextAuth, Google OAuth, Supabase
 
 Hosting + CI/CD: Vercel
 
-TODO: Implement unit testing with Vitest / Jest
-TODO: Clean up code components and make code more readable (create util components for most activities within the map component)
-TODO: Adopt Typescript clean code and best code practices for React
+TODO: Implement unit testing with Vitest / Jest  
+
+TODO: Clean up code components and make code more readable (create util components for most activities within the map component)  
+
+TODO: Adopt Typescript clean code and best code practices for React  
+
 
 
 # Development Process
