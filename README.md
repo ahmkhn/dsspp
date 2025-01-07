@@ -1,5 +1,12 @@
 
-# Decolonization of Social Sciences Documentation
+# Decolonization of Social Sciences
+
+
+
+
+https://github.com/user-attachments/assets/56c476bd-420f-4ab1-87d4-2bf7ef2f8222
+
+
 
 
 # Origin of DSSP
