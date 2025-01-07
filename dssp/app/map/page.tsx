@@ -1,5 +1,6 @@
 import Worldmap from "@/components/Worldmap/page";
 import { createClient } from "@/utils/supabase/server";
+import Nav from "@/components/nav/Nav";
 export default async function Map(){
     const supabase = await createClient();
     const {
@@ -7,23 +8,8 @@ export default async function Map(){
   } = await supabase.auth.getUser();
   return (
     <div className="flex-1 w-full flex flex-col min-h-screen">
-      <nav className="z-10 w-full border-b border-gray-600 py-4">
-        <div className="flex justify-between items-center w-full px-4 sm:px-6">
-          <a 
-            className="z-20 inline-flex items-center justify-center text-center bg-white text-black px-4 py-2 rounded text-sm sm:text-base font-bold"
-            href="/"
-          >
-            Homepage
-          </a>
-          <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-center">Interactive Map</h1>
-          <a 
-            className="z-20 inline-flex items-center justify-center text-center bg-white text-black px-4 py-2 rounded text-sm sm:text-base font-bold"
-            href="/about"
-          >
-            About DSSP
-          </a>
-        </div>
-      </nav>
+      <Nav/>
+      <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-center">Interactive Map</h1>
       <main className="flex-1 flex flex-col">
         <section className="flex-1 w-full flex flex-col p-4">
           <div className="flex h-full">

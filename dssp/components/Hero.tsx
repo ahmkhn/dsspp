@@ -21,7 +21,11 @@ export function HeroHighlightDemo() {
         }}
         className="text-center font-black !leading-tight text-sm sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl overflow-hidden whitespace-pre-wrap"
       >
-        Decolonization of Social Sciences in{" "}
+        
+        <Highlight className="text-green-500">{" "}Decolonization</Highlight>
+        {" "}of{" "}
+        <Highlight className="text-green-500">Social Sciences</Highlight>
+        {" "}in{" "}
         <Highlight className="text-green-500">Pakistan</Highlight>
         <div className="w-full p-[1px] bg-gradient-to-r from-transparent via-gray-300 to-transparent my-4 !text-1xl" />
         A platform for a global community to share{" "}

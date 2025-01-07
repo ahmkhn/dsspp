@@ -5,6 +5,7 @@ import { createClient } from "@/utils/supabase/server";
 import { OAuthButtons } from "./oauth-signin";
 import { StarsBackground } from "@/components/ui/stars-background";
 import { ShootingStars } from "@/components/ui/shooting-stars";
+import Nav from "@/components/nav/Nav";
 export default async function Login({
   searchParams,
 }: {
@@ -22,6 +23,7 @@ export default async function Login({
 
   return (
     <div className="flex w-full flex-col items-center min-h-screen bg-black bg-dot-thick-neutral-800 group">
+      <Nav/>
     <StarsBackground className="important" starDensity={0.0001}/>
     <ShootingStars starColor="green-200" trailColor="white" minDelay={800} maxDelay={1200} starHeight={6} starWidth={40}/>
       <section className="z-10 h-[calc(100vh-57px)] flex justify-center items-center">
