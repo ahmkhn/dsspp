@@ -1,4 +1,4 @@
-import { createClient } from "@/asdasd/supabase/server";
+import { createClient } from "@/supa/supabase/server";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 

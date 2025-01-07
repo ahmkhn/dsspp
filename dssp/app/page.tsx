@@ -1,10 +1,11 @@
-import { createClient } from "@/asdasd/supabase/server";
+import { createClient } from "@/supa/supabase/server";
 import { signOut } from "@/app/login/actions";
 import { StarsBackground } from "@/components/ui/stars-background";
 import { ShootingStars } from "@/components/ui/shooting-stars";
 import { HeroHighlightDemo } from "@/components/Hero";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react"
+import Nav from "@/components/nav/Nav";
 export default async function Index() {
 
 
@@ -34,7 +35,7 @@ export default async function Index() {
   
   
 
-    <nav className="-mb-60 z-20 w-full border-b border-gray-600 py-4">
+    {/*<nav className="-mb-60 z-20 w-full border-b border-gray-600 py-4">
     <div className="flex flex-wrap justify-between items-center w-full px-4 sm:px-6 gap-4">
       <a 
         className="z-50 inline-flex items-center justify-center text-center bg-white text-black px-4 py-2 rounded text-sm sm:text-base font-bold"
@@ -55,9 +56,10 @@ export default async function Index() {
         About DSSP
       </a>
     </div>
-  </nav>
+  </nav>*/}
+  <Nav/>
 
-  <main className="flex-grow flex items-center justify-center w-full z-10">
+  <main className="mb-60 z-20 flex-grow flex items-center justify-center w-full z-10">
     <div className=" flex flex-col items-center justify-center w-full max-w-4xl p-4">
       <HeroHighlightDemo/>
       <a className="-mt-60 sm:-mt-40 z-10  font-bold max-w-xs cursor-pointer inline-flex items-center justify-center !bg-green-600 text-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background bg-primary text-primary-foreground h-11 px-12 sm:px-24 rounded-2xl"
