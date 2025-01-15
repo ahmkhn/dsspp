@@ -21,7 +21,15 @@ Authentication: NextAuth, Google OAuth, Supabase
 
 Hosting + CI/CD: Vercel
 
-TODO: Implement unit testing with Vitest / Jest  
+TODO: Implement unit testing with Jest, setup github actions ci/cd workflow
+
+TODO: Add interactive chat component
+
+TODO: Add resource library
+
+TODO: Clean up and minimize UI
+
+TODO: Tidy PRD and add here to readme
 
 TODO: Clean up code components and make code more readable (create util components for most activities within the map component)  
 
