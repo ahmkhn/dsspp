@@ -16,7 +16,7 @@ export default async function About() {
       <nav className="z-10 mb-10 w-full  py-4 flex flex-col sm:flex-row items-center">
         <div className="flex flex-col sm:flex-row justify-center items-center w-full px-4 sm:px-6 space-y-4 sm:space-y-0">
           <a 
-            className="z-10 inline-flex items-center justify-center text-center bg-white text-black px-4 py-2 rounded text-sm sm:text-base font-bold"
+            className="z-10 inline-flex items-center justify-center text-center !bg-green-600 text-black px-4 py-2 rounded text-sm sm:text-base font-bold"
             href="/"
           >
             Homepage

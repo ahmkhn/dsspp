@@ -6,6 +6,7 @@ import { HeroHighlightDemo } from "@/components/Hero";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react"
 import Nav from "@/components/nav/Nav";
+import Footer from "./footer/page";
 export default async function Index() {
 
   const supabase = await createClient();
@@ -33,18 +34,7 @@ export default async function Index() {
     </div>
   </main>
 
-  <footer className="-mt-20 w-full border-t border-gray-600 py-2 flex justify-center items-center text-center text-xs bg-black group z-10">
-    <p>
-      Developed by {" "}
-      <a href="https://linkedin.com/in/ahmkhn"
-        target="_blank"
-        className="font-bold underline text-green-500"
-        rel="noreferrer">
-                Ahmed Khan
-      </a>
-    </p>
-    <p className="ml-[1.5rem]">Your feedback matters! Send us your thoughts and help us improve</p>
-  </footer>
+  <Footer/>
   <SpeedInsights/>
   <Analytics/>
 </div>
