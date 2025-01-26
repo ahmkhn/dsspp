@@ -22,7 +22,7 @@ export default async function Login({
   }
 
   return (
-    <div className="flex w-full flex-col items-center min-h-screen bg-black bg-dot-thick-neutral-800 group">
+    <div className="flex w-full flex-col items-center min-h-screen bg-black  group">
       <Nav/>
     <StarsBackground className="important" starDensity={0.0001}/>
     <ShootingStars starColor="green-200" trailColor="white" minDelay={800} maxDelay={1200} starHeight={6} starWidth={40}/>
@@ -31,7 +31,7 @@ export default async function Login({
                 <OAuthButtons />
               </div>
       </section>
-    <footer className="-mt-2 w-full border-t border-gray-600 py-2 flex justify-center items-center text-center text-xs bg-black bg-dot-thick-neutral-800 group z-10">
+    <footer className="-mt-2 w-full border-t border-gray-600 py-2 flex justify-center items-center text-center text-xs bg-black group z-10">
       <p>
         Developed by {" "}
         <a href="https://linkedin.com/in/ahmkhn"

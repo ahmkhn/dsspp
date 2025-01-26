@@ -3,7 +3,7 @@ import { ShootingStars } from "@/components/ui/shooting-stars";
 import { Highlight } from "@/components/ui/hero-highlight";
 export default async function About() {
   return (
-    <div className="flex w-full flex-col items-center min-h-screen bg-black bg-dot-thick-neutral-800 group justify-center">
+    <div className="flex w-full flex-col items-center min-h-screen bg-black group justify-center">
       <StarsBackground className="important" starDensity={0.0001} />
       <ShootingStars
         starColor="green-200"
