@@ -1,5 +1,12 @@
 
-# Decolonization of Social Sciences Documentation
+# Decolonization of Social Sciences
+
+
+
+
+https://github.com/user-attachments/assets/56c476bd-420f-4ab1-87d4-2bf7ef2f8222
+
+
 
 
 # Origin of DSSP
@@ -14,7 +21,15 @@ Authentication: NextAuth, Google OAuth, Supabase
 
 Hosting + CI/CD: Vercel
 
-TODO: Implement unit testing with Vitest / Jest  
+TODO: Implement unit testing with Jest, setup github actions ci/cd workflow
+
+TODO: Add interactive chat component
+
+TODO: Add resource library
+
+TODO: Clean up and minimize UI
+
+TODO: Tidy PRD and add here to readme
 
 TODO: Clean up code components and make code more readable (create util components for most activities within the map component)  
 
