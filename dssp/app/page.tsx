@@ -7,6 +7,16 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react"
 import Nav from "@/components/nav/Nav";
 import Footer from "./footer/page";
+import { MapPinIcon } from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+
 export default async function Index() {
 
   const supabase = await createClient();
@@ -28,9 +38,16 @@ export default async function Index() {
         href="/login">
         Get Started
       </a>
-      <p className="mt-20 sm:mt-12 text-center text-xs sm:text-sm md:text-base lg:text-lg font-bold text-green-500 leading-relaxed max-w-md">
-            To set a marker, simply tap or click on the map! Explore the map and tap or click on other markers to see other people's stories!
-      </p>
+      <Card className="mt-20 bg-black/10 max-w-md mx-auto border border-green-500/80 backdrop-blur-sm hover:border-green-400/70 transition-all duration-300 shadow-lg shadow-green-500/10 rounded-3xl">
+        <CardContent className="p-6">
+          <div className="flex items-center justify-center mb-4">
+            <MapPinIcon className="w-6 h-6 text-green-500 animate-bounce" />
+          </div>
+          <p className="text-center text-sm md:text-base font-medium text-green-400 leading-relaxed">
+            Click anywhere on the map to drop a marker and share your story. Discover others' stories by exploring existing markers!
+          </p>
+        </CardContent>
+      </Card>
     </div>
   </main>
 
