@@ -1,0 +1,60 @@
+.page { width: 100%; min-height: 100vh; background: #f7f7ef; color: #172e24; -webkit-font-smoothing: antialiased; }
+.main { max-width: 1240px; margin: 0 auto; padding: 0 40px; }
+.eyebrow { color: #667c53; font-size: 10px; font-weight: 650; letter-spacing: .14em; line-height: 1.8; }
+.hero { display: grid; grid-template-columns: 1.35fr 1fr; gap: 85px; align-items: center; padding: 78px 0 72px; }
+.hero h1 { font-size: clamp(37px, 4.1vw, 54px); line-height: 1.1; font-weight: 500; letter-spacing: -.045em; margin: 22px 0 25px; }
+.hero h1 span, .peopleIntro h2 span { color: #75865d; }
+.introduction { max-width: 520px; font-size: 16px; line-height: 1.9; color: #62715e; }
+.primaryLink { display: inline-flex; align-items: center; justify-content: center; gap: 22px; min-height: 48px; padding: 14px 19px; background: #244b38; color: white; border-radius: 7px; font-size: 13px; font-weight: 550; }
+.hero .primaryLink { margin-top: 28px; }
+.primaryLink:hover { background: #35634b; }
+.mission { position: relative; border: 1px solid #dae2cf; border-radius: 14px; padding: 35px; background: #eaf0e2; overflow: hidden; }
+.mission > svg { margin-bottom: 28px; color: #5e794b; }
+.mission h2 { font-size: 30px; letter-spacing: -.04em; line-height: 1.2; margin: 17px 0; font-weight: 500; }
+.mission > p:not(.eyebrow) { font-size: 14px; color: #667b59; line-height: 1.85; }
+.missionFoot { display: flex; gap: 8px; align-items: center; margin-top: 27px; padding-top: 20px; border-top: 1px solid #d4dec7; color: #627d50; font-size: 11px; }
+.principles { border-top: 1px solid #dce2d3; padding: 49px 0 60px; }
+.principles h2, .invitation h2 { margin-top: 15px; font-size: 32px; font-weight: 500; line-height: 1.2; letter-spacing: -.04em; }
+.principleGrid { margin-top: 36px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px; }
+.principleTop { display: flex; align-items: center; justify-content: space-between; color: #668051; }
+.principleTop span { font-size: 11px; color: #89977a; }
+.principleGrid h3 { font-size: 17px; font-weight: 550; margin: 23px 0 12px; }
+.principleGrid p { font-size: 14px; line-height: 1.9; color: #6d7a63; }
+.people { display: grid; grid-template-columns: 1fr 1.4fr; gap: 75px; padding: 54px 0 66px; border-top: 1px solid #dce2d3; }
+.peopleIntro h2 { margin: 18px 0 21px; font-size: 35px; font-weight: 500; letter-spacing: -.045em; line-height: 1.17; }
+.peopleIntro > p:last-child { font-size: 14px; line-height: 1.9; color: #6d7a63; max-width: 330px; }
+.peopleCards { display: grid; gap: 17px; }
+.person { display: flex; align-items: flex-start; gap: 19px; padding: 26px; background: #fcfcf7; border: 1px solid #dce2d3; border-radius: 12px; }
+.monogram { flex: none; display: grid; place-items: center; width: 45px; height: 45px; border-radius: 50%; color: #6c8054; background: #eaf0e0; font-size: 13px; }
+.role { color: #82916f; font-size: 9px; letter-spacing: .12em; font-weight: 650; }
+.person h3 { font-size: 20px; font-weight: 550; letter-spacing: -.025em; margin: 7px 0 11px; }
+.person h3 + p { font-size: 14px; line-height: 1.8; color: #6e7b65; }
+.contact { display: flex; flex-wrap: wrap; align-items: center; gap: 7px 22px; margin-top: 14px; }
+.contact a { display: inline-flex; align-items: center; gap: 7px; min-height: 44px; font-size: 12px; color: #3c5c38; }
+.contact a:hover { text-decoration: underline; }
+.invitation { display: flex; justify-content: space-between; align-items: center; gap: 35px; padding: 35px 39px; margin-bottom: 65px; background: #244b38; border-radius: 12px; color: #f3f5ea; }
+.invitation .eyebrow { color: #b4c4a4; }
+.invitation p:last-child { margin-top: 14px; font-size: 14px; line-height: 1.8; color: #c0cdb5; }
+.invitation .primaryLink { background: #edf2df; color: #294b34; flex: none; }
+.invitation .primaryLink:hover { background: white; }
+.page a:focus-visible { outline: 3px solid #809c64; outline-offset: 4px; }
+@media (max-width: 950px) { .hero { gap: 35px; } .mission { padding: 28px; } .people { gap: 30px; grid-template-columns: 1fr 1.5fr; } .person { padding: 22px; gap: 14px; } }
+@media (max-width: 760px) {
+  .main { padding: 0 24px; }
+  .hero { grid-template-columns: 1fr; padding: 43px 0; gap: 32px; }
+  .hero h1 { font-size: 39px; margin: 18px 0 22px; }
+  .introduction { font-size: 15px; }
+  .mission { padding: 28px; }
+  .mission h2 { font-size: 29px; }
+  .principles { padding: 36px 0 39px; }
+  .principles h2, .invitation h2 { font-size: 29px; }
+  .principleGrid { grid-template-columns: 1fr; gap: 28px; margin-top: 30px; }
+  .principleGrid article + article { border-top: 1px solid #dce2d3; padding-top: 27px; }
+  .principleGrid h3 { margin-top: 17px; }
+  .people { grid-template-columns: 1fr; padding: 36px 0 42px; gap: 28px; }
+  .peopleIntro h2 { font-size: 32px; }
+  .peopleIntro > p:last-child { max-width: 500px; }
+  .person { padding: 23px 20px; }
+  .invitation { flex-direction: column; align-items: flex-start; padding: 29px 25px; margin-bottom: 40px; gap: 23px; }
+}
+@media (max-width: 380px) { .main { padding: 0 18px; } .hero h1 { font-size: 34px; } .person { flex-direction: column; gap: 17px; } .mission { padding: 25px; } }

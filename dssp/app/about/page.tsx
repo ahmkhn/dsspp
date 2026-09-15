@@ -1,105 +1,70 @@
-import { StarsBackground } from "@/components/ui/stars-background";
-import { ShootingStars } from "@/components/ui/shooting-stars";
-import { Highlight } from "@/components/ui/hero-highlight";
-export default async function About() {
+import Link from "next/link";
+import { ArrowUpRight, BookOpen, Globe2, Mail, MapPin, Users } from "lucide-react";
+import Nav from "@/components/nav/Nav";
+import Footer from "@/app/footer/page";
+import styles from "./about.module.css";
+
+export const metadata = { title: "About DSSP | Decolonizing Social Sciences" };
+
+const principles = [
+  { icon: BookOpen, title: "Start with local knowledge", text: "Make space for indigenous knowledge, lived experiences, and research grounded in the realities of Pakistan." },
+  { icon: Users, title: "Look beyond your discipline", text: "Bring different fields into conversation. Shared questions can create connections across academic boundaries." },
+  { icon: Globe2, title: "Connect across borders", text: "Find people with a shared curiosity and take the conversation further through their research and profiles." },
+];
+
+export default function About() {
   return (
-    <div className="flex w-full flex-col items-center min-h-screen bg-black group justify-center">
-      <StarsBackground className="important" starDensity={0.0001} />
-      <ShootingStars
-        starColor="green-200"
-        trailColor="white"
-        minDelay={800}
-        maxDelay={1200}
-        starHeight={6}
-        starWidth={40}
-      />
-      <nav className="z-10 mb-10 w-full  py-4 flex flex-col sm:flex-row items-center">
-        <div className="flex flex-col sm:flex-row justify-center items-center w-full px-4 sm:px-6 space-y-4 sm:space-y-0">
-          <a 
-            className="z-10 inline-flex items-center justify-center text-center !bg-green-600 text-black px-4 py-2 rounded text-sm sm:text-base font-bold"
-            href="/"
-          >
-            Homepage
-          </a>
-        </div>
-  </nav>
-      <div className="flex flex-col items-center">
-        <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-8 text-center">
-          The Decolonization of&nbsp;
-          <Highlight className="text-green-500">Social Sciences</Highlight>
-          &nbsp;in&nbsp;
-          <Highlight className="text-green-500">Pakistan&nbsp;</Highlight>
-        </h1>
-      </div>
-      
-      <div className="flex flex-col text-left">
-        <div className="w-full flex flex-col gap-4 mx-auto">
-          <div className="flex-1 border border-white p-4 md:p-6 lg:p-8 rounded-lg bg-black-800 bg-opacity-75">
-            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-200 leading-relaxed">
-            Are you someone interested in challenging colonial legacies within social sciences? Are you interested in decolonizing bureaucratic thought to pave the way to modern governance in Pakistan? Is your research focused on the intersection of governance and decolonization? Do you believe in the power of indigenous knowledge and perspectives? Are you passionate about reshaping social sciences to better reflect local contexts and realities? Do you want to contribute to a broader understanding of decolonization beyond traditional academic boundaries? Are you eager to collaborate on projects that seek to dismantle power imbalances in academia? Are you looking for opportunities to engage in interdisciplinary research that addresses pressing social issues? Do you see yourself as part of a global conversation on decolonizing social sciences? If yes, let's get started by plotting your info on the map!
-            </p>
+    <div className={styles.page}>
+      <Nav />
+      <main className={styles.main}>
+        <header className={styles.hero}>
+          <div>
+            <p className={styles.eyebrow}>ABOUT DSSP</p>
+            <h1>Knowledge grows<br /><span>with more perspectives.</span></h1>
+            <p className={styles.introduction}>Decolonizing Social Sciences in Pakistan is a space for researchers, students, and curious minds to connect—and rethink whose knowledge shapes our understanding of the world.</p>
+            <Link href="/map" className={styles.primaryLink}>Meet the community <ArrowUpRight size={18} aria-hidden="true" /></Link>
           </div>
-        </div>
-        <div className="mt-8 flex-1 border border-white p-4 md:p-6 lg:p-8 rounded-lg bg-black-800 bg-opacity-75">
-            <h1 className="mt-4 font-extrabold  text-lg sm:text-xl md:text-2xl lg:text-3xl text-gray-200 leading-relaxed text-center">
-            Rabia Akhtar, Academic Entrepreneur, DSSP Lead
-            </h1>
-            <p className="mt-4 text-base sm:text-lg md:text-xl lg:text-2xl">
-              Rabia Akhtar is the Dean of the Faculty of Social Sciences at the University of Lahore, where she has established herself as a visionary leader and academic entrepreneur. A Professor of International Relations, she is the driving force behind the Centre for Security, Strategy, and Policy Research (CSSPR) and the School of Integrated Social Sciences (SISS), both of which are her innovative projects aimed at reshaping academic discourse and policy research in Pakistan.
-            </p>
-            <p className="mt-4 text-base sm:text-lg md:text-xl lg:text-2xl">
-            Dr. Akhtar holds a PhD in Security Studies from Kansas State University and Master's degrees in International Relations from Quaid-i-Azam University, Islamabad, and in Political Science from Eastern Illinois University, USA. Her research has spanned critical areas such as South Asian nuclear security, deterrence dynamics, emerging technologies, media disinformation, and Pakistan’s foreign policy.
-            </p>
+          <aside className={styles.mission} aria-labelledby="mission-heading">
+            <Globe2 size={32} strokeWidth={1.3} aria-hidden="true" />
+            <p className={styles.eyebrow}>ROOTED LOCALLY. OPEN GLOBALLY.</p>
+            <h2 id="mission-heading">A broader view<br />of the social sciences.</h2>
+            <p>We want to challenge colonial legacies in research and make room for local contexts, indigenous perspectives, and more inclusive conversations.</p>
+            <span className={styles.missionFoot}><MapPin size={16} aria-hidden="true" /> From Pakistan, to a shared world.</span>
+          </aside>
+        </header>
 
-            <p className="mt-4 text-base sm:text-lg md:text-xl lg:text-2xl">
-            She is the editor of <a target="_blank" className="italic text-green-500 underline" href="https://pakistan.fes.de/e/china-pakistan-economic-corridor-beyond-2030-a-green-alliance-for-sustainable-development.html"> CPEC Beyond 2030: A Green Alliance for Sustainable Development</a>, published by FES Pakistan in August 2024, underscoring her commitment to fostering regional cooperation and sustainable development. In 2018, Dr. Akhtar authored <a target="_blank" className="italic text-green-500 underline" href="https://csspr.uol.edu.pk/f2c/">The Blind Eye: U.S. Non-proliferation Policy Towards Pakistan from Ford to Clinton </a>, showcasing her expertise as a nuclear historian.
-            </p>
+        <section className={styles.principles} aria-labelledby="principles-heading">
+          <p className={styles.eyebrow}>WHAT BRINGS US TOGETHER</p>
+          <h2 id="principles-heading">Different disciplines. Shared purpose.</h2>
+          <div className={styles.principleGrid}>{principles.map(({ icon: Icon, title, text }, index) => (
+            <article key={title}>
+              <div className={styles.principleTop}><Icon size={25} strokeWidth={1.5} aria-hidden="true" /><span>0{index + 1}</span></div>
+              <h3>{title}</h3><p>{text}</p>
+            </article>
+          ))}</div>
+        </section>
 
-            <p className="mt-4 text-base sm:text-lg md:text-xl lg:text-2xl">
-            As the Editor of <a target="_blank" className="italic text-green-500 underline" href="https://pakistanpolitico.com/">Pakistan Politico,</a> Pakistan's pioneering strategic and foreign affairs magazine, another one of her projects, Dr. Akhtar continues to influence public discourse. Her policy experience includes serving as a member of Prime Minister Imran Khan's Advisory Council on Foreign Affairs from 2018 to 2022. She is a Nonresident Senior Fellow at the South Asia Center, Atlantic Council, Washington DC, and a Nonresident Fellow at BASIC, UK. She is currently a Visiting Fellow at the Project for Managing The Atom at the Belfer Center, Harvard Kennedy School for 2024-2025.
-            </p>
-
-            <p className="mt-4 text-base sm:text-lg md:text-xl lg:text-2xl">
-            Her global reach extends to teaching roles at the NATO Defence College, the NPIHP Nuclear Bootcamp in Rome, and ISODARCO in Andalo, Italy. Through her role as an academic entrepreneur, Dr. Akhtar continues to push the boundaries of knowledge and policy innovation in Pakistan and beyond.
-            </p>
-
-            <p className="mt-4 text-base sm:text-lg md:text-xl lg:text-2xl"> Contact: <a target="_blank" className="text-green-500 underline" href="mailto:rabia.akhtar@csspr.uol.edu.pk">rabia.akhtar@csspr.uol.edu.pk</a></p>
-            <p className="mt-4 text-base sm:text-lg md:text-xl lg:text-2xl"> LinkedIn: <a target="_blank" className="text-green-500 underline" href="https://www.linkedin.com/in/dr-rabia-akhtar-4a702b49/">Rabia Akhtar</a></p>
-
+        <section className={styles.people} aria-labelledby="people-heading">
+          <div className={styles.peopleIntro}><p className={styles.eyebrow}>THE PEOPLE BEHIND DSSP</p><h2 id="people-heading">An idea.<br />A collaboration.<br /><span>A growing community.</span></h2><p>DSSP began with Dr. Rabia Akhtar’s vision to bring minds together. Through collaboration with Ahmed Khan, that idea became this platform.</p></div>
+          <div className={styles.peopleCards}>
+            <article className={styles.person}>
+              <span className={styles.monogram} aria-hidden="true">RA</span>
+              <div><p className={styles.role}>DSSP LEAD</p><h3>Dr. Rabia Akhtar</h3><p>An academic entrepreneur whose work connects research, policy, and public discourse. Rabia initiated the vision for DSSP.</p>
+                <div className={styles.contact}><a href="mailto:rabia.akhtar@csspr.uol.edu.pk"><Mail size={15} aria-hidden="true" /> Email Rabia</a><a href="https://www.linkedin.com/in/dr-rabia-akhtar-4a702b49/" target="_blank" rel="noopener noreferrer">LinkedIn <ArrowUpRight size={15} aria-hidden="true" /></a></div>
+              </div>
+            </article>
+            <article className={styles.person}>
+              <span className={styles.monogram} aria-hidden="true">AK</span>
+              <div><p className={styles.role}>DEVELOPER</p><h3>Ahmed Khan</h3><p>Ahmed built DSSP to turn a shared vision into a place where people can discover one another and connect through their interests.</p>
+                <div className={styles.contact}><a href="mailto:ahmkhnwork@gmail.com"><Mail size={15} aria-hidden="true" /> Email Ahmed</a><a href="https://www.linkedin.com/in/ahmkhn" target="_blank" rel="noopener noreferrer">LinkedIn <ArrowUpRight size={15} aria-hidden="true" /></a></div>
+              </div>
+            </article>
           </div>
+        </section>
 
-          <div className="mt-8 flex-1 border border-white p-4 md:p-6 lg:p-8 rounded-lg bg-opacity-75">
-            <h1 className="mt-4 font-extrabold  text-lg sm:text-xl md:text-2xl lg:text-3xl text-gray-200 leading-relaxed text-center">
-            Ahmed Khan, CS @ UMass, Developer of DSSP
-            </h1>
-            <p className="mt-4 text-base sm:text-lg md:text-xl lg:text-2xl">
-              Hi! I'm Ahmed, a junior at the University of Massachusetts, Amherst studying Computer Science.
-            </p>
-
-            <h1 className="mt-4 font-extrabold  text-lg sm:text-xl md:text-2xl lg:text-3xl text-gray-200 leading-relaxed text-center">
-            Origin of DSSP
-            </h1>
-            <p className="mt-4 text-base sm:text-lg md:text-xl lg:text-2xl">
-            The idea was initiated by Dr. Rabia Akhtar, who reached out with a vision to create a platform that could bring together minds from around the world. Through brainstorming and collaboration, this concept evolved into the application you see today.
-            </p>
-            <h1 className="mt-4 font-extrabold  text-lg sm:text-xl md:text-2xl lg:text-3xl text-gray-200 leading-relaxed text-center">
-            Development Process
-            </h1>
-            <p className="mt-4 text-base sm:text-lg md:text-xl lg:text-2xl">
-            The journey from idea to reality involved several key processes. Initially, we focused on actualizing the concept by determining how to implement functionality that connects users. This included gathering input and conducting tests with a diverse group of individuals, followed by continuous refinement based on their feedback and experiences.
-            </p>
-            <h1 className="mt-4 font-extrabold  text-lg sm:text-xl md:text-2xl lg:text-3xl text-gray-200 leading-relaxed text-center">
-            Our Achievement
-            </h1>
-            <p className="mt-4 text-base sm:text-lg md:text-xl lg:text-2xl">
-            We're proud to present an application that we believe truly embodies our initial vision. It represents not just technological innovation, but a step towards creating a more inclusive and diverse approach to social sciences.
-            We invite you to explore, engage, and contribute to this growing global community!
-            </p>
-
-            <p className="mt-4 text-base sm:text-lg md:text-xl lg:text-2xl"> Contact: <a target="_blank" className="text-green-500 underline" href="mailto:ahmkhnwork@gmail.com">ahmkhnwork@gmail.com</a></p>
-            <p className="mt-4 text-base sm:text-lg md:text-xl lg:text-2xl"> LinkedIn: <a target="_blank" className="text-green-500 underline" href="https://www.linkedin.com/in/ahmkhn">Ahmed Khan</a></p>
-          </div>
-      </div>
+        <section className={styles.invitation} aria-labelledby="invitation-heading"><div><p className={styles.eyebrow}>YOUR PERSPECTIVE BELONGS HERE</p><h2 id="invitation-heading">Be part of the conversation.</h2><p>Explore the map, share your interests, and find your community.</p></div><Link href="/login" className={styles.primaryLink}>Add your voice <ArrowUpRight size={18} aria-hidden="true" /></Link></section>
+      </main>
+      <Footer />
     </div>
   );
 }

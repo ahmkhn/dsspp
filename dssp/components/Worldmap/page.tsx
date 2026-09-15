@@ -14,6 +14,18 @@ import styles from './worldmap.module.css';
 
 type Member = NonNullable<Awaited<ReturnType<typeof getAllMarkerUserData>>>[number];
 type Coordinate = [number, number];
+const MEMBER_PAGE_SIZE = 20;
+
+function MemberAvatar({ member }: { member: Member }) {
+  const src = safeWebUrl(member.avatar_url);
+  const [failedSrc, setFailedSrc] = useState<string>();
+  return (
+    <span className={styles.memberAvatar} aria-hidden="true">
+      <span>{initials(member.full_name)}</span>
+      {src && src !== failedSrc && <img src={src} alt="" width={40} height={40} loading="lazy" decoding="async" referrerPolicy="no-referrer" onError={() => setFailedSrc(src)} />}
+    </span>
+  );
+}
 
 function safeWebUrl(value: string | undefined) {
   if (!value) return undefined;
@@ -37,6 +49,9 @@ function hasCoordinates(member: Member) {
 export default function Worldmap({ authorized }: { authorized: User | null }) {
   const mapContainer = useRef<HTMLDivElement>(null);
   const sidebar = useRef<HTMLElement>(null);
+  const memberList = useRef<HTMLDivElement>(null);
+  const loadMoreTrigger = useRef<HTMLDivElement>(null);
+  const [visibleCount, setVisibleCount] = useState(MEMBER_PAGE_SIZE);
   const map = useRef<mapboxgl.Map | null>(null);
   const draftMarker = useRef<mapboxgl.Marker | null>(null);
   const profileHeading = useRef<HTMLHeadingElement>(null);
@@ -182,6 +197,28 @@ export default function Worldmap({ authorized }: { authorized: User | null }) {
     return members.filter((member) => (!field || member.user_research_tag === field)
       && (!search || [member.full_name, member.user_research_tag, member.user_occupation, member.summary].some((value) => value?.toLowerCase().includes(search))));
   }, [members, query, field]);
+
+  // Only mount photos for the current directory pages; all matching map pins remain available.
+  const visibleMembers = filteredMembers.slice(0, visibleCount);
+  const hasMoreMembers = visibleCount < filteredMembers.length;
+  useEffect(() => {
+    setVisibleCount(MEMBER_PAGE_SIZE);
+    if (memberList.current) memberList.current.scrollTop = 0;
+  }, [query, field]);
+
+  useEffect(() => {
+    const root = memberList.current;
+    const target = loadMoreTrigger.current;
+    if (!root || !target || !hasMoreMembers || loading || dataError || typeof IntersectionObserver === 'undefined') return;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        observer.disconnect();
+        setVisibleCount((count) => count + MEMBER_PAGE_SIZE);
+      }
+    }, { root, rootMargin: '0px 0px 100px 0px' });
+    observer.observe(target);
+    return () => observer.disconnect();
+  }, [visibleCount, filteredMembers.length, hasMoreMembers, selected, sidebarOpen, loading, dataError]);
 
   const selectMember = useCallback((member: Member) => {
     setSelected(member);
@@ -355,12 +392,16 @@ export default function Worldmap({ authorized }: { authorized: User | null }) {
               <label className={styles.fieldLabel}><span>Research area</span><select value={field} onChange={(event) => setField(event.target.value)}><option value="">All research areas</option>{fields.map((name) => <option key={name} value={name}>{name}</option>)}</select></label>
             </div>
             <div className={styles.resultHeading}><span aria-live="polite">{loading ? 'Loading community…' : `${filteredMembers.length} ${filteredMembers.length === 1 ? 'person' : 'people'}`}</span><span>AROUND THE WORLD</span></div>
-            <div className={styles.memberList} aria-busy={loading}>
-              {loading ? <div className={styles.emptyState}><LoaderCircle size={24} className={styles.spin} /><p>Finding your community…</p></div> : dataError ? <div className={styles.emptyState}><p>{dataError}</p><button className={styles.secondaryButton} onClick={() => void loadMembers()}>Try again</button></div> : filteredMembers.length === 0 ? <div className={styles.emptyState}><Users size={27} /><h2>{members.length ? 'No matches yet' : 'The map starts with you'}</h2><p>{members.length ? 'Try a different name or research area.' : 'Add your pin and help this community grow.'}</p>{(query || field) && <button className={styles.secondaryButton} onClick={() => { setQuery(''); setField(''); }}>Clear filters</button>}</div> : filteredMembers.map((member, index) => (
+            <div ref={memberList} className={styles.memberList} aria-label="Member list" aria-busy={loading}>
+              {loading ? <div className={styles.emptyState}><LoaderCircle size={24} className={styles.spin} /><p>Finding your community…</p></div> : dataError ? <div className={styles.emptyState}><p>{dataError}</p><button className={styles.secondaryButton} onClick={() => void loadMembers()}>Try again</button></div> : filteredMembers.length === 0 ? <div className={styles.emptyState}><Users size={27} /><h2>{members.length ? 'No matches yet' : 'The map starts with you'}</h2><p>{members.length ? 'Try a different name or research area.' : 'Add your pin and help this community grow.'}</p>{(query || field) && <button className={styles.secondaryButton} onClick={() => { setQuery(''); setField(''); }}>Clear filters</button>}</div> : visibleMembers.map((member, index) => (
                 <button key={`${member.email}-${index}`} className={styles.memberCard} onClick={() => selectMember(member)}>
-                  <span className={styles.memberAvatar}>{initials(member.full_name)}</span><span className={styles.memberText}><strong>{member.full_name || 'Community member'}</strong><span>{member.user_research_tag || member.user_occupation || 'DSSP community'}</span></span><ChevronRight size={17} />
+                  <MemberAvatar member={member} /><span className={styles.memberText}><strong>{member.full_name || 'Community member'}</strong><span>{member.user_research_tag || member.user_occupation || 'DSSP community'}</span></span><ChevronRight size={17} />
                 </button>
               ))}
+              {!loading && !dataError && filteredMembers.length > 0 && <div ref={loadMoreTrigger} className={styles.listPagination}>
+                <p aria-live="polite">Showing {visibleMembers.length} of {filteredMembers.length} people</p>
+                {hasMoreMembers && <button className={styles.secondaryButton} onClick={() => setVisibleCount((count) => count + MEMBER_PAGE_SIZE)}>Load more members</button>}
+              </div>}
             </div>
           </>
         )}

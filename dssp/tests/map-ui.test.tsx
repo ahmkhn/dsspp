@@ -1,6 +1,6 @@
 // @vitest-environment happy-dom
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import type { ReactNode } from "react";
 import type { User } from "@supabase/supabase-js";
 
@@ -56,7 +56,7 @@ beforeEach(() => {
   mocks.add.mockResolvedValue(undefined);
   mocks.remove.mockResolvedValue(undefined);
 });
-afterEach(() => { cleanup(); vi.unstubAllEnvs(); });
+afterEach(() => { cleanup(); vi.unstubAllEnvs(); vi.unstubAllGlobals(); });
 
 async function ready(authorized: User | null = null) {
   render(<Worldmap authorized={authorized} />);
@@ -140,5 +140,57 @@ describe("community map interactions", () => {
     fireEvent.click(screen.getByRole("button", { name: "Remove pin" }));
     await screen.findByText("Your pin has been removed. You can add a new one whenever you’re ready.");
     expect(mocks.remove).toHaveBeenCalledOnce();
+  });
+});
+
+
+describe("member directory pagination and photos", () => {
+  it("reveals 20 rows and photos per scroll batch, and searches beyond the loaded rows", async () => {
+    let onIntersection: IntersectionObserverCallback = () => {};
+    vi.stubGlobal("IntersectionObserver", class {
+      constructor(callback: IntersectionObserverCallback) { onIntersection = callback; }
+      observe() {}
+      disconnect() {}
+    });
+    const members = Array.from({ length: 45 }, (_, index) => ({
+      ...researcher, full_name: `Person ${index + 1}`, email: `person${index}@example.com`,
+      avatar_url: `https://images.example.com/${index}.jpg`,
+    }));
+    mocks.getMembers.mockResolvedValue(members);
+    render(<Worldmap authorized={null} />);
+    await screen.findByText("Showing 20 of 45 people");
+    const list = screen.getByLabelText("Member list");
+    expect(within(list).getAllByRole("button", { name: /Person/ })).toHaveLength(20);
+    expect(list.querySelectorAll("img")).toHaveLength(20);
+    expect(Array.from(list.querySelectorAll("img")).every(image => image.loading === "lazy")).toBe(true);
+    act(() => onIntersection([{ isIntersecting: true } as IntersectionObserverEntry], {} as IntersectionObserver));
+    expect(screen.getByText("Showing 40 of 45 people")).toBeTruthy();
+    expect(list.querySelectorAll("img")).toHaveLength(40);
+    act(() => onIntersection([{ isIntersecting: true } as IntersectionObserverEntry], {} as IntersectionObserver));
+    expect(screen.getByText("Showing 45 of 45 people")).toBeTruthy();
+    expect(screen.queryByRole("button", { name: "Load more members" })).toBeNull();
+    fireEvent.change(screen.getByRole("textbox", { name: "Search people, research, or occupation" }), { target: { value: "Person 45" } });
+    expect(within(list).getAllByRole("button", { name: /Person/ })).toHaveLength(1);
+    fireEvent.click(screen.getByRole("button", { name: "Clear search" }));
+    expect(screen.getByText("Showing 20 of 45 people")).toBeTruthy();
+    expect(list.querySelectorAll("img")).toHaveLength(20);
+  });
+
+  it("offers manual loading without an observer and falls back to initials for broken or unsafe photos", async () => {
+    vi.stubGlobal("IntersectionObserver", undefined);
+    mocks.getMembers.mockResolvedValue(Array.from({ length: 21 }, (_, index) => ({
+      ...researcher, full_name: `Person ${index + 1}`, email: `person${index}@example.com`,
+      avatar_url: index === 0 ? "javascript:alert(1)" : `https://images.example.com/${index}.jpg`,
+    })));
+    render(<Worldmap authorized={null} />);
+    await screen.findByText("Showing 20 of 21 people");
+    const first = screen.getByRole("button", { name: "Person 1 Sociology" });
+    expect(first.querySelector("img")).toBeNull();
+    const second = screen.getByRole("button", { name: "Person 2 Sociology" });
+    fireEvent.error(second.querySelector("img")!);
+    expect(second.querySelector("img")).toBeNull();
+    expect(second.textContent).toContain("P2");
+    fireEvent.click(screen.getByRole("button", { name: "Load more members" }));
+    expect(screen.getByText("Showing 21 of 21 people")).toBeTruthy();
   });
 });
