@@ -39,14 +39,14 @@
 .navLinks { display: flex; align-items: center; gap: 30px; }
 .navAbout { padding: 12px 0; font-size: 12px; font-weight: 600; color: #465647; }
 .navAbout:hover { color: #172e24; }
-.navExplore { display: inline-flex; align-items: center; justify-content: center; gap: 16px; min-height: 42px; padding: 11px 17px; border-radius: 6px; background: #244b38; color: #fff; font-size: 12px; font-weight: 500; transition: background .2s; }
+.navExplore { display: inline-flex; align-items: center; justify-content: center; gap: 16px; min-height: 44px; padding: 11px 17px; border-radius: 6px; background: #244b38; color: #fff; font-size: 12px; font-weight: 500; transition: background .2s; }
 .navExplore:hover, .primaryButton:hover { background: #34664c; }
 .hero { position: relative; display: grid; grid-template-columns: 1.03fr 1fr; align-items: center; gap: 45px; max-width: 1320px; margin: 0 auto; padding: 75px 40px 91px; }
 .eyebrow { display: flex; align-items: center; gap: 9px; color: #54694d; font-size: 10px; line-height: 1.7; font-weight: 650; letter-spacing: 1.55px; text-transform: uppercase; }
 .eyebrow > span { display: block; width: 6px; height: 6px; border-radius: 50%; background: #78954d; }
 .heroCopy h1 { margin: 23px 0 24px; font-size: clamp(38px, 4.35vw, 61px); font-weight: 550; letter-spacing: -2.7px; line-height: 1.08; }
 .heroCopy h1 > span, .sectionHeader h2 > span { color: #6b8055; }
-.heroDescription { max-width: 455px; color: #647064; font-size: 14px; line-height: 1.9; }
+.heroDescription { max-width: 455px; color: #647064; font-size: 16px; line-height: 1.9; }
 .heroActions { margin-top: 31px; display: flex; align-items: center; flex-wrap: wrap; gap: 24px; }
 .primaryButton, .lightButton { display: inline-flex; align-items: center; justify-content: center; gap: 25px; padding: 16px 20px; border-radius: 6px; background: #244b38; color: #fff; font-size: 12px; font-weight: 550; line-height: 1.4; transition: background .2s; }
 .textButton { display: inline-flex; align-items: center; gap: 11px; padding: 12px 0; color: #304b36; font-size: 12px; font-weight: 600; }
@@ -84,20 +84,20 @@
 .howSection { max-width: 1320px; margin: 0 auto; padding: 77px 40px 80px; scroll-margin-top: 24px; }
 .sectionHeader { display: flex; justify-content: space-between; align-items: flex-end; gap: 45px; }
 .sectionHeader h2 { margin-top: 16px; font-size: clamp(28px, 3vw, 39px); font-weight: 500; letter-spacing: -1.6px; line-height: 1.17; }
-.sectionHeader > p { max-width: 290px; color: #7a8372; font-size: 12px; line-height: 1.8; padding-bottom: 4px; }
+.sectionHeader > p { max-width: 290px; color: #68735f; font-size: 14px; line-height: 1.8; padding-bottom: 4px; }
 .steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 39px; border-top: 1px solid #dce2d4; }
 .step { padding: 27px 30px 4px 0; }
 .step + .step { margin-left: 30px; }
 .stepTop { display: flex; align-items: center; justify-content: space-between; color: #547341; }
 .stepTop > span { font-size: 10px; letter-spacing: 1px; color: #98a48a; }
 .step h3 { margin-top: 25px; font-size: 15px; font-weight: 550; letter-spacing: -.3px; line-height: 1.4; }
-.step > p { margin-top: 11px; color: #7a8372; font-size: 12px; line-height: 1.85; }
+.step > p { margin-top: 11px; color: #68735f; font-size: 14px; line-height: 1.85; }
 .mission { position: relative; max-width: 1240px; margin: 0 auto 72px; padding: 45px 50px; display: flex; justify-content: space-between; align-items: center; gap: 50px; overflow: hidden; border-radius: 10px; background: #214a36; }
 .mission::after { content: ""; position: absolute; width: 420px; height: 420px; border-radius: 50%; border: 1px solid #8eb16a1f; box-shadow: 0 0 0 40px #8eb16a0b, 0 0 0 80px #8eb16a09, 0 0 0 120px #8eb16a07; top: -70px; right: -210px; pointer-events: none; }
 .missionCopy, .missionAction { position: relative; z-index: 1; }
 .mission .eyebrow { color: #a0b38d; font-size: 8px; }
 .mission h2 { margin-top: 14px; color: #f4f5e8; font-size: 35px; font-weight: 450; line-height: 1.2; letter-spacing: -1.2px; }
-.missionCopy > p:last-child { margin-top: 17px; max-width: 420px; color: #adbeaa; font-size: 12px; line-height: 1.9; }
+.missionCopy > p:last-child { margin-top: 17px; max-width: 420px; color: #bdcbb7; font-size: 14px; line-height: 1.9; }
 .missionAction { display: flex; align-items: center; flex-direction: column; gap: 18px; margin-right: 19px; flex-shrink: 0; }
 .lightButton { background: #edf1df; color: #28472e; }
 .lightButton:hover { background: #fff; }
@@ -164,17 +164,17 @@
   .brandMark { width: 29px; height: 29px; }
   .brandName { font-size: 24px; }
   .navLinks { gap: 17px; }
-  .navAbout { font-size: 10px; }
-  .navExplore { gap: 8px; padding: 10px 12px; font-size: 10px; }
+  .navAbout { font-size: 12px; }
+  .navExplore { gap: 8px; padding: 10px 12px; font-size: 12px; }
   .navExplore svg { width: 14px; }
   .hero { padding: 36px 20px 51px; gap: 30px; }
   .eyebrow { font-size: 8px; letter-spacing: 1.15px; }
   .heroCopy h1 { margin: 19px 0; font-size: clamp(35px, 9.3vw, 47px); letter-spacing: -1.65px; line-height: 1.09; }
-  .heroDescription { font-size: 12px; line-height: 1.85; }
+  .heroDescription { font-size: 14px; line-height: 1.85; }
   .desktopBreak { display: none; }
   .heroActions { margin-top: 25px; gap: 18px; }
-  .primaryButton { padding: 15px; font-size: 11px; gap: 12px; }
-  .textButton { gap: 7px; font-size: 11px; }
+  .primaryButton { padding: 15px; font-size: 13px; gap: 12px; }
+  .textButton { gap: 7px; font-size: 13px; }
   .heroNote { margin-top: 24px; }
   .networkFigure { padding: 18px 17px 14px; border-radius: 10px; }
   .figureHeading { margin-top: 23px; font-size: 23px; }
@@ -194,18 +194,18 @@
   .howSection { padding: 40px 20px 35px; }
   .sectionHeader { flex-direction: column; gap: 13px; }
   .sectionHeader h2 { margin-top: 12px; font-size: 30px; }
-  .sectionHeader > p { margin-top: 0; max-width: 300px; font-size: 11px; }
+  .sectionHeader > p { margin-top: 0; max-width: 300px; font-size: 14px; }
   .steps { grid-template-columns: 1fr; margin-top: 25px; }
   .step, .step + .step { margin: 0; padding: 25px 0; }
   .step + .step { border-top: 1px solid #dce2d4; }
   .step h3 { margin-top: 17px; font-size: 15px; }
-  .step > p { max-width: 340px; font-size: 12px; margin-top: 8px; }
+  .step > p { max-width: 340px; font-size: 14px; margin-top: 8px; }
   .mission { margin: 0 20px 35px; padding: 29px 24px; flex-direction: column; align-items: flex-start; gap: 25px; }
   .mission .eyebrow { font-size: 7px; letter-spacing: .9px; }
   .mission h2 { font-size: 29px; }
-  .missionCopy > p:last-child { font-size: 11px; }
+  .missionCopy > p:last-child { font-size: 14px; }
   .missionAction { align-items: flex-start; flex-direction: row; flex-wrap: wrap; gap: 17px; }
-  .lightButton { padding: 14px 16px; font-size: 11px; gap: 17px; }
+  .lightButton { padding: 14px 16px; font-size: 13px; gap: 17px; }
   .missionLink { font-size: 9px; }
   .footerInner { padding: 24px 20px; flex-direction: column; align-items: flex-start; gap: 13px; }
   .footerMeta { text-align: left; }
@@ -213,4 +213,8 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .navExplore, .primaryButton, .lightButton { transition: none; }
+}
+@media (max-width: 380px) {
+  .navAboutSuffix { display: none; }
+  .navLinks { gap: 12px; }
 }

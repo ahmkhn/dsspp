@@ -10,7 +10,7 @@ export function HeroHighlightDemo() {
         <p className={styles.eyebrow}><span /> Rooted in Pakistan. Connected globally.</p>
         <h1 id="hero-heading">Local perspectives.<br /><span>Global connections.</span></h1>
         <p className={styles.heroDescription}>
-          Decolonizing Social Sciences in Pakistan.<br className={styles.desktopBreak} />
+          Decolonizing Social Sciences in Pakistan.<br className={styles.desktopBreak} />{" "}
           A shared space to discover researchers, exchange ideas, and bring local knowledge into a global conversation.
         </p>
         <div className={styles.heroActions}>

@@ -27,10 +27,12 @@
     "tailwind-merge": "2.6.1"
   },
   "devDependencies": {
+    "@testing-library/react": "16.3.3",
     "@types/node": "22.20.3",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
     "autoprefixer": "10.6.1",
+    "happy-dom": "20.14.5",
     "mini-svg-data-uri": "1.4.4",
     "postcss": "8.5.28",
     "tailwindcss": "3.4.19",

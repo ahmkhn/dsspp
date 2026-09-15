@@ -1,0 +1,53 @@
+.page { width: 100%; min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; background: #f7f7ef; color: #172e24; -webkit-font-smoothing: antialiased; }
+.main { width: 100%; max-width: 1200px; margin: auto; padding: 66px 40px 80px; display: grid; grid-template-columns: 1.1fr 1fr; gap: 100px; align-items: center; flex: 1; }
+.backLink { display: inline-flex; align-items: center; gap: 9px; min-height: 44px; margin-bottom: 30px; font-size: 13px; color: #657760; }
+.backLink:hover { color: #244b38; }
+.eyebrow { display: flex; align-items: center; gap: 8px; color: #647951; font-size: 10px; font-weight: 650; line-height: 1.7; letter-spacing: 1.5px; }
+.eyebrow > span { height: 6px; width: 6px; border-radius: 50%; background: #7b945a; }
+.story h2 { margin: 22px 0; font-size: clamp(37px, 4vw, 51px); line-height: 1.12; letter-spacing: -2px; font-weight: 500; }
+.story h2 > span { color: #75865d; }
+.description { color: #657360; font-size: 15px; line-height: 1.85; max-width: 400px; }
+.illustration { margin-top: 22px; position: relative; width: 100%; aspect-ratio: 2.2; overflow: hidden; background: radial-gradient(ellipse at center, #e7eddf, transparent 70%); }
+.illustration > img { width: 100%; height: 100%; object-fit: contain; opacity: .7; }
+.mapPoint { position: absolute; left: 68%; top: 31%; display: grid; place-items: center; width: 44px; height: 44px; border: 5px solid #f7f7ef; color: #fff; background: #416448; border-radius: 50%; box-shadow: 0 0 0 9px #617d4112; }
+.mapPointSmall { position: absolute; left: 29%; top: 27%; width: 11px; height: 11px; border-radius: 50%; background: #648354; box-shadow: 0 0 0 5px #f7f7ef, 0 0 0 11px #617d4112; }
+.illustrationCaption { position: absolute; bottom: 8px; left: 0; right: 0; display: flex; justify-content: center; align-items: center; gap: 9px; font-size: 11px; color: #60764f; }
+.communityNote { display: flex; align-items: center; gap: 13px; margin-top: 26px; }
+.communityNote > span { display: grid; place-items: center; width: 42px; height: 42px; flex: none; border-radius: 50%; border: 1px solid #d9e0ce; color: #718353; }
+.communityNote p { font-size: 12px; line-height: 1.8; color: #7a8470; }
+.communityNote strong { color: #4e6346; font-weight: 500; }
+.card { padding: 41px 36px 33px; border: 1px solid #dce2d3; border-radius: 17px; background: #fcfcf8; box-shadow: 0 12px 45px #2b483405; }
+.cardIcon { display: grid; place-items: center; width: 58px; height: 58px; margin-bottom: 27px; color: #567143; background: #eaf0e1; border: 1px solid #dfe6d3; border-radius: 15px; }
+.card h1 { margin: 15px 0 17px; font-size: 36px; font-weight: 500; letter-spacing: -1.4px; line-height: 1.15; }
+.cardDescription { margin: 0 0 29px; color: #6e7b66; font-size: 14px; line-height: 1.85; }
+.googleButton { display: flex; align-items: center; justify-content: center; gap: 12px; min-height: 52px; width: 100%; border: 1px solid #d0dac6; border-radius: 8px; padding: 14px 17px; background: #fff; color: #294331; font-size: 14px; font-weight: 550; box-shadow: 0 2px 3px #203a2510; cursor: pointer; transition: background .15s, border-color .15s; }
+.googleButton > span { flex: 1; text-align: left; }
+.googleButton > svg { flex: none; }
+.googleButton:hover { border-color: #93a780; background: #f4f7ef; }
+.googleButton:disabled { opacity: .7; cursor: wait; }
+.signInNote { margin-top: 17px; color: #7b8771; font-size: 11px; line-height: 1.85; text-align: center; }
+.divider { display: flex; align-items: center; gap: 12px; margin: 28px 0 20px; font-size: 11px; white-space: nowrap; color: #8a927f; }
+.divider span { flex: 1; height: 1px; background: #e2e7d9; }
+.guestButton { min-height: 48px; display: flex; align-items: center; justify-content: center; gap: 10px; color: #405d37; border: 1px solid #e0e5d6; background: #edf1e5; border-radius: 8px; font-size: 13px; font-weight: 500; padding: 13px 10px; }
+.guestButton:hover { background: #e1e9d6; }
+.guestNote { margin-top: 13px; text-align: center; color: #85917a; font-size: 11px; }
+.error { padding: 12px; margin-bottom: 20px; border: 1px solid #e4c5b5; border-radius: 8px; background: #faf0e9; color: #924935; font-size: 13px; line-height: 1.7; }
+.page a:focus-visible, .page button:focus-visible { outline: 3px solid #78965c; outline-offset: 4px; }
+.spin { animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+@media (max-width: 1050px) { .main { gap: 55px; padding: 48px 30px 65px; } .card { padding: 32px 27px; } .story h2 { font-size: 40px; } }
+@media (max-width: 760px) {
+  .main { grid-template-columns: 1fr; gap: 12px; max-width: 520px; padding: 24px 24px 44px; }
+  .backLink { margin-bottom: 0; }
+  .story > :not(.backLink) { display: none; }
+  .story h2 { font-size: 37px; letter-spacing: -1.4px; margin: 15px 0; }
+  .description { font-size: 14px; }
+  .illustration, .communityNote { display: none; }
+  .card { padding: 29px 26px; }
+  .cardIcon { width: 48px; height: 48px; border-radius: 12px; margin-bottom: 23px; }
+  .card h1 { font-size: 33px; }
+  .signInNote, .guestNote { font-size: 12px; }
+}
+@media (max-width: 380px) { .main { padding-left: 18px; padding-right: 18px; } .card { padding: 26px 21px; } .card h1 { font-size: 30px; } .eyebrow { letter-spacing: 1px; } }
+@media (prefers-reduced-motion: reduce) { .spin { animation: none; } .googleButton { transition: none; } }
+@media (max-width: 380px) { .googleButton > svg:last-child { display: none; } }

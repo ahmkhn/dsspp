@@ -1,10 +1,11 @@
 module.exports = {
+  oxc: { jsx: { runtime: "automatic" } },
   resolve: {
     alias: { "@": __dirname },
   },
   test: {
     environment: "node",
-    include: ["tests/**/*.test.ts"],
+    include: ["tests/**/*.test.{ts,tsx}"],
     clearMocks: true,
     restoreMocks: true,
     maxWorkers: 2,

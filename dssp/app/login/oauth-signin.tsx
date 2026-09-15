@@ -1,62 +1,26 @@
 "use client";
-import { Provider } from "@supabase/supabase-js";
-import { oAuthSignIn } from "./actions";
-import Link from "next/link";
-import type { ReactElement } from "react";
-type OAuthProvider = {
-  name: Provider;
-  displayName: string;
-  icon?: ReactElement;
-};
 
+import { useTransition } from "react";
+import { ArrowRight, LoaderCircle } from "lucide-react";
+import { oAuthSignIn } from "./actions";
+import styles from "./login.module.css";
 
 export function OAuthButtons() {
-  const oAuthProviders: OAuthProvider[] = [
-    {
-      name: "google",
-      displayName: "Google",
-      icon: <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 48 48"
-      width="24px"
-      height="24px"
-    >
-      <path
-        fill="#4285F4"
-        d="M45.12 24.5c0-1.4-.12-2.42-.38-3.49H24v6.96h11.95c-.25 2.09-1.64 5.21-4.72 7.31l-.04.26 6.87 5.3.48.05c4.36-4.01 6.88-9.9 6.88-16.39z"
-      />
-      <path
-        fill="#34A853"
-        d="M24 48c6.3 0 11.59-2.07 15.46-5.63L31.8 37.1c-2.1 1.44-4.81 2.32-7.8 2.32-5.99 0-11.07-4.06-12.88-9.57l-.25.02-7.14 5.55-.1.25C7.62 44.3 15.33 48 24 48z"
-      />
-      <path
-        fill="#FBBC05"
-        d="M11.12 29.85A14.85 14.85 0 0 1 10 24c0-1.71.29-3.36.8-4.85L4.02 13.55 3.83 13A24 24 0 0 0 0 24c0 3.78.86 7.34 2.4 10.49l8.72-6.64z"
-      />
-      <path
-        fill="#EA4335"
-        d="M24 9.5c4.42 0 7.42 1.9 9.12 3.47l6.64-6.64C35.58 2.59 30.3 0 24 0 15.33 0 7.62 3.7 3.04 9.25l8.82 6.86c1.81-5.51 6.89-9.57 12.88-9.57 2.99 0 5.7.88 7.8 2.32L39.46 5.63C35.59 2.07 30.3 0 24 0z"
-      />
-    </svg>
-    },
-  ];
+  const [pending, startTransition] = useTransition();
 
   return (
-    <>
-      {oAuthProviders.map((provider) => (
-        <button
-          key={provider.name}
-          className="w-full flex items-center justify-center border gap-2 rounded-2xl p-3"
-          onClick={async () => {
-            await oAuthSignIn(provider.name);
-          }}
-        >
-          {provider.icon}
-          Login with {provider.displayName}
-        </button>
-      ))}
-      <Link href="/map" className="underline text-wrap text-center flex justify-center mt-3 border rounded-2xl p-3">View without signing in?</Link>
-      
-    </>
+    <button type="button" className={styles.googleButton} disabled={pending} aria-busy={pending}
+      onClick={() => startTransition(async () => { await oAuthSignIn("google"); })}>
+      {pending ? <LoaderCircle size={21} className={styles.spin} aria-hidden="true" /> : (
+        <svg width="21" height="21" viewBox="0 0 24 24" aria-hidden="true">
+          <path fill="#4285F4" d="M21.6 12.23c0-.71-.06-1.39-.18-2.05H12v3.88h5.38a4.6 4.6 0 0 1-2 3.02v2.51h3.24c1.9-1.75 2.98-4.33 2.98-7.36Z" />
+          <path fill="#34A853" d="M12 22c2.7 0 4.96-.9 6.62-2.42l-3.24-2.51c-.9.6-2.06.96-3.38.96-2.6 0-4.81-1.76-5.6-4.13H3.07v2.59A10 10 0 0 0 12 22Z" />
+          <path fill="#FBBC05" d="M6.4 13.9a6 6 0 0 1 0-3.8V7.51H3.07a10 10 0 0 0 0 8.98L6.4 13.9Z" />
+          <path fill="#EA4335" d="M12 5.97c1.47 0 2.79.51 3.83 1.52l2.88-2.88A9.6 9.6 0 0 0 12 2a10 10 0 0 0-8.93 5.51L6.4 10.1c.79-2.37 3-4.13 5.6-4.13Z" />
+        </svg>
+      )}
+      <span>{pending ? "Connecting to Google…" : "Continue with Google"}</span>
+      {!pending && <ArrowRight size={17} aria-hidden="true" />}
+    </button>
   );
 }

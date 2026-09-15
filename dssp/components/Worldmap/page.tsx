@@ -36,6 +36,7 @@ function hasCoordinates(member: Member) {
 
 export default function Worldmap({ authorized }: { authorized: User | null }) {
   const mapContainer = useRef<HTMLDivElement>(null);
+  const sidebar = useRef<HTMLElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
   const draftMarker = useRef<mapboxgl.Marker | null>(null);
   const profileHeading = useRef<HTMLHeadingElement>(null);
@@ -49,6 +50,7 @@ export default function Worldmap({ authorized }: { authorized: User | null }) {
   const [field, setField] = useState('');
   const [selected, setSelected] = useState<Member | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const [isPlacing, setIsPlacing] = useState(false);
   const [coordinates, setCoordinates] = useState<Coordinate | null>(null);
   const [formVisible, setFormVisible] = useState(false);
@@ -84,6 +86,37 @@ export default function Worldmap({ authorized }: { authorized: User | null }) {
   useEffect(() => { void loadMembers(); }, [loadMembers]);
 
   useEffect(() => {
+    const media = window.matchMedia('(max-width: 760px)');
+    const update = () => setIsMobile(media.matches);
+    update();
+    media.addEventListener('change', update);
+    return () => media.removeEventListener('change', update);
+  }, []);
+
+  useEffect(() => {
+    if (!sidebarOpen || !isMobile || !sidebar.current) return;
+    const panel = sidebar.current;
+    const previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    const focusable = () => Array.from(panel.querySelectorAll<HTMLElement>('button:not(:disabled), a[href], input, select, [tabindex="0"]'))
+      .filter((element) => element.getClientRects().length > 0);
+    focusable()[0]?.focus();
+    const handleKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setSidebarOpen(false);
+      if (event.key !== 'Tab') return;
+      const elements = focusable();
+      const first = elements[0];
+      const last = elements[elements.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault(); last?.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault(); first?.focus();
+      }
+    };
+    panel.addEventListener('keydown', handleKey);
+    return () => { panel.removeEventListener('keydown', handleKey); previousFocus?.focus(); };
+  }, [sidebarOpen, isMobile]);
+
+  useEffect(() => {
     if (selected) profileHeading.current?.focus({ preventScroll: true });
   }, [selected]);
 
@@ -109,7 +142,7 @@ export default function Worldmap({ authorized }: { authorized: User | null }) {
       instance = new mapboxgl.Map({
         container: mapContainer.current,
         accessToken: token,
-        style: 'mapbox://styles/ahmkhn/cm0t536km002101nt0xc1fwvq',
+        style: process.env.NEXT_PUBLIC_MAPBOX_STYLE || 'mapbox://styles/mapbox/light-v11',
         projection: 'globe',
         zoom: 1.7,
         center: [35, 25],
@@ -294,7 +327,7 @@ export default function Worldmap({ authorized }: { authorized: User | null }) {
   return (
     <div className={styles.workspace}>
       {sidebarOpen && <button className={styles.sidebarBackdrop} aria-label="Close community panel" onClick={() => setSidebarOpen(false)} />}
-      <aside id="community-panel" className={`${styles.sidebar} ${sidebarOpen ? styles.sidebarOpen : ''}`} aria-label="Community explorer">
+      <aside ref={sidebar} id="community-panel" className={`${styles.sidebar} ${sidebarOpen ? styles.sidebarOpen : ''}`} aria-label="Community explorer" role={isMobile && sidebarOpen ? 'dialog' : undefined} aria-modal={isMobile && sidebarOpen ? true : undefined}>
         <div className={styles.sidebarHeading}>
           <span className={styles.eyebrow}><span className={styles.liveDot} /> THE DSSP COMMUNITY</span>
           <button className={`${styles.iconButton} ${styles.mobileClose}`} aria-label="Close community panel" onClick={() => setSidebarOpen(false)}><X size={20} /></button>

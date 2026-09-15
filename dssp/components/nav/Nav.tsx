@@ -18,7 +18,7 @@ export default function Nav() {
           <span className={styles.brandDescriptor}>A world of<br />shared perspectives</span>
         </Link>
         <div className={styles.navLinks}>
-          <Link href="/about" className={styles.navAbout}>About DSSP</Link>
+          <Link href="/about" className={styles.navAbout}>About<span className={styles.navAboutSuffix}> DSSP</span></Link>
           <Link href="/map" className={styles.navExplore}>
             Explore the map <ArrowUpRight size={16} aria-hidden="true" />
           </Link>
