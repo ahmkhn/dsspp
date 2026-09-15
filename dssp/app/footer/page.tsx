@@ -1,16 +1,17 @@
-export default function Footer(){
-    return(
-        <footer className="w-full border-t border-gray-600 py-2 flex justify-center items-center text-center text-xs bg-black group z-10">
-            <p>
-                Developed by {" "}
-                <a href="https://linkedin.com/in/ahmkhn"
-                target="_blank"
-                className="font-bold underline text-green-500"
-                rel="noreferrer">
-                        Ahmed Khan
-                </a>
-            </p>
-            <p className="ml-[1.5rem]">Your feedback matters! Send us your thoughts and help us improve</p>
-        </footer>
-    )
+import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
+import styles from "@/components/site.module.css";
+
+export default function Footer() {
+  return (
+    <footer className={styles.footer}>
+      <div className={styles.footerInner}>
+        <div><Link href="/" className={styles.footerBrand}>DSSP<span>.</span></Link><p>Decolonizing Social Sciences in Pakistan.</p></div>
+        <div className={styles.footerMeta}>
+          <p>Built for a world of shared perspectives.</p>
+          <p>Developed by <a href="https://linkedin.com/in/ahmkhn" target="_blank" rel="noreferrer">Ahmed Khan <ArrowUpRight size={12} aria-hidden="true" /></a></p>
+        </div>
+      </div>
+    </footer>
+  );
 }

@@ -15,7 +15,7 @@ interface User {
 }
 
 export async function getAllMarkerUserData(): Promise<User[] | null> {
-    const supabase = createClient();
+    const supabase = await createClient();
     const { data, error } = await supabase
         .from('users')
         .select('full_name, user_research_tag, avatar_url, user_research_description, user_occupation, user_location_x, user_location_y, linked_in_link, summary, email')
@@ -29,7 +29,7 @@ export async function getAllMarkerUserData(): Promise<User[] | null> {
     return data;
 }
 export async function getUserDataExists() {
-    const supabase = createClient();
+    const supabase = await createClient();
     
     // Step 1: Check if we can get the current user
     const { data: { user }, error: userError } = await supabase.auth.getUser();
@@ -63,7 +63,7 @@ export async function getUserDataExists() {
     return exists;
   }
   export async function getUserId() {
-    const supabase = createClient();
+    const supabase = await createClient();
       
     // Step 1: Check if we can get the current user
     const { data: { user }, error: userError } = await supabase.auth.getUser();

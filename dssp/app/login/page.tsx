@@ -7,11 +7,7 @@ import { StarsBackground } from "@/components/ui/stars-background";
 import { ShootingStars } from "@/components/ui/shooting-stars";
 import Footer from "../footer/page";
 import Nav from "@/components/nav/Nav";
-export default async function Login({
-  searchParams,
-}: {
-  searchParams: { message: string };
-}) {
+export default async function Login() {
   const supabase = await createClient();
 
   const {

@@ -2,10 +2,11 @@
 import { Provider } from "@supabase/supabase-js";
 import { oAuthSignIn } from "./actions";
 import Link from "next/link";
+import type { ReactElement } from "react";
 type OAuthProvider = {
   name: Provider;
   displayName: string;
-  icon?: JSX.Element;
+  icon?: ReactElement;
 };
 
 

@@ -4,7 +4,7 @@ import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
 
 export async function addData(full_name:string,user_location_x:number,user_location_y:number,user_occupation:string,user_research_description:string,user_research_tag:string,li_link:string,summary:string){
-    const supabase = createClient();
+    const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
     const {avatar_url} = user?.user_metadata || {}
     const { error } = await supabase.from("users").insert({
@@ -29,7 +29,7 @@ export async function addData(full_name:string,user_location_x:number,user_locat
     revalidatePath("/map");
 }
 export async function removeData(){
-    const supabase = createClient();
+    const supabase = await createClient();
     const { data: { user }, error: authError } = await supabase.auth.getUser();
 
     if (authError || !user) {

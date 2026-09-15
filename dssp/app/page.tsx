@@ -1,60 +1,87 @@
+import Link from "next/link";
 import { createClient } from "@/supa/supabase/server";
-import { signOut } from "@/app/login/actions";
-import { StarsBackground } from "@/components/ui/stars-background";
-import { ShootingStars } from "@/components/ui/shooting-stars";
 import { HeroHighlightDemo } from "@/components/Hero";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { Analytics } from "@vercel/analytics/react"
+import { Analytics } from "@vercel/analytics/react";
+import { ArrowUpRight, Compass, MapPin, MessagesSquare } from "lucide-react";
 import Nav from "@/components/nav/Nav";
 import Footer from "./footer/page";
-import { MapPinIcon } from "lucide-react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
+import styles from "@/components/site.module.css";
+
+const steps = [
+  {
+    number: "01",
+    icon: Compass,
+    title: "Find your community",
+    description: "Explore the map and discover people working on the questions you care about, nearby and around the world.",
+  },
+  {
+    number: "02",
+    icon: MapPin,
+    title: "Put your work on the map",
+    description: "Choose your location, share your research interests, and introduce your perspective to the community.",
+  },
+  {
+    number: "03",
+    icon: MessagesSquare,
+    title: "Take the conversation further",
+    description: "Get to know the people behind the profiles. Follow their links to connect and explore opportunities to collaborate.",
+  },
+];
 
 export default async function Index() {
-
   const supabase = await createClient();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  await supabase.auth.getUser();
 
   return (
-    <div className="flex flex-col min-h-screen w-full bg-black group overflow-hidden">
-  <StarsBackground className="!fixed inset-0 z-0" starDensity={0.0002}/>
-  <ShootingStars starColor="#16a34a" trailColor="white" minDelay={800} maxDelay={1200} starHeight={10} starWidth={40}/>
-  <Nav/>
+    <div className={styles.site}>
+      <Nav />
+      <main id="main-content">
+        <HeroHighlightDemo />
 
-  <main className="mb-60 z-20 flex-grow flex items-center justify-center w-full z-10">
-    <div className=" flex flex-col items-center justify-center w-full max-w-4xl p-4">
-      <HeroHighlightDemo/>
-      <a className="-mt-60 sm:-mt-40 z-10  font-bold max-w-xs cursor-pointer inline-flex items-center justify-center !bg-green-600 text-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background bg-primary text-primary-foreground h-11 px-12 sm:px-24 rounded-2xl"
-        href="/login">
-        Get Started
-      </a>
-      <Card className="mt-20 bg-black/10 max-w-md mx-auto border border-green-500/80 backdrop-blur-sm hover:border-green-400/70 transition-all duration-300 shadow-lg shadow-green-500/10 rounded-3xl">
-        <CardContent className="p-6">
-          <div className="flex items-center justify-center mb-4">
-            <MapPinIcon className="w-6 h-6 text-green-500 animate-bounce" />
+        <section className={styles.disciplines} aria-label="A community across disciplines">
+          <div className={styles.disciplinesInner}>
+            <p>MANY DISCIPLINES.<br /><strong>ONE OPEN CONVERSATION.</strong></p>
+            <div className={styles.disciplineList}>
+              {["Anthropology", "Sociology", "Political Science", "History", "Development Studies"].map((discipline) => (
+                <span key={discipline}>{discipline}</span>
+              ))}
+              <Link href="/map" aria-label="Explore all research disciplines">& more <ArrowUpRight size={14} aria-hidden="true" /></Link>
+            </div>
           </div>
-          <p className="text-center text-sm md:text-base font-medium text-green-400 leading-relaxed">
-            Click anywhere on the map to drop a marker and share your story. Discover others' stories by exploring existing markers!
-          </p>
-        </CardContent>
-      </Card>
-    </div>
-  </main>
+        </section>
 
-  <Footer/>
-  <SpeedInsights/>
-  <Analytics/>
-</div>
-  
+        <section id="how-it-works" className={styles.howSection} aria-labelledby="how-heading">
+          <div className={styles.sectionHeader}>
+            <div><p className={styles.eyebrow}>A PLACE TO BEGIN</p><h2 id="how-heading">Big ideas start with<br /><span>a simple connection.</span></h2></div>
+            <p>A community built around people and their perspectives. Here&apos;s how to become part of it.</p>
+          </div>
+          <div className={styles.steps}>
+            {steps.map(({ number, icon: Icon, title, description }) => (
+              <article className={styles.step} key={number}>
+                <div className={styles.stepTop}><Icon size={25} strokeWidth={1.5} aria-hidden="true" /><span>{number}</span></div>
+                <h3>{title}</h3>
+                <p>{description}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className={styles.mission} aria-labelledby="mission-heading">
+          <div className={styles.missionCopy}>
+            <p className={styles.eyebrow}>LOCAL KNOWLEDGE. SHARED POSSIBILITY.</p>
+            <h2 id="mission-heading">Research is richer<br />with your perspective.</h2>
+            <p>Help reshape the social sciences through local contexts, indigenous knowledge, and connections that cross borders.</p>
+          </div>
+          <div className={styles.missionAction}>
+            <Link href="/login" className={styles.lightButton}>Add your voice <ArrowUpRight size={19} aria-hidden="true" /></Link>
+            <Link href="/about" className={styles.missionLink}>Learn about DSSP <ArrowUpRight size={16} aria-hidden="true" /></Link>
+          </div>
+        </section>
+      </main>
+      <Footer />
+      <SpeedInsights />
+      <Analytics />
+    </div>
   );
 }

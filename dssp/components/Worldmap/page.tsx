@@ -1,320 +1,378 @@
 'use client';
-import "leaflet/dist/leaflet.css";
-import { useState } from 'react';
+
+import { useCallback, useEffect, useMemo, useRef, useState, type FormEvent } from 'react';
+import type { User } from '@supabase/supabase-js';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import {Dialog} from 'primereact/dialog';
-import { Dropdown } from 'primereact/dropdown';
-import { InputText } from 'primereact/inputtext';
-import ResearchType from "@/public/ResearchTypes.json";
-import {useEffect, useRef, useCallback} from 'react';
-import {InputTextarea} from 'primereact/inputtextarea';
-import {Button} from 'primereact/button';
+import { Dialog } from 'primereact/dialog';
 import 'primereact/resources/themes/mira/theme.css';
-import { addData } from "./test";
-import { getAllMarkerUserData } from "./getMapData";
-import { getUserDataExists } from "./getMapData";
-import { removeData } from "./test";
-import { getUserId } from "./getMapData";
-import pin from "@/public/pin.gif";
+import { ArrowLeft, ArrowUpRight, Check, ChevronRight, Compass, Globe2, LoaderCircle, Mail, MapPin, Plus, Search, Trash2, Users, X } from 'lucide-react';
+import ResearchType from '@/public/ResearchTypes.json';
+import { addData, removeData } from './test';
+import { getAllMarkerUserData, getUserDataExists } from './getMapData';
+import styles from './worldmap.module.css';
 
+type Member = NonNullable<Awaited<ReturnType<typeof getAllMarkerUserData>>>[number];
+type Coordinate = [number, number];
 
-import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
-import { Toast } from 'primereact/toast';
-import { User } from "@supabase/supabase-js";
-
-type worldMapProps = {
-    authorized: User | null;
+function safeWebUrl(value: string | undefined) {
+  if (!value) return undefined;
+  try {
+    const url = new URL(value);
+    return ['https:', 'http:'].includes(url.protocol) ? url.href : undefined;
+  } catch {
+    return undefined;
+  }
 }
 
+function initials(name: string) {
+  return (name || '?').split(' ').filter(Boolean).slice(0, 2).map((part) => part[0]).join('').toUpperCase();
+}
 
-type Coordinate = [number,number];
-export default function Worldmap( {authorized} : worldMapProps) {
+function hasCoordinates(member: Member) {
+  return Number.isFinite(member.user_location_x) && Number.isFinite(member.user_location_y)
+    && Math.abs(member.user_location_x) <= 90 && Math.abs(member.user_location_y) <= 180;
+}
+
+export default function Worldmap({ authorized }: { authorized: User | null }) {
+  const mapContainer = useRef<HTMLDivElement>(null);
+  const map = useRef<mapboxgl.Map | null>(null);
+  const draftMarker = useRef<mapboxgl.Marker | null>(null);
+  const profileHeading = useRef<HTMLHeadingElement>(null);
+  const [mapReady, setMapReady] = useState(false);
+  const [mapError, setMapError] = useState('');
+  const [members, setMembers] = useState<Member[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [dataError, setDataError] = useState('');
+  const [hasMarker, setHasMarker] = useState(false);
+  const [query, setQuery] = useState('');
+  const [field, setField] = useState('');
+  const [selected, setSelected] = useState<Member | null>(null);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [isPlacing, setIsPlacing] = useState(false);
+  const [coordinates, setCoordinates] = useState<Coordinate | null>(null);
+  const [formVisible, setFormVisible] = useState(false);
+  const [deleteVisible, setDeleteVisible] = useState(false);
+  const [pending, setPending] = useState(false);
+  const [notice, setNotice] = useState('');
+  const [formError, setFormError] = useState('');
+  const [fullName, setFullName] = useState('');
+  const [title, setTitle] = useState('');
+  const [research, setResearch] = useState('');
+  const [otherResearch, setOtherResearch] = useState('');
+  const [linkedinLink, setLinkedInLink] = useState('');
+  const [summary, setSummary] = useState('');
+
+  const loadMembers = useCallback(async () => {
+    setLoading(true);
+    setDataError('');
+    try {
+      const [data, exists] = await Promise.all([
+        getAllMarkerUserData(),
+        authorized ? getUserDataExists() : Promise.resolve(false),
+      ]);
+      if (data === null) throw new Error('Unable to load profiles.');
+      setMembers(data);
+      setHasMarker(exists);
+    } catch {
+      setDataError('We couldn’t load the community. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  }, [authorized]);
+
+  useEffect(() => { void loadMembers(); }, [loadMembers]);
 
   useEffect(() => {
-    async function CheckIfUserMarkerExists() {
-      setUserIDExists( await getUserId() );
+    if (selected) profileHeading.current?.focus({ preventScroll: true });
+  }, [selected]);
+
+  useEffect(() => {
+    if (!sidebarOpen) return;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setSidebarOpen(false);
+    };
+    window.addEventListener('keydown', closeOnEscape);
+    return () => window.removeEventListener('keydown', closeOnEscape);
+  }, [sidebarOpen]);
+
+  useEffect(() => {
+    if (!mapContainer.current) return;
+    const token = process.env.NEXT_PUBLIC_MAPBOX_KEY;
+    if (!token) {
+      setMapError('The map isn’t configured yet. You can still explore the community below.');
+      return;
     }
-    CheckIfUserMarkerExists();
+
+    let instance: mapboxgl.Map;
+    try {
+      instance = new mapboxgl.Map({
+        container: mapContainer.current,
+        accessToken: token,
+        style: 'mapbox://styles/ahmkhn/cm0t536km002101nt0xc1fwvq',
+        projection: 'globe',
+        zoom: 1.7,
+        center: [35, 25],
+        attributionControl: false,
+      });
+    } catch {
+      setMapError('The map couldn’t start in this browser. You can still browse the community.');
+      return;
+    }
+
+    map.current = instance;
+    instance.addControl(new mapboxgl.NavigationControl({ showCompass: true }), 'top-right');
+    instance.addControl(new mapboxgl.GeolocateControl({
+      positionOptions: { enableHighAccuracy: false },
+      trackUserLocation: false,
+      showUserHeading: false,
+    }), 'top-right');
+    instance.addControl(new mapboxgl.AttributionControl({ compact: true }), 'bottom-right');
+    instance.on('style.load', () => instance.setFog({}));
+    instance.on('load', () => { setMapReady(true); setMapError(''); });
+    instance.on('error', () => {
+      if (!instance.isStyleLoaded()) setMapError('Map tiles are unavailable. Check your connection or map configuration.');
+    });
+    const observer = new ResizeObserver(() => instance.resize());
+    observer.observe(mapContainer.current);
+
+    return () => {
+      observer.disconnect();
+      instance.remove();
+      map.current = null;
+    };
   }, []);
 
-  const toast = useRef<Toast>(null);
-  const [userIDExists,setUserIDExists] = useState<boolean>(false);
-  const accept = async () => {
-    if (authorized) {
-        if(userIDExists===false){
-          toast.current?.show({ severity: 'error', summary: 'Error', detail: "You don't have a marker!", life: 3000 });
-        }else{
-          try {
-            await removeData();
-            toast.current?.show({ severity: 'info', summary: 'Confirmed', detail: 'Your marker has been deleted :)', life: 3000 });
-          } catch (error) {
-              toast.current?.show({ severity: 'error', summary: 'Error', detail: "there was an error", life: 3000 });
-          }
-        }
-    } else {
-        toast.current?.show({ severity: 'warn', summary: 'Error', detail: 'You are not signed in.', life: 3000 });
-    }
-}
+  const fields = useMemo(() => Array.from(new Set(members.map((member) => member.user_research_tag).filter(Boolean))).sort(), [members]);
+  const filteredMembers = useMemo(() => {
+    const search = query.trim().toLowerCase();
+    return members.filter((member) => (!field || member.user_research_tag === field)
+      && (!search || [member.full_name, member.user_research_tag, member.user_occupation, member.summary].some((value) => value?.toLowerCase().includes(search))));
+  }, [members, query, field]);
 
-
-    const reject = () => {
-        toast.current?.show({ severity: 'warn', summary: 'Rejected', detail: 'You have selected no', life: 3000 });
-    }
-
-    const confirm2 = () => {
-        confirmDialog({
-            message: 'Do you want to delete this record?',
-            header: 'Delete Confirmation',
-            icon: 'pi pi-info-circle',
-            defaultFocus: 'reject',
-            acceptClassName: 'p-button-danger',
-            accept,
-            reject
-        });
-    };
-
-
-
-    const [visible, setVisible] = useState(false);
-    const [longLat, setLongLat] = useState<Coordinate>([0,0]);
-    //user input
-    const [fullName, setFullName] = useState<string>("");
-    const [title,setTitle] = useState<string>("");
-    const [research,setResearch] = useState<string>("");
-    const [linkedinLink,setLinkedInLink] = useState<string>("");
-    const [researchDisabled,setResearchDisabled] = useState<boolean>(true);
-    const mapContainer = useRef<HTMLDivElement>(null);
-    const map = useRef<mapboxgl.Map | null>(null);
-    const [showDialog, setShowDialog] = useState(true);
-    const [researchInputDescription,setResearchInputDescription] = useState<string>("'Other' research type. Currently disabled.")
-    const [summary,setSummary] = useState<string>("");
-    const [userExists,setUserExists] = useState<boolean>(false);
-    const [introVisible,setIntroVisible] = useState(true);
-
-    const [deleteButtonVisible, setDeleteButtonVisible] = useState<boolean>(false);
-    interface User {
-      full_name: string;
-      user_research_tag: string;
-      avatar_url: string;
-      user_research_description: string;
-      user_occupation: string;
-      user_location_x: number;
-      user_location_y: number;
-      linked_in_link: string;
-      summary: string;
-      email: string;
-    }
-    
-    const [users, setUsers] = useState<User[] | null>(null);
-    
-    useEffect(() => {
-      async function fetchData() {
-        const data = await getAllMarkerUserData();
-        setUsers(data);
-      }
-      fetchData();
-    }, []);
-
-    useEffect(() => {
-      async function initializeDeleteButton() {
-        setDeleteButtonVisible( await getUserId() );
-      }
-      initializeDeleteButton();
-    }, []);
-
-    useEffect(() => {
-      if (users === null) return;
-      users.map((user, index) => {
-          if (!map.current) return;
-          const el = document.createElement('div');
-          el.className = 'marker';
-          el.style.backgroundImage = `url(${pin.src})`;
-          el.style.backgroundSize = 'cover';
-          el.style.width = '45px';
-          el.style.height = '45px';
-          el.style.borderRadius = '50%';
-          el.style.cursor = 'pointer';
-          const popupContent = `
-          <div class="p-4 bg-white text-black border border-gray-300 rounded-lg shadow-lg" style="max-width: 300px; width: 100%;">
-            <div class="flex items-center mb-3">
-              <img src="${user.avatar_url}" alt="${user.full_name}" class="w-16 h-16 rounded-full mr-3 object-cover border-2 border-gray-300 flex-shrink-0">
-              <h1 class="text-xl font-bold break-words">${user.full_name}</h1>
-            </div>
-            <p class="text-sm mt-2"><span class="font-semibold">Research / Major:</span> ${user.user_research_tag}</p>
-            <p class="text-sm mt-2"><span class="font-semibold">Summary:</span> ${user.summary}</p>
-            <p class="text-sm mt-2"><span class="font-semibold">Occupation:</span> ${user.user_occupation}</p>
-            <p class="text-sm mt-2"><span class="font-semibold">Location:</span> (${user.user_location_x}, ${user.user_location_y})</p>
-            <p class="text-sm mt-2"><span class="font-semibold">Email:</span> <a href="mailto:${user.email}" class="text-blue-500 hover:underline">${user.email}</a></p>
-            <a class="text-blue-500 hover:underline text-sm mt-2 block" href="${user.linked_in_link}" target="_blank" rel="noopener noreferrer">LinkedIn Profile</a>
-          </div>`;
-        const popup = new mapboxgl.Popup({ offset: 25 })
-          .setHTML(popupContent);
-
-          new mapboxgl.Marker(el)
-              .setLngLat([user.user_location_y, user.user_location_x])
-              .setPopup(
-                  new mapboxgl.Popup({ offset: 25 })
-                      .setHTML(popupContent)
-              )
-              .addTo(map.current);
-      });
-    }, [users]);
-
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-      const researchUpdated = (researchDisabled ? research : researchInputDescription);
-      await addData(fullName,longLat[0],longLat[1],title,researchInputDescription,researchUpdated,linkedinLink,summary);
-      /*export async function addData(full_name:string,user_location_x:number,user_location_y:number,user_occupation:string,user_research_description:string,user_research_tag:string){
-      */
-    }
-    useEffect(() => {
-      const hasSeenDialog = localStorage.getItem('hasSeenDialog');
-      if (!hasSeenDialog) {
-        setShowDialog(true);
-        localStorage.setItem('hasSeenDialog', 'true');
-      }
-    }, []);
-    
-    useEffect(() =>{
-      if(research){
-        if(research==="Other"){
-          setResearchDisabled(false);
-          setResearchInputDescription("");
-        }else{
-          setResearchDisabled(true);
-          setResearchInputDescription("'Other' research type. Currently disabled.");
-        }
-      }
-    },[research])
-    
-
-    const addMarker = useCallback(async (e: mapboxgl.MapMouseEvent & { originalEvent: MouseEvent }) => {
-      if(!map.current) return; // make sure the map is loaded ? 
-
-      if (!authorized){
-        if (e.defaultPrevented || e.originalEvent.target instanceof HTMLElement && e.originalEvent.target.className.includes('mapboxgl-marker')) {
-          return; // Exit the function if the click was on a marker
-        }
-        toast.current?.show({ severity: 'error', summary: 'Unable to add marker', detail: "Please login", life: 3000 });
-        return;
-      };
-    
-      // Check if the click was on a marker
-      if (e.defaultPrevented || e.originalEvent.target instanceof HTMLElement && e.originalEvent.target.className.includes('mapboxgl-marker')) {
-        return; // Exit the function if the click was on a marker
-      }
-    
-      try {
-        const exists = await getUserDataExists();
-        setUserExists(exists);
-        if (exists) {
-          return; // Exit if the user already exists
-        }
-      } catch (error) {
-        console.error("Error checking user existence:", error);
-      }
-
-      setVisible(true);
-      const el = document.createElement('div');
-      el.className = 'marker';
-      el.style.backgroundImage = "url('https://docs.mapbox.com/help/demos/custom-markers-gl-js/mapbox-icon.png')";
-      el.style.backgroundSize = 'cover';
-      el.style.width = '20px';
-      el.style.height = '20px';
-      el.style.borderRadius = '50%';
-      el.style.cursor = 'pointer';
-      setLongLat([e.lngLat.lat, e.lngLat.lng]);
-      new mapboxgl.Marker(el)
-        .setLngLat(e.lngLat)
-        .addTo(map.current);
-    }, [map, authorized, setUserExists]);
+  const selectMember = useCallback((member: Member) => {
+    setSelected(member);
+    setSidebarOpen(true);
+    if (hasCoordinates(member)) map.current?.flyTo({ center: [member.user_location_y, member.user_location_x], zoom: 5, essential: false });
+  }, []);
 
   useEffect(() => {
-    if (map.current || !mapContainer.current) return;
-    mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_KEY as string;
-    map.current = new mapboxgl.Map({
-      container: mapContainer.current,
-      style: 'mapbox://styles/ahmkhn/cm0t536km002101nt0xc1fwvq',
-      projection: 'globe',
-      zoom: 3,
-      center: [70, 30]
+    if (!mapReady || !map.current) return;
+    const markers = filteredMembers.filter(hasCoordinates).map((member) => {
+      const element = document.createElement('button');
+      element.type = 'button';
+      element.className = styles.marker;
+      element.setAttribute('aria-label', `View ${member.full_name}’s profile`);
+      element.title = member.full_name;
+      const dot = document.createElement('span');
+      dot.className = styles.markerDot;
+      element.appendChild(dot);
+      element.addEventListener('click', (event) => {
+        event.stopPropagation();
+        selectMember(member);
+      });
+      return new mapboxgl.Marker({ element })
+        .setLngLat([member.user_location_y, member.user_location_x])
+        .addTo(map.current!);
     });
-    map.current.addControl(new mapboxgl.NavigationControl());
-    map.current.on('style.load', () => {
-      map.current?.setFog({});
-    });
-    map.current.on('click', addMarker);
-  });
+    return () => markers.forEach((marker) => marker.remove());
+  }, [filteredMembers, mapReady, selectMember]);
+
+  const chooseLocation = useCallback((latitude: number, longitude: number) => {
+    setCoordinates([latitude, ((longitude + 180) % 360 + 360) % 360 - 180]);
+    setIsPlacing(false);
+    setFormError('');
+    setFormVisible(true);
+  }, []);
+
+  useEffect(() => {
+    const instance = map.current;
+    if (!instance || !isPlacing || !authorized || hasMarker) return;
+    const click = (event: mapboxgl.MapMouseEvent) => {
+      if (event.originalEvent.target instanceof Element && event.originalEvent.target.closest('.mapboxgl-marker')) return;
+      chooseLocation(event.lngLat.lat, event.lngLat.lng);
+    };
+    instance.getCanvas().style.cursor = 'crosshair';
+    instance.on('click', click);
+    return () => {
+      instance.off('click', click);
+      instance.getCanvas().style.cursor = '';
+    };
+  }, [isPlacing, authorized, hasMarker, chooseLocation]);
+
+  useEffect(() => {
+    if (coordinates && map.current) {
+      draftMarker.current = new mapboxgl.Marker({ color: '#c76a35' })
+        .setLngLat([coordinates[1], coordinates[0]])
+        .addTo(map.current);
+    }
+    return () => { draftMarker.current?.remove(); draftMarker.current = null; };
+  }, [coordinates]);
+
+  const beginPlacement = async () => {
+    if (!authorized || !mapReady || pending) return;
+    setPending(true);
+    setNotice('');
+    try {
+      const exists = await getUserDataExists();
+      setHasMarker(exists);
+      if (exists) { setNotice('You already have a pin. Remove it first to choose a new location.'); return; }
+      setSelected(null);
+      setSidebarOpen(false);
+      setIsPlacing(true);
+    } catch {
+      setNotice('We couldn’t check your profile. Please try again.');
+    } finally {
+      setPending(false);
+    }
+  };
+
+  const closeForm = () => {
+    if (pending) return;
+    setFormVisible(false);
+    setCoordinates(null);
+    setFormError('');
+  };
+
+  const submitProfile = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!authorized || !coordinates || pending) return;
+    setPending(true);
+    setFormError('');
+    try {
+      if (await getUserDataExists()) {
+        setHasMarker(true);
+        setFormError('You already have a pin. Close this form and remove it before adding a new one.');
+        return;
+      }
+      const description = research === 'Other' ? otherResearch.trim() : "'Other' research type. Currently disabled.";
+      const researchTag = research === 'Other' ? description : research;
+      // The database stores latitude in x and longitude in y; keep that existing contract.
+      await addData(fullName.trim(), coordinates[0], coordinates[1], title.trim(), description, researchTag, linkedinLink.trim(), summary.trim());
+      const [exists, data] = await Promise.all([getUserDataExists(), getAllMarkerUserData()]);
+      // The existing action logs insert failures, so confirm the row exists before showing success.
+      if (!exists) throw new Error('Profile was not saved.');
+      setHasMarker(true);
+      if (data) setMembers(data);
+      else setDataError('Your profile was saved, but the community list needs a refresh.');
+      setFormVisible(false);
+      setCoordinates(null);
+      setNotice('Your pin is live. Welcome to the community.');
+      setFullName(''); setTitle(''); setResearch(''); setOtherResearch(''); setLinkedInLink(''); setSummary('');
+    } catch {
+      setFormError('We couldn’t save your profile. Your details are still here; please try again.');
+    } finally {
+      setPending(false);
+    }
+  };
+
+  const deleteProfile = async () => {
+    if (!authorized || !hasMarker || pending) return;
+    setPending(true);
+    setFormError('');
+    try {
+      await removeData();
+      setHasMarker(false);
+      setSelected(null);
+      setDeleteVisible(false);
+      setNotice('Your pin has been removed. You can add a new one whenever you’re ready.');
+      const data = await getAllMarkerUserData();
+      if (data) setMembers(data);
+      else setDataError('Your pin was removed, but the community list needs a refresh.');
+    } catch {
+      setFormError('We couldn’t remove your pin. Please try again.');
+    } finally {
+      setPending(false);
+    }
+  };
+
+  const contributionControl = authorized ? (
+    hasMarker ? <button className={styles.secondaryButton} onClick={() => { setFormError(''); setDeleteVisible(true); }} disabled={pending}><Trash2 size={16} /> Remove my pin</button>
+      : <button className={styles.primaryButton} onClick={() => void beginPlacement()} disabled={loading || pending || !mapReady || isPlacing}>{pending ? <LoaderCircle size={17} className={styles.spin} /> : <Plus size={17} />} Add your pin</button>
+  ) : <a className={styles.primaryButton} href="/login"><Plus size={17} /> Join the map <ArrowUpRight size={16} /></a>;
 
   return (
-    <>
-    <Toast ref={toast}/>
-    <div style={{ position: 'relative', width: '100%', height: '100vh' }}>
-      <div ref={mapContainer} style={{ position: 'absolute', top: 0, bottom: 0, width: '100%' }} />
-      <ConfirmDialog/>
-      {deleteButtonVisible && (
-      <button
-        onClick={confirm2}
-        className="border-black border-2 rounded-md text-center bg-red-500"
-        style={{
-          font: 'bold 12px/20px "Helvetica Neue", Arial, Helvetica, sans-serif',
-          color: 'black',
-          position: 'absolute',
-          top: '20px',
-          left: '50%',
-          zIndex: 1,
-          width: '200px',
-          marginLeft: '-100px',
-          display: 'block',
-          cursor: 'pointer',
-          padding: '10px 20px',
-          borderRadius: '3px',
-        }}
-      >
-        Delete your marker?
-      </button> )}
+    <div className={styles.workspace}>
+      {sidebarOpen && <button className={styles.sidebarBackdrop} aria-label="Close community panel" onClick={() => setSidebarOpen(false)} />}
+      <aside id="community-panel" className={`${styles.sidebar} ${sidebarOpen ? styles.sidebarOpen : ''}`} aria-label="Community explorer">
+        <div className={styles.sidebarHeading}>
+          <span className={styles.eyebrow}><span className={styles.liveDot} /> THE DSSP COMMUNITY</span>
+          <button className={`${styles.iconButton} ${styles.mobileClose}`} aria-label="Close community panel" onClick={() => setSidebarOpen(false)}><X size={20} /></button>
+        </div>
+        {selected ? (
+          <div className={styles.profile}>
+            <button className={styles.backButton} onClick={() => setSelected(null)}><ArrowLeft size={16} /> Back to community</button>
+            <div className={styles.profileAvatar}>{safeWebUrl(selected.avatar_url) ? <img src={safeWebUrl(selected.avatar_url)} alt="" referrerPolicy="no-referrer" onError={(event) => { event.currentTarget.style.display = 'none'; }} /> : null}<span>{initials(selected.full_name)}</span></div>
+            <h1 ref={profileHeading} tabIndex={-1} className={styles.profileName}>{selected.full_name}</h1>
+            <p className={styles.occupation}>{selected.user_occupation}</p>
+            <span className={styles.researchTag}>{selected.user_research_tag || 'Community member'}</span>
+            <div className={styles.profileSection}><h2>About</h2><p>{selected.summary || 'This member hasn’t added a summary yet.'}</p></div>
+            {selected.user_research_description && selected.user_research_description !== "'Other' research type. Currently disabled." && selected.user_research_description !== selected.user_research_tag && <div className={styles.profileSection}><h2>Research</h2><p>{selected.user_research_description}</p></div>}
+            <div className={styles.profileSection}><h2>On the map</h2><p className={styles.location}><MapPin size={16} /> {hasCoordinates(selected) ? `${selected.user_location_x.toFixed(3)}°, ${selected.user_location_y.toFixed(3)}°` : 'Location unavailable'}</p></div>
+            <div className={styles.contactLinks}>
+              {selected.email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(selected.email) && <a className={styles.secondaryButton} href={`mailto:${selected.email}`}><Mail size={16} /> Email {selected.full_name?.split(' ')[0]}</a>}
+              {safeWebUrl(selected.linked_in_link) && <a className={styles.primaryButton} href={safeWebUrl(selected.linked_in_link)} target="_blank" rel="noopener noreferrer">LinkedIn profile <ArrowUpRight size={16} /></a>}
+            </div>
+          </div>
+        ) : (
+          <>
+            <div className={styles.intro}><h1>A world of<br />shared perspectives.</h1><p>Find the people rethinking social science, one connection at a time.</p></div>
+            <div className={styles.filters}>
+              <label className={styles.search}><Search size={18} /><input aria-label="Search people, research, or occupation" placeholder="Search people or research" value={query} onChange={(event) => setQuery(event.target.value)} />{query && <button aria-label="Clear search" onClick={() => setQuery('')}><X size={16} /></button>}</label>
+              <label className={styles.fieldLabel}><span>Research area</span><select value={field} onChange={(event) => setField(event.target.value)}><option value="">All research areas</option>{fields.map((name) => <option key={name} value={name}>{name}</option>)}</select></label>
+            </div>
+            <div className={styles.resultHeading}><span aria-live="polite">{loading ? 'Loading community…' : `${filteredMembers.length} ${filteredMembers.length === 1 ? 'person' : 'people'}`}</span><span>AROUND THE WORLD</span></div>
+            <div className={styles.memberList} aria-busy={loading}>
+              {loading ? <div className={styles.emptyState}><LoaderCircle size={24} className={styles.spin} /><p>Finding your community…</p></div> : dataError ? <div className={styles.emptyState}><p>{dataError}</p><button className={styles.secondaryButton} onClick={() => void loadMembers()}>Try again</button></div> : filteredMembers.length === 0 ? <div className={styles.emptyState}><Users size={27} /><h2>{members.length ? 'No matches yet' : 'The map starts with you'}</h2><p>{members.length ? 'Try a different name or research area.' : 'Add your pin and help this community grow.'}</p>{(query || field) && <button className={styles.secondaryButton} onClick={() => { setQuery(''); setField(''); }}>Clear filters</button>}</div> : filteredMembers.map((member, index) => (
+                <button key={`${member.email}-${index}`} className={styles.memberCard} onClick={() => selectMember(member)}>
+                  <span className={styles.memberAvatar}>{initials(member.full_name)}</span><span className={styles.memberText}><strong>{member.full_name || 'Community member'}</strong><span>{member.user_research_tag || member.user_occupation || 'DSSP community'}</span></span><ChevronRight size={17} />
+                </button>
+              ))}
+            </div>
+          </>
+        )}
+        <div className={styles.sidebarFooter}><p>{authorized ? hasMarker ? 'You’re part of this community.' : 'Your perspective belongs here.' : 'Explore freely. Sign in to share your story.'}</p>{contributionControl}</div>
+      </aside>
+
+      <section className={styles.mapRegion} aria-label="Interactive community map">
+        <div ref={mapContainer} className={styles.mapCanvas} />
+        <div className={styles.mapLabel}><Globe2 size={16} /><span>Many places. Shared purpose.</span></div>
+        {!mapReady && !mapError && <div className={styles.mapLoading} role="status"><LoaderCircle size={25} className={styles.spin} /><span>Opening the world…</span></div>}
+        {mapError && <div className={styles.mapUnavailable} role="status"><Globe2 size={34} /><h2>A connection away.</h2><p>{mapError}</p><button className={styles.secondaryButton} onClick={() => { setSelected(null); setSidebarOpen(true); }}>Browse the community</button></div>}
+        {notice && <div className={styles.notice} role="status"><Check size={18} /><span>{notice}</span><button aria-label="Dismiss message" onClick={() => setNotice('')}><X size={17} /></button></div>}
+        {isPlacing ? (
+          <>
+            <div className={styles.crosshair} aria-hidden="true"><Plus size={30} strokeWidth={1.4} /></div>
+            <div className={styles.placementPanel}><span className={styles.placementIcon}><MapPin size={21} /></span><div><strong>Find your place</strong><p>Tap a location, or move the map and use its center.</p></div><div className={styles.placementActions}><button className={styles.secondaryButton} onClick={() => { setIsPlacing(false); setCoordinates(null); }}>Cancel</button><button className={styles.primaryButton} onClick={() => { const center = map.current?.getCenter(); if (center) chooseLocation(center.lat, center.lng); }}>Use map center</button></div></div>
+          </>
+        ) : <button className={styles.resetView} onClick={() => map.current?.flyTo({ center: [35, 25], zoom: 1.7, bearing: 0, pitch: 0, essential: false })} disabled={!mapReady}><Compass size={17} /> World view</button>}
+        <div className={styles.mapCredit}>A growing community by DSSP</div>
+      </section>
+
+      {!isPlacing && <div className={styles.mobileToolbar}><button className={styles.secondaryButton} aria-controls="community-panel" aria-expanded={sidebarOpen} onClick={() => setSidebarOpen((open) => !open)}><Users size={18} /> People <span className={styles.count}>{members.length}</span></button>{contributionControl}</div>}
+
+      <Dialog header="Put your perspective on the map" visible={formVisible} onHide={closeForm} modal draggable={false} resizable={false} blockScroll closable={!pending} closeOnEscape={!pending} className={styles.dialog} maskClassName={styles.dialogMask}>
+        <form onSubmit={submitProfile} className={styles.form}>
+          <p className={styles.formIntro}>Introduce yourself to a global community of researchers, students, and curious minds.</p>
+          {coordinates && <div className={styles.locationPreview}><MapPin size={19} /><div><strong>Your selected location</strong><span>{coordinates[0].toFixed(4)}°, {coordinates[1].toFixed(4)}°</span></div><button type="button" disabled={pending} onClick={() => { closeForm(); setIsPlacing(true); }}>Change</button></div>}
+          <div className={styles.formGrid}>
+            <label>Full name <span>*</span><input name="name" autoComplete="name" required value={fullName} disabled={pending} onChange={(event) => setFullName(event.target.value)} placeholder="Your full name" /></label>
+            <label>Occupation / title <span>*</span><input name="occupation" autoComplete="organization-title" required value={title} disabled={pending} onChange={(event) => setTitle(event.target.value)} placeholder="e.g. Sociology student" /></label>
+            <label>Research area <span>*</span><select name="research" required value={research} disabled={pending} onChange={(event) => setResearch(event.target.value)}><option value="" disabled>Select your area</option>{ResearchType.map((type) => <option key={type.code} value={type.code}>{type.name}</option>)}</select></label>
+            <label>LinkedIn <small>Optional</small><input name="linkedin" type="url" inputMode="url" value={linkedinLink} disabled={pending} onChange={(event) => setLinkedInLink(event.target.value)} placeholder="https://linkedin.com/in/…" /></label>
+          </div>
+          {research === 'Other' && <label>Your research area <span>*</span><input name="other-research" required value={otherResearch} disabled={pending} onChange={(event) => setOtherResearch(event.target.value)} placeholder="Tell us your field" /></label>}
+          <label>A little about you <span>*</span><textarea name="summary" required rows={4} value={summary} disabled={pending} onChange={(event) => setSummary(event.target.value)} placeholder="What are you studying, questioning, or working on?" /></label>
+          <p className={styles.formNote}>Your profile, selected location, and account email will be visible to the community.</p>
+          {formError && <p className={styles.formError} role="alert">{formError}</p>}
+          <div className={styles.formActions}><button type="button" className={styles.secondaryButton} disabled={pending} onClick={closeForm}>Cancel</button><button type="submit" className={styles.primaryButton} disabled={pending}>{pending ? <LoaderCircle size={17} className={styles.spin} /> : <MapPin size={17} />}{pending ? 'Saving your profile…' : 'Add me to the map'}</button></div>
+        </form>
+      </Dialog>
+      <Dialog header="Remove your pin?" visible={deleteVisible} onHide={() => { if (!pending) setDeleteVisible(false); }} modal draggable={false} resizable={false} blockScroll closable={!pending} closeOnEscape={!pending} className={`${styles.dialog} ${styles.confirmDialog}`} maskClassName={styles.dialogMask}>
+        <p className={styles.formIntro}>Your profile will be removed from the community map. You can add a new pin later.</p>
+        {formError && <p className={styles.formError} role="alert">{formError}</p>}
+        <div className={styles.formActions}><button className={styles.secondaryButton} disabled={pending} onClick={() => setDeleteVisible(false)} autoFocus>Keep my pin</button><button className={styles.dangerButton} disabled={pending} onClick={() => void deleteProfile()}>{pending ? <LoaderCircle size={16} className={styles.spin} /> : <Trash2 size={16} />}{pending ? 'Removing…' : 'Remove pin'}</button></div>
+      </Dialog>
     </div>
-    <Dialog className="dialog-popup w-full sm:w-[90vw] md:w-[40rem] max-w-[50rem] border border-black p-4" header="Input your details" visible={visible} position="top" onHide={() => {if (!visible) return; setVisible(false); }}>
-      <form onSubmit={(e: React.FormEvent<HTMLFormElement>)=>{
-        handleSubmit(e);
-      }}>
-                    <p className="text-black text-center text-sm md:text-base">Please <strong>make sure </strong>the marker on the map is accurate to the location you would like to set! :) (this window can be moved!)</p>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <InputText required className="h-10 border border-black rounded-md p-2 w-full" id="name" value={fullName} onChange={(e) => setFullName(e.target.value)} placeholder="Enter Full Name" />
-          <InputText required className="h-10 border border-black rounded-md p-2 w-full" id="title" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Enter Job Title" />
-          <Dropdown
-            required
-            className="border border-black rounded-md h-10 w-full"
-            value={research}
-            options={ResearchType.map((type) => ({ label: type.name, value: type.code }))}
-            onChange={(e) => setResearch(e.target.value)}
-            placeholder="Select a research"
-          />
-          <InputText className="h-10 border border-black rounded-md p-2 w-full" id="linkedin" value={linkedinLink} onChange={(e) => setLinkedInLink(e.target.value)} placeholder="Enter LinkedIn Link" />
-        </div>
-        
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <InputTextarea
-            disabled={researchDisabled}
-            rows={2}
-            className="mt-2 w-full border-2 border-black rounded-md text-center p-2"
-            placeholder={researchInputDescription}
-            onChange={(e) => setResearchInputDescription(e.target.value)}
-          />
-          <InputTextarea
-            rows={3}
-            className="mt-2 w-full border-2 border-black rounded-md text-center p-2"
-            placeholder="Who are you and what's your research about? (please keep it concise!)"
-            required
-            onChange={(e) => setSummary(e.target.value)}
-          />
-        </div>
-        
-        <div className="flex justify-center mt-2">
-          <Button type="submit" className="border border-black rounded-md p-2 text-white bg-black">Submit</Button>
-        </div>
-      </form>       
-    </Dialog>
-    </>
   );
-};
+}

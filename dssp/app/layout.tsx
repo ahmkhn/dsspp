@@ -1,4 +1,3 @@
-import { GeistSans } from "geist/font/sans";
 import "./globals.css";
 import {Inter} from 'next/font/google';
 const defaultUrl = 'https://www.dssp.app'
@@ -21,9 +20,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.className}>
       <body className="bg-background text-foreground">
-        <main className="min-h-screen flex flex-col items-center">
+        <div className="min-h-screen flex flex-col items-center">
           {children}
-        </main>
+        </div>
       </body>
     </html>
   );

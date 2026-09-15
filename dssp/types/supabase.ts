@@ -16,6 +16,8 @@ export type Database = {
           id: string
           updated_at: string | null
           email: string | null
+          linked_in_link: string | null
+          summary: string | null
           user_location_x: number | null
           user_location_y: number | null
           user_occupation: string | null
@@ -24,6 +26,9 @@ export type Database = {
           username: string | null
         }
         Insert: {
+          email?: string | null
+          linked_in_link?: string | null
+          summary?: string | null
           avatar_url?: string | null
           full_name?: string | null
           id: string
@@ -37,6 +42,9 @@ export type Database = {
           username?: string | null
         }
         Update: {
+          email?: string | null
+          linked_in_link?: string | null
+          summary?: string | null
           avatar_url?: string | null
           full_name?: string | null
           id?: string

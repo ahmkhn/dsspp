@@ -1,78 +1,42 @@
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { type NextRequest, NextResponse } from "next/server";
 
-export const updateSession = async (request: NextRequest) => {
-  // This `try/catch` block is only here for the interactive tutorial.
-  // Feel free to remove once you have Supabase connected.
+export async function updateSession(request: NextRequest) {
   try {
-    // Create an unmodified response
-    let response = NextResponse.next({
-      request: {
-        headers: request.headers,
-      },
-    });
+    let response = NextResponse.next({ request: { headers: request.headers } });
+    // A refresh may write several cookie chunks, or more than one batch.
+    const pendingCookies = new Map<string, { value: string; options: CookieOptions }>();
+    const refreshHeaders = new Headers();
 
     const supabase = createServerClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
       {
         cookies: {
-          get(name: string) {
-            return request.cookies.get(name)?.value;
+          getAll() {
+            return request.cookies.getAll();
           },
-          set(name: string, value: string, options: CookieOptions) {
-            // If the cookie is updated, update the cookies for the request and response
-            request.cookies.set({
-              name,
-              value,
-              ...options,
+          setAll(cookiesToSet, headers) {
+            cookiesToSet.forEach(({ name, value, options }) => {
+              request.cookies.set(name, value);
+              pendingCookies.set(name, { value, options });
             });
-            response = NextResponse.next({
-              request: {
-                headers: request.headers,
-              },
+            Object.entries(headers).forEach(([name, value]) => refreshHeaders.set(name, value));
+            response = NextResponse.next({ request: { headers: request.headers } });
+            pendingCookies.forEach(({ value, options }, name) => {
+              response.cookies.set(name, value, options);
             });
-            response.cookies.set({
-              name,
-              value,
-              ...options,
-            });
-          },
-          remove(name: string, options: CookieOptions) {
-            // If the cookie is removed, update the cookies for the request and response
-            request.cookies.set({
-              name,
-              value: "",
-              ...options,
-            });
-            response = NextResponse.next({
-              request: {
-                headers: request.headers,
-              },
-            });
-            response.cookies.set({
-              name,
-              value: "",
-              ...options,
-            });
+            refreshHeaders.forEach((value, name) => response.headers.set(name, value));
           },
         },
       },
     );
 
-    // This will refresh session if expired - required for Server Components
-    // https://supabase.com/docs/guides/auth/server-side/nextjs
+    // Keep the existing server-verified session refresh and public-route policy.
     await supabase.auth.getUser();
-
     return response;
-  } catch (e) {
-    // If you are here, a Supabase client could not be created!
-    // This is likely because you have not set up environment variables.
-    // Check out http://localhost:3000 for Next Steps.
-    return NextResponse.next({
-      request: {
-        headers: request.headers,
-      },
-    });
+  } catch {
+    // Preserve the existing pass-through behavior when Supabase is unavailable.
+    return NextResponse.next({ request: { headers: request.headers } });
   }
-};
+}
