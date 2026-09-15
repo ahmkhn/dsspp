@@ -57,9 +57,6 @@
 .mapLabel { position: absolute; top: 26px; left: 26px; padding: 11px 15px; display: inline-flex; align-items: center; gap: 9px; font-size: 11px; color: #3c5848; background: #fafbf5ed; border: 1px solid #e6e9df; border-radius: 30px; box-shadow: 0 3px 16px #233c2e0a; pointer-events: none; }
 .mapCredit { position: absolute; bottom: 10px; left: 22px; font-size: 9px; color: #334c3d; padding: 3px 6px; border-radius: 3px; background: #fafbf5d9; pointer-events: none; }
 .resetView { position: absolute; bottom: 42px; left: 24px; display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 500; min-height: 44px; border: 1px solid #dfe5d8; border-radius: 8px; padding: 12px 15px; background: #fafbf5; box-shadow: 0 3px 16px #233c2e12; }
-.marker { width: 44px; height: 44px; display: grid; place-items: center; border: 0; background: transparent; cursor: pointer; border-radius: 50%; }
-.markerDot { display: block; width: 17px; height: 17px; border: 3px solid #fff; border-radius: 50%; background: #48784b; box-shadow: 0 2px 9px #173c4266, 0 0 0 5px #54764c20; transition: transform .15s; }
-.marker:hover .markerDot, .marker:focus-visible .markerDot { transform: scale(1.35); background: #bf7348; }
 .profile { padding: 21px 25px; flex: 1; min-height: 0; overflow: auto; overscroll-behavior: contain; }
 .backButton { display: flex; align-items: center; gap: 8px; color: #738172; font-size: 11px; min-height: 44px; margin: -5px 0 21px; }
 .profileAvatar { width: 76px; height: 76px; position: relative; background: #e4e9d9; border: 4px solid #fff; border-radius: 50%; overflow: hidden; display: grid; place-items: center; box-shadow: 0 0 0 1px #e0e5d8; margin-bottom: 20px; }
@@ -180,7 +177,7 @@
   .formNote { font-size: 11px; }
 }
 @media (max-height: 650px) and (max-width: 760px) { .intro { padding-top: 5px; padding-bottom: 10px; } .intro h1 { font-size: 24px; } .intro p { display: none; } .filters { gap: 8px; padding-bottom: 10px; } .sidebarHeading { padding-top: 8px; } }
-@media (prefers-reduced-motion: reduce) { .spin { animation: none; } .markerDot, .memberCard, .primaryButton, .secondaryButton { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .spin { animation: none; } .memberCard, .primaryButton, .secondaryButton { transition: none; } }
 
 .memberAvatar { overflow: hidden; position: relative; }
 .memberAvatar img { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; }

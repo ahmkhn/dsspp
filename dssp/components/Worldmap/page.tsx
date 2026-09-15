@@ -15,6 +15,14 @@ import styles from './worldmap.module.css';
 type Member = NonNullable<Awaited<ReturnType<typeof getAllMarkerUserData>>>[number];
 type Coordinate = [number, number];
 const MEMBER_PAGE_SIZE = 20;
+const MEMBER_SOURCE = 'community-members';
+const MEMBER_LAYER = 'community-member-pins';
+
+function memberFeaturesAt(instance: mapboxgl.Map, point: mapboxgl.Point) {
+  if (!instance.getLayer(MEMBER_LAYER)) return [];
+  // Preserve a generous touch target without creating a DOM element for every pin.
+  return instance.queryRenderedFeatures([[point.x - 14, point.y - 14], [point.x + 14, point.y + 14]], { layers: [MEMBER_LAYER] });
+}
 
 function MemberAvatar({ member }: { member: Member }) {
   const src = safeWebUrl(member.avatar_url);
@@ -157,7 +165,7 @@ export default function Worldmap({ authorized }: { authorized: User | null }) {
       instance = new mapboxgl.Map({
         container: mapContainer.current,
         accessToken: token,
-        style: process.env.NEXT_PUBLIC_MAPBOX_STYLE || 'mapbox://styles/mapbox/light-v11',
+        style: process.env.NEXT_PUBLIC_MAPBOX_STYLE || 'mapbox://styles/ahmkhn/cm0t536km002101nt0xc1fwvq',
         projection: 'globe',
         zoom: 1.7,
         center: [35, 25],
@@ -228,24 +236,36 @@ export default function Worldmap({ authorized }: { authorized: User | null }) {
 
   useEffect(() => {
     if (!mapReady || !map.current) return;
-    const markers = filteredMembers.filter(hasCoordinates).map((member) => {
-      const element = document.createElement('button');
-      element.type = 'button';
-      element.className = styles.marker;
-      element.setAttribute('aria-label', `View ${member.full_name}’s profile`);
-      element.title = member.full_name;
-      const dot = document.createElement('span');
-      dot.className = styles.markerDot;
-      element.appendChild(dot);
-      element.addEventListener('click', (event) => {
-        event.stopPropagation();
-        selectMember(member);
+    const instance = map.current;
+    const data: GeoJSON.FeatureCollection<GeoJSON.Point> = {
+      type: 'FeatureCollection',
+      features: filteredMembers.flatMap((member, index) => hasCoordinates(member) ? [{
+        type: 'Feature' as const,
+        geometry: { type: 'Point' as const, coordinates: [member.user_location_y, member.user_location_x] },
+        properties: { memberIndex: index },
+      }] : []),
+    };
+    const source = instance.getSource(MEMBER_SOURCE) as mapboxgl.GeoJSONSource | undefined;
+    if (source) source.setData(data);
+    else {
+      instance.addSource(MEMBER_SOURCE, { type: 'geojson', data });
+      instance.addLayer({
+        id: MEMBER_LAYER, type: 'circle', source: MEMBER_SOURCE,
+        paint: {
+          'circle-radius': 7,
+          'circle-color': '#48784b',
+          'circle-stroke-width': 2.5,
+          'circle-stroke-color': '#ffffff',
+        },
       });
-      return new mapboxgl.Marker({ element })
-        .setLngLat([member.user_location_y, member.user_location_x])
-        .addTo(map.current!);
-    });
-    return () => markers.forEach((marker) => marker.remove());
+    }
+    const click = (event: mapboxgl.MapMouseEvent) => {
+      const feature = memberFeaturesAt(instance, event.point)[0];
+      const member = filteredMembers[Number(feature?.properties?.memberIndex)];
+      if (feature && member) selectMember(member);
+    };
+    instance.on('click', click);
+    return () => { instance.off('click', click); };
   }, [filteredMembers, mapReady, selectMember]);
 
   const chooseLocation = useCallback((latitude: number, longitude: number) => {
@@ -260,6 +280,7 @@ export default function Worldmap({ authorized }: { authorized: User | null }) {
     if (!instance || !isPlacing || !authorized || hasMarker) return;
     const click = (event: mapboxgl.MapMouseEvent) => {
       if (event.originalEvent.target instanceof Element && event.originalEvent.target.closest('.mapboxgl-marker')) return;
+      if (memberFeaturesAt(instance, event.point).length) return;
       chooseLocation(event.lngLat.lat, event.lngLat.lng);
     };
     instance.getCanvas().style.cursor = 'crosshair';
