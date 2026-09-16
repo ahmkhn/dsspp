@@ -6,10 +6,10 @@ import styles from "./about.module.css";
 
 export const metadata = { title: "About DSSP | Decolonizing Social Sciences" };
 
-// Replace each placeholder with a profile photo URL, or a path to an image in public/.
+// Portraits are served with the site from public/people, independent of LinkedIn URLs.
 const profilePhotos = {
-  rabia: "https://media.licdn.com/dms/image/v2/D4D03AQFMv_G3mRTlrA/profile-displayphoto-crop_800_800/B4DZsynpJuI8AI-/0/1766080813722?e=1791417600&v=beta&t=dSiNjtLaKaeFnCwghDGE--jJlBKd97xYxR9-_Q_J6es",
-  ahmed: "https://media.licdn.com/dms/image/v2/D4E03AQEQJxVRMlF5fQ/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1718856735598?e=1791417600&v=beta&t=hPQzyuwvYb1g_AqnxEbgKGlIw6el2xgB2LqQ0JJbUhA",
+  rabia: "/people/rabia-akhtar.jpg",
+  ahmed: "/people/ahmed-khan.jpg",
 };
 
 const principles = [
