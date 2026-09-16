@@ -25,7 +25,7 @@
 .peopleIntro > p:last-child { font-size: 14px; line-height: 1.9; color: #6d7a63; max-width: 330px; }
 .peopleCards { display: grid; gap: 17px; }
 .person { display: flex; align-items: flex-start; gap: 19px; padding: 26px; background: #fcfcf7; border: 1px solid #dce2d3; border-radius: 12px; }
-.monogram { flex: none; display: grid; place-items: center; width: 45px; height: 45px; border-radius: 50%; color: #6c8054; background: #eaf0e0; font-size: 13px; }
+.profilePhoto { flex: none; width: 56px; height: 56px; border-radius: 50%; background: #eaf0e0; object-fit: cover; }
 .role { color: #82916f; font-size: 9px; letter-spacing: .12em; font-weight: 650; }
 .person h3 { font-size: 20px; font-weight: 550; letter-spacing: -.025em; margin: 7px 0 11px; }
 .person h3 + p { font-size: 14px; line-height: 1.8; color: #6e7b65; }

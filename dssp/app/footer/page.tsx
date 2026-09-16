@@ -9,7 +9,7 @@ export default function Footer() {
         <div><Link href="/" className={styles.footerBrand}>DSSP<span>.</span></Link><p>Decolonizing Social Sciences in Pakistan.</p></div>
         <div className={styles.footerMeta}>
           <p>Built for a world of shared perspectives.</p>
-          <p>Developed by <a href="https://linkedin.com/in/ahmkhn" target="_blank" rel="noreferrer">Ahmed Khan <ArrowUpRight size={12} aria-hidden="true" /></a></p>
+          <p>Developed by <a href="https://www.linkedin.com/in/ahmkh" target="_blank" rel="noreferrer">Ahmed Khan <ArrowUpRight size={12} aria-hidden="true" /></a></p>
         </div>
       </div>
     </footer>

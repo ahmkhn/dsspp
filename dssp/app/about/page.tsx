@@ -6,6 +6,12 @@ import styles from "./about.module.css";
 
 export const metadata = { title: "About DSSP | Decolonizing Social Sciences" };
 
+// Replace each placeholder with a profile photo URL, or a path to an image in public/.
+const profilePhotos = {
+  rabia: "https://media.licdn.com/dms/image/v2/D4D03AQFMv_G3mRTlrA/profile-displayphoto-crop_800_800/B4DZsynpJuI8AI-/0/1766080813722?e=1791417600&v=beta&t=dSiNjtLaKaeFnCwghDGE--jJlBKd97xYxR9-_Q_J6es",
+  ahmed: "https://media.licdn.com/dms/image/v2/D4E03AQEQJxVRMlF5fQ/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1718856735598?e=1791417600&v=beta&t=hPQzyuwvYb1g_AqnxEbgKGlIw6el2xgB2LqQ0JJbUhA",
+};
+
 const principles = [
   { icon: BookOpen, title: "Start with local knowledge", text: "Make space for indigenous knowledge, lived experiences, and research grounded in the realities of Pakistan." },
   { icon: Users, title: "Look beyond your discipline", text: "Bring different fields into conversation. Shared questions can create connections across academic boundaries." },
@@ -48,15 +54,15 @@ export default function About() {
           <div className={styles.peopleIntro}><p className={styles.eyebrow}>THE PEOPLE BEHIND DSSP</p><h2 id="people-heading">An idea.<br />A collaboration.<br /><span>A growing community.</span></h2><p>DSSP began with Dr. Rabia Akhtar’s vision to bring minds together. Through collaboration with Ahmed Khan, that idea became this platform.</p></div>
           <div className={styles.peopleCards}>
             <article className={styles.person}>
-              <span className={styles.monogram} aria-hidden="true">RA</span>
+              <img className={styles.profilePhoto} src={profilePhotos.rabia} alt="" width={56} height={56} loading="lazy" decoding="async" />
               <div><p className={styles.role}>DSSP LEAD</p><h3>Dr. Rabia Akhtar</h3><p>An academic entrepreneur whose work connects research, policy, and public discourse. Rabia initiated the vision for DSSP.</p>
                 <div className={styles.contact}><a href="mailto:rabia.akhtar@csspr.uol.edu.pk"><Mail size={15} aria-hidden="true" /> Email Rabia</a><a href="https://www.linkedin.com/in/dr-rabia-akhtar-4a702b49/" target="_blank" rel="noopener noreferrer">LinkedIn <ArrowUpRight size={15} aria-hidden="true" /></a></div>
               </div>
             </article>
             <article className={styles.person}>
-              <span className={styles.monogram} aria-hidden="true">AK</span>
+              <img className={styles.profilePhoto} src={profilePhotos.ahmed} alt="" width={56} height={56} loading="lazy" decoding="async" />
               <div><p className={styles.role}>DEVELOPER</p><h3>Ahmed Khan</h3><p>Ahmed built DSSP to turn a shared vision into a place where people can discover one another and connect through their interests.</p>
-                <div className={styles.contact}><a href="mailto:ahmkhnwork@gmail.com"><Mail size={15} aria-hidden="true" /> Email Ahmed</a><a href="https://www.linkedin.com/in/ahmkhn" target="_blank" rel="noopener noreferrer">LinkedIn <ArrowUpRight size={15} aria-hidden="true" /></a></div>
+                <div className={styles.contact}><a href="mailto:ahmkhnwork@gmail.com"><Mail size={15} aria-hidden="true" /> Email Ahmed</a><a href="https://www.linkedin.com/in/ahmkh" target="_blank" rel="noopener noreferrer">LinkedIn <ArrowUpRight size={15} aria-hidden="true" /></a></div>
               </div>
             </article>
           </div>
