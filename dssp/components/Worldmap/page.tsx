@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type FormEvent } from 'react';
 import type { User } from '@supabase/supabase-js';
 import mapboxgl from 'mapbox-gl';
+import type * as GeoJSON from 'geojson';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { Dialog } from 'primereact/dialog';
 import 'primereact/resources/themes/mira/theme.css';
@@ -239,10 +240,10 @@ export default function Worldmap({ authorized }: { authorized: User | null }) {
     const instance = map.current;
     const data: GeoJSON.FeatureCollection<GeoJSON.Point> = {
       type: 'FeatureCollection',
-      features: filteredMembers.flatMap((member, index) => hasCoordinates(member) ? [{
+      features: filteredMembers.flatMap((member) => hasCoordinates(member) ? [{
         type: 'Feature' as const,
         geometry: { type: 'Point' as const, coordinates: [member.user_location_y, member.user_location_x] },
-        properties: { memberIndex: index },
+        properties: { memberIndex: members.indexOf(member) },
       }] : []),
     };
     const source = instance.getSource(MEMBER_SOURCE) as mapboxgl.GeoJSONSource | undefined;
@@ -261,12 +262,12 @@ export default function Worldmap({ authorized }: { authorized: User | null }) {
     }
     const click = (event: mapboxgl.MapMouseEvent) => {
       const feature = memberFeaturesAt(instance, event.point)[0];
-      const member = filteredMembers[Number(feature?.properties?.memberIndex)];
-      if (feature && member) selectMember(member);
+      const member = members[Number(feature?.properties?.memberIndex)];
+      if (feature && member && filteredMembers.includes(member)) selectMember(member);
     };
     instance.on('click', click);
     return () => { instance.off('click', click); };
-  }, [filteredMembers, mapReady, selectMember]);
+  }, [filteredMembers, members, mapReady, selectMember]);
 
   const chooseLocation = useCallback((latitude: number, longitude: number) => {
     setCoordinates([latitude, ((longitude + 180) % 360 + 360) % 360 - 180]);

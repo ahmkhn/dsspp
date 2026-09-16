@@ -7,6 +7,8 @@ import type { User } from "@supabase/supabase-js";
 const mocks = vi.hoisted(() => ({
   getMembers: vi.fn(), exists: vi.fn(), add: vi.fn(), remove: vi.fn(),
   flyTo: vi.fn(), removedMarkers: vi.fn(),
+  setData: vi.fn(), addSource: vi.fn(), addLayer: vi.fn(), queryFeatures: vi.fn(),
+  clicks: new Set<(event: any) => void>(),
 }));
 vi.mock("@/components/Worldmap/getMapData", () => ({
   getAllMarkerUserData: mocks.getMembers, getUserDataExists: mocks.exists,
@@ -20,8 +22,18 @@ vi.mock("mapbox-gl", () => {
   class Map {
     canvas = document.createElement("canvas");
     addControl() {}
-    on(event: string, listener: () => void) { if (event === "load") listener(); }
-    off() {}
+    source: unknown;
+    layer: unknown;
+    addSource(id: string, source: unknown) { this.source = { setData: mocks.setData }; mocks.addSource(id, source); }
+    getSource() { return this.source; }
+    addLayer(layer: unknown) { this.layer = layer; mocks.addLayer(layer); }
+    getLayer() { return this.layer; }
+    queryRenderedFeatures = mocks.queryFeatures;
+    on(event: string, listener: () => void) {
+      if (event === "load") listener();
+      if (event === "click") mocks.clicks.add(listener);
+    }
+    off(event: string, listener: () => void) { if (event === "click") mocks.clicks.delete(listener); }
     setFog() {}
     resize() {}
     remove() {}
@@ -51,6 +63,8 @@ const account = { id: "fixture-user", email: "fixture@example.com" } as User;
 
 beforeEach(() => {
   vi.stubEnv("NEXT_PUBLIC_MAPBOX_KEY", "test-only-token");
+  mocks.clicks.clear();
+  mocks.queryFeatures.mockReturnValue([]);
   mocks.getMembers.mockResolvedValue([researcher, secondResearcher]);
   mocks.exists.mockResolvedValue(false);
   mocks.add.mockResolvedValue(undefined);
@@ -89,6 +103,40 @@ describe("community map interactions", () => {
     expect(screen.getByRole("button", { name: /Bilal Historian History/ })).toBeTruthy();
     expect(mocks.add).not.toHaveBeenCalled();
     expect(mocks.remove).not.toHaveBeenCalled();
+  });
+
+  it("keeps all pins in one map source and preserves identity after filtering", async () => {
+    await ready();
+    expect(mocks.addSource).toHaveBeenCalledTimes(1);
+    const data = mocks.setData.mock.lastCall?.[0] ?? mocks.addSource.mock.lastCall?.[1].data;
+    expect(data.features).toHaveLength(2);
+    expect(data.features[0].geometry.coordinates).toEqual([74.36, 31.52]);
+    fireEvent.change(screen.getByLabelText("Research area"), { target: { value: "History" } });
+    expect(mocks.setData.mock.lastCall?.[0].features).toHaveLength(1);
+    expect(mocks.setData.mock.lastCall?.[0].features[0].properties.memberIndex).toBe(1);
+    // A worker can briefly return the previous source while a filter update is pending.
+    mocks.queryFeatures.mockReturnValue([{ properties: { memberIndex: 0 } }]);
+    act(() => mocks.clicks.forEach((click) => click({ point: { x: 100, y: 100 } })));
+    expect(screen.queryByRole("heading", { name: "Amina Researcher" })).toBeNull();
+    mocks.queryFeatures.mockReturnValue([{ properties: { memberIndex: 1 } }]);
+    act(() => mocks.clicks.forEach((click) => click({ point: { x: 100, y: 100 } })));
+    expect(screen.getByRole("heading", { name: "Bilal Historian" })).toBeTruthy();
+    expect(mocks.addSource).toHaveBeenCalledTimes(1);
+    expect(mocks.addLayer).toHaveBeenCalledTimes(1);
+  });
+
+  it("does not place a new pin when an existing member is clicked", async () => {
+    await ready(account);
+    fireEvent.click(screen.getAllByRole("button", { name: "Add your pin" })[0]);
+    await screen.findByRole("button", { name: "Use map center" });
+    const event = { point: { x: 100, y: 100 }, lngLat: { lat: 10, lng: 20 }, originalEvent: { target: document.createElement("canvas") } };
+    mocks.queryFeatures.mockReturnValue([{ properties: { memberIndex: 0 } }]);
+    act(() => mocks.clicks.forEach((click) => click(event)));
+    expect(screen.queryByRole("dialog")).toBeNull();
+    mocks.queryFeatures.mockReturnValue([]);
+    act(() => mocks.clicks.forEach((click) => click(event)));
+    expect(screen.getByRole("dialog", { name: "Put your perspective on the map" })).toBeTruthy();
+    expect(mocks.add).not.toHaveBeenCalled();
   });
 
   it("renders profile text safely, rejects unsafe links, and preserves map coordinate order", async () => {
