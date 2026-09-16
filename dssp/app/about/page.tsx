@@ -56,7 +56,7 @@ export default function About() {
             <article className={styles.person}>
               <img className={styles.profilePhoto} src={profilePhotos.rabia} alt="" width={56} height={56} loading="lazy" decoding="async" />
               <div><p className={styles.role}>DSSP LEAD</p><h3>Dr. Rabia Akhtar</h3><p>An academic entrepreneur whose work connects research, policy, and public discourse. Rabia initiated the vision for DSSP.</p>
-                <div className={styles.contact}><a href="mailto:rabia.akhtar@csspr.uol.edu.pk"><Mail size={15} aria-hidden="true" /> Email Rabia</a><a href="https://www.linkedin.com/in/dr-rabia-akhtar-4a702b49/" target="_blank" rel="noopener noreferrer">LinkedIn <ArrowUpRight size={15} aria-hidden="true" /></a></div>
+                <div className={styles.contact}><a href="mailto:rabia.akhtar@csspr.uol.edu.pk"><Mail size={15} aria-hidden="true" /> Email Rabia</a><a href="https://www.linkedin.com/in/rabia-akhtar-ph-d-4a702b49" target="_blank" rel="noopener noreferrer">LinkedIn <ArrowUpRight size={15} aria-hidden="true" /></a></div>
               </div>
             </article>
             <article className={styles.person}>
